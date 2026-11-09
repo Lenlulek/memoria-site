@@ -368,7 +368,8 @@ footer a:hover{color:var(--granat)}
     </ul></div>
     <div><h4>Заказать</h4><ul>
       <li><a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram: @ellaMua</a></li>
-      <li><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp: +7 926 615-93-09</a></li>
+      <li><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a></li>
+      <li>Телефон: +7 926 615-93-09</li>
       <li><a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a></li>
     </ul></div>
   </div>
@@ -430,7 +431,7 @@ function render(){
 more.addEventListener("click",()=>{shown+=12;render();});
 function press(group,attr,val){document.querySelectorAll(group+" .chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset[attr]===val));}
 document.querySelectorAll(".chip[data-f]").forEach(c=>c.addEventListener("click",()=>{fT=c.dataset.f;shown=12;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===c));render();}));
-document.querySelectorAll(".chip[data-c]").forEach(c=>c.addEventListener("click",()=>{fC=c.dataset.c;shown=12;press("#cchips","c",fC);render();}));
+document.querySelectorAll(".chip[data-c]").forEach(c=>c.addEventListener("click",()=>{fC=c.dataset.c;if(fC!=="all"){fT="all";document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));}shown=12;press("#cchips","c",fC);render();}));
 document.querySelectorAll(".col[data-c]").forEach(a=>a.addEventListener("click",()=>{fC=a.dataset.c;fT="all";shown=12;press("#cchips","c",fC);document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));render();}));
 render();
 
