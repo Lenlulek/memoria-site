@@ -244,7 +244,7 @@ footer a:hover{color:var(--granat)}
       <a href="#about">О бренде</a>
       <a href="#delivery">Доставка и гарантия</a>
     </nav>
-    <a class="btn sm" href="https://t.me/ellaMua" target="_blank" rel="noopener">Написать нам</a>
+    <button class="btn sm" type="button" id="ask">Написать нам</button>
   </div>
 </header>
 
@@ -368,7 +368,8 @@ footer a:hover{color:var(--granat)}
     </ul></div>
     <div><h4>Заказать</h4><ul>
       <li><a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram: @ellaMua</a></li>
-      <li><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp: 8 926 615-93-09</a></li>
+      <li><a href="tel:+79266159309">Телефон: +7 926 615-93-09</a></li>
+      <li><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a></li>
       <li><a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a></li>
     </ul></div>
   </div>
@@ -400,12 +401,13 @@ footer a:hover{color:var(--granat)}
   <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
     <button class="close" id="sh-x" type="button">Закрыть ✕</button>
     <h3 id="sh-t">Заказать</h3>
-    <p>Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.</p>
+    <p id="sh-p">Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.</p>
     <div class="msg" id="sh-msg"></div>
     <div class="opts">
       <a class="btn" id="sh-tg" target="_blank" rel="noopener">Telegram <span>→</span></a>
       <a class="btn ghost" id="sh-wa" target="_blank" rel="noopener">WhatsApp <span>→</span></a>
       <a class="btn ghost" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX <span>→</span></a>
+      <a class="btn ghost" href="tel:+79266159309">Позвонить <span>+7 926 615-93-09</span></a>
     </div>
   </div>
 </div>
@@ -435,11 +437,22 @@ document.querySelectorAll(".col[data-c]").forEach(a=>a.addEventListener("click",
 render();
 
 /* order sheet */
+document.getElementById("ask").addEventListener("click",()=>{
+  const sh=document.getElementById("sheet");
+  document.getElementById("sh-t").textContent="Написать нам";
+  document.getElementById("sh-p").textContent="Подскажем по размеру, подберём подарок, ответим на любой вопрос. Выберите, где вам удобнее.";
+  document.getElementById("sh-msg").hidden=true;
+  document.getElementById("sh-tg").href="https://t.me/ellaMua";
+  document.getElementById("sh-wa").href="https://wa.me/79266159309";
+  sh.hidden=false; document.getElementById("sh-x").focus();
+});
 const sheet=document.getElementById("sheet");
 function order(it){
   const full=(it.nm?`«${it.nm}», `:"")+it.name.toLowerCase();
   const msg=`Здравствуйте! Хочу заказать: ${full} (${it.sku}), ${rub(it.price)}.`;
   document.getElementById("sh-t").textContent=it.nm?`«${it.nm}»`:it.name;
+  document.getElementById("sh-p").textContent="Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.";
+  document.getElementById("sh-msg").hidden=false;
   document.getElementById("sh-msg").textContent=msg;
   document.getElementById("sh-tg").href="https://t.me/ellaMua";
   document.getElementById("sh-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(msg);
