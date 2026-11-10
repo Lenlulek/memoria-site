@@ -10,7 +10,7 @@ head='''<!doctype html>
 <style>html,body{margin:0;padding:0}</style>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MEMORIA">
-<meta property="og:title" content="MEMORIA — украшения с гранатом">
+<meta property="og:title" content="MEMORIA — украшения о памяти">
 <meta property="og:description" content="Колье, серьги, кольца и браслеты. Не боятся воды, гипоаллергенно. Заказ в Telegram, WhatsApp и MAX.">
 <meta property="og:url" content="https://memoria-jewelry.ru/">
 <meta property="og:image" content="https://memoria-jewelry.ru/img/og.jpg">
