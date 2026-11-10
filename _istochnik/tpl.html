@@ -1,0 +1,484 @@
+<title>MEMORIA — украшения с гранатом</title>
+<meta name="description" content="MEMORIA — украшения о памяти и рае: колье, серьги, кольца и браслеты с натуральными камнями. Заказ в Telegram, WhatsApp и MAX.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Commissioner:wght@300;400;500&display=swap">
+<style>
+@font-face{font-family:"Ouvality";src:url(data:font/ttf;base64,__OUV__) format("truetype");font-display:swap}
+/* Layout: журнальная витрина — асимметричный первый экран, лента коллекций, сетка карточек с одной кнопкой «Заказать» (позже станет «В корзину») */
+:root{
+  --milk:#FBF7F1; --paper:#F3ECE2; --granat:#8C2A2E; --granat-deep:#5E1A1E;
+  --ink:#2B2427; --muted:#7A6E6C; --line:#E4D9CD;
+  --display:"Cormorant Garamond", "Times New Roman", serif;
+  --body:"Commissioner", "Segoe UI", Arial, sans-serif;
+  --script:"Ouvality", "Segoe Script", cursive;
+  --gut:max(16px, env(safe-area-inset-left, 0px));
+  --gutr:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--milk);color:var(--ink);font-family:var(--body);font-weight:300;font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--milk)}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gutr)}
+.draft{background:var(--granat);color:var(--milk);font-size:13px;text-align:center;padding-block:7px;letter-spacing:.02em}
+.draft .wrap{padding-block:0}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--milk) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:14px}
+.logo{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:.32em;text-decoration:none;color:var(--granat)}
+nav{display:flex;gap:28px;font-size:14px}
+nav a{text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--granat)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:500 14px/1 var(--body);letter-spacing:.04em;padding:14px 22px;border-radius:999px;border:1px solid var(--granat);background:var(--granat);color:var(--milk);text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--granat-deep);border-color:var(--granat-deep)}
+.btn.ghost{background:transparent;color:var(--granat)}
+.btn.ghost:hover{background:var(--granat);color:var(--milk)}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--granat);outline-offset:3px}
+.btn.sm{padding:10px 16px;font-size:13px}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding-block:64px 72px}
+.script{font-family:var(--script);color:var(--granat);font-size:30px;line-height:1.25}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,5.6vw,72px);line-height:1.02;margin:18px 0 22px;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--granat)}
+.lead{max-width:30em;color:var(--muted);font-size:17px;margin:0 0 32px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-pom{margin:0;display:grid;justify-items:center;gap:6px;color:var(--granat)}
+.hero-pom svg{width:min(100%,440px);height:auto;aspect-ratio:1}
+.hero-pom figcaption{text-align:center;font-size:13px;color:var(--muted);max-width:22em;display:grid}
+.hero-pom .script{font-size:34px}
+.quote{text-align:center;padding-block:72px 8px}
+.quote q{display:block;font-family:var(--script);color:var(--granat);font-size:clamp(30px,4vw,46px);line-height:1.2;quotes:"«" "»";text-wrap:balance}
+.quote cite{display:block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.card h3 .nm{display:block;font-size:24px;color:var(--granat)}
+.card h3 .ds{display:block;font-family:var(--body);font-weight:300;font-size:14px;line-height:1.45;color:var(--ink);margin-top:2px}
+.hero-art{position:relative;display:grid;grid-template-columns:1fr .62fr;gap:14px;align-items:end}
+.hero-art img{display:block;width:100%;object-fit:cover}
+.hero-art .main{aspect-ratio:3/4;border-radius:200px 200px 4px 4px}
+.hero-art .side{aspect-ratio:3/5;border-radius:4px}
+.hero-art figcaption{position:absolute;left:-22px;bottom:28px;background:var(--milk);padding:12px 16px;font-size:13px;border:1px solid var(--line);max-width:210px;line-height:1.4}
+.hero-art figcaption b{display:block;font-family:var(--display);font-size:19px;font-weight:500;color:var(--granat)}
+
+/* promises */
+.promise{background:var(--paper);border-block:1px solid var(--line)}
+.promise ul{list-style:none;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-block:26px;position:relative;z-index:1}
+.promise{position:relative;overflow:hidden}
+/* hand-drawn pomegranate seeds, as on the flyers */
+.orn{position:absolute;pointer-events:none;color:var(--granat);opacity:.17}
+.orn svg{display:block;width:100%;height:100%}
+.hero{position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:1}
+.orn.h{inset:0}
+.orn.s{inset:0;opacity:.13}
+.about{position:relative;overflow:hidden}
+.orn.a{inset:0;color:var(--milk);opacity:.16}
+footer{position:relative;overflow:hidden}
+footer .wrap{position:relative;z-index:1}
+.orn.f{inset:0;opacity:.14}
+.logo{display:inline-flex;align-items:center;gap:10px}
+.logo svg{width:26px;height:26px;color:var(--granat)}
+.hero .lead em{font-style:normal;color:var(--ink)}
+.filters{display:grid;gap:10px;justify-items:end}
+.chips .lbl{font-size:12px;color:var(--muted);align-self:center;margin-right:4px}
+.coll{font-size:12px;color:var(--granat)}
+.badge{position:absolute;top:10px;left:10px;background:var(--milk);color:var(--granat);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.card .ph{position:relative}
+.empty{grid-column:1/-1;color:var(--muted)}
+.about blockquote{font-family:var(--display);font-style:italic;font-size:22px;line-height:1.35;margin:24px 0 0;color:#F4DCD6;max-width:28em}
+.promise li{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--muted)}
+.promise b{font-family:var(--display);font-size:20px;font-weight:500;color:var(--ink)}
+
+section{scroll-margin-top:80px}
+.sec{padding-block:88px 24px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:36px;flex-wrap:wrap}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.05;margin:4px 0 0;text-wrap:balance}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--granat)}
+.sec-head p{max-width:30em;margin:0;color:var(--muted)}
+
+/* collections */
+.cols{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.col{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:3/4.4;text-decoration:none;color:#FBF7F1;background:var(--paper)}
+.col img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.col:hover img{transform:scale(1.04)}
+.col::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(43,20,22,.72),rgba(43,20,22,0) 55%)}
+.col div{position:absolute;left:16px;right:16px;bottom:16px;z-index:1}
+.col b{display:block;font-family:var(--display);font-size:26px;font-weight:500;line-height:1.05}
+.col span{font-size:12.5px;opacity:.9;line-height:1.4;display:block;margin-top:4px}
+
+/* catalog */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:400 13px/1 var(--body);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--milk)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 22px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card .ph{aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:var(--paper);margin-bottom:10px}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card:hover img{transform:scale(1.04)}
+.sku{font-size:11.5px;letter-spacing:.12em;color:var(--muted);font-variant-numeric:tabular-nums}
+.card h3{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.15;margin:0;flex:1}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+.price{font-family:var(--display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:13px;color:var(--muted);margin-top:28px}
+
+/* about */
+.about{background:var(--granat);color:var(--milk);margin-top:96px}
+.about .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center;padding-block:0}
+.about img{display:block;width:100%;height:100%;min-height:100%;object-fit:cover;align-self:stretch}
+.about .txt{padding-block:72px}
+.about .eyebrow{color:#E9C9C3}
+.about h2{color:var(--milk)}
+.about p{max-width:34em;opacity:.92}
+.about .script{color:#F4DCD6;font-size:28px;margin-top:28px}
+
+/* delivery */
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.info div{border-top:1px solid var(--granat);padding-top:18px}
+.info h3{font-family:var(--display);font-weight:500;font-size:24px;margin:0 0 8px}
+.info p{margin:0;color:var(--muted);font-size:15px}
+
+footer{margin-top:96px;background:var(--paper);border-top:1px solid var(--line)}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px;padding-block:56px}
+footer h4{font-family:var(--display);font-size:20px;font-weight:500;margin:0 0 12px}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:6px;font-size:14px}
+footer a{text-decoration:none;color:var(--muted)}
+footer a:hover{color:var(--granat)}
+.fine{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-block:18px}
+
+/* order sheet */
+.sheet{position:fixed;inset:0;z-index:20;display:grid;place-items:end center;background:rgba(43,36,39,.45);padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet .box{background:var(--milk);width:100%;max-width:440px;border-radius:14px;padding:26px;display:grid;gap:14px;animation:up .25s ease}
+@keyframes up{from{transform:translateY(16px);opacity:.4}}
+.sheet h3{font-family:var(--display);font-weight:500;font-size:26px;margin:0;line-height:1.1}
+.sheet p{margin:0;color:var(--muted);font-size:14px}
+.sheet .opts{display:grid;gap:8px}
+.sheet .opts a{justify-content:space-between}
+.sheet .close{justify-self:end;background:none;border:0;font:400 14px var(--body);color:var(--muted);cursor:pointer;padding:4px}
+.msg{font-size:13px;background:var(--paper);padding:10px 12px;border-radius:8px;user-select:all}
+
+
+.count{color:var(--muted);font-size:13px;margin:-16px 0 20px}
+.more-wrap{display:flex;justify-content:center;margin-top:40px}
+.card .ph{display:block;width:100%;padding:0;border:0;cursor:pointer}
+.badge.n{left:auto;right:10px;color:var(--muted)}
+.lnk{all:unset;cursor:pointer;display:block}
+.lnk:hover .nm,.lnk:hover{color:var(--granat)}
+.lnk:focus-visible{outline:2px solid var(--granat);outline-offset:3px}
+.pv{position:fixed;inset:0;z-index:15;background:rgba(43,36,39,.5);display:grid;place-items:center;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto}
+.pv-box{position:relative;background:var(--milk);width:100%;max-width:960px;border-radius:14px;display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;animation:up .25s ease}
+.pv-box>.close{position:absolute;top:12px;right:14px;z-index:2;background:var(--milk);border:0;border-radius:999px;padding:8px 12px;font:400 13px var(--body);color:var(--muted);cursor:pointer}
+.gal{position:relative;background:var(--paper)}
+.gal-win{overflow:hidden;aspect-ratio:4/5}
+.card img[src$="-r.jpg"],.gal-track img[src$="-r.jpg"]{object-fit:contain;background:#fff}
+.gal-track{display:flex;height:100%;transition:transform .35s ease}
+.gal-track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;min-width:0}
+.arr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:rgba(251,247,241,.9);color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.arr.l{left:12px}.arr.r{right:12px}
+.gal-dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.gal-dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(251,247,241,.6);cursor:pointer}
+.gal-dots button[aria-current="true"]{background:var(--milk);width:20px;border-radius:4px}
+.pv.one .arr{display:none}
+.pv-info{padding:44px 32px 32px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pv-info h3{font-family:var(--display);font-weight:500;font-size:28px;line-height:1.15;margin:0}
+.pv-info h3 .nm{display:block;font-size:34px;color:var(--granat)}
+.pv-info h3 .ds{display:block;font-family:var(--body);font-weight:300;font-size:16px;line-height:1.45;margin-top:4px}
+.pv-info .price{font-size:28px}
+.meta{list-style:none;padding:0;margin:4px 0;display:grid;gap:8px;font-size:14px;border-top:1px solid var(--line);padding-top:14px}
+.meta b{display:block;font-weight:500;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pv-q q{display:block;font-family:var(--script);color:var(--granat);font-size:24px;line-height:1.25;quotes:"«" "»"}
+.pv-q cite{font-style:normal;font-size:12px;color:var(--muted)}
+.pv-info .btn{align-self:flex-start;margin-top:6px}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+@media (min-width:761px){.gal-win{aspect-ratio:auto;height:100%;min-height:420px}}
+@media (max-width:760px){.pv{place-items:start center}.pv-box{grid-template-columns:1fr}.pv-info{padding:22px 20px 26px}}
+@media (max-width:980px){
+  nav{display:none}
+  .hero .wrap{grid-template-columns:1fr;gap:40px;padding-block:40px 56px}
+  .cols{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .promise ul{grid-template-columns:repeat(2,1fr)}
+  .about .wrap{grid-template-columns:1fr;gap:0}
+  .about img{max-height:420px}
+  .about .txt{padding-block:40px 56px}
+  .info{grid-template-columns:1fr}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .cols{grid-template-columns:repeat(2,1fr)}
+  .cols .col:last-child{grid-column:span 2;aspect-ratio:16/10}
+  .grid{gap:30px 14px}
+  .card h3{font-size:18px}
+  .price{font-size:19px}
+  .card .row{flex-direction:column;align-items:stretch}
+  .hero-art figcaption{position:static;grid-column:1/-1;max-width:none}
+  .promise b{line-height:1.2}
+  header .btn{padding:10px 14px;font-size:12px}
+  .logo{font-size:20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">__POM__MEMORIA</a>
+    <nav aria-label="Разделы">
+      <a href="#collections">Коллекции</a>
+      <a href="#catalog">Каталог</a>
+      <a href="#about">О бренде</a>
+      <a href="#delivery">Доставка и гарантия</a>
+    </nav>
+    <button class="btn sm" type="button" id="ask">Написать нам</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="orn h">__SEEDS_HERO__</div>
+    <div class="wrap">
+      <div>
+        <div class="script">Рай — это не про место. Это про состояние</div>
+        <h1>Memoria значит <em>«память»</em></h1>
+        <p class="lead">В каждом из нас есть память о месте, где царит гармония. О состоянии, где нет раскола внутри, где любовь не зависит от настроения и где тебя любят не благодаря, а вопреки. <em>Наши украшения напоминают о нём.</em></p>
+        <div class="cta">
+          <a class="btn" href="#catalog">Смотреть каталог</a>
+          <a class="btn ghost" href="https://t.me/memoria_jewellry" target="_blank" rel="noopener">Наш Telegram-канал</a>
+        </div>
+      </div>
+      <figure class="hero-pom">
+        __POM_BIG__
+      </figure>
+    </div>
+  </section>
+
+  <div class="promise">
+    <div class="orn s">__SEEDS_STRIP__</div>
+    <ul class="wrap">
+      <li><b>Гипоаллергенно</b>нержавеющая сталь и гипоаллергенное покрытие</li>
+      <li><b>Водостойко</b>не боятся воды, можно в душ</li>
+      <li><b>Гарантия 6 месяцев</b>если что-то случится, напишите нам, постараемся помочь</li>
+      <li><b>В подарочной коробке</b>сразу можно дарить</li>
+      <li><b>Доставка по России</b>уже включена в цену</li>
+    </ul>
+  </div>
+
+  <section id="collections" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Коллекции</div><h2>У каждой своя история</h2></div>
+        <p>Названия коллекций взяты из Писания. Украшения легко сочетаются между собой, поэтому их удобно собирать в свой комплект.</p>
+      </div>
+      <div class="cols">
+        <a class="col" href="#catalog" data-c="Гранат"><img src="img/pomegranate.jpg" alt=""><div><b>Гранат</b><span>тёплое золото и красные вставки</span></div></a>
+        <a class="col" href="#catalog" data-c="Светила"><img src="img/svetila.jpg" alt=""><div><b>Светила</b><span>солнце, луна и звёзды</span></div></a>
+        <a class="col" href="#catalog" data-c="Начало"><img src="img/nachalo.jpg" alt=""><div><b>Начало</b><span>базовые цепочки для каждого дня</span></div></a>
+        <a class="col" href="#catalog" data-c="Цвет надежды"><img src="img/eyes.jpg" alt=""><div><b>Цвет надежды</b><span>бусы из натуральных камней</span></div></a>
+        <a class="col" href="#catalog" data-c="Никогда не поздно"><img src="img/nikogda.jpg" alt=""><div><b>Никогда не поздно</b><span>маленькие напоминания о главном</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote wrap"><q>Вся ты прекрасна, возлюбленная моя</q><cite>Песнь песней 4:7</cite></div>
+
+  <section id="catalog" class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Каталог</div><h2>Все украшения</h2></div>
+        <div class="filters">
+          <div class="chips" role="group" aria-label="Фильтр по типу">
+            <button class="chip" id="f-all" data-f="all" aria-pressed="true">Все</button>
+            <button class="chip" id="f-new" data-f="new" aria-pressed="false">Новинки</button>
+            <button class="chip" id="f-neck" data-f="neck" aria-pressed="false">Колье и цепочки</button>
+            <button class="chip" id="f-ear" data-f="ear" aria-pressed="false">Серьги</button>
+            <button class="chip" id="f-ring" data-f="ring" aria-pressed="false">Кольца</button>
+            <button class="chip" id="f-br" data-f="br" aria-pressed="false">Браслеты</button>
+          </div>
+          <div class="chips" role="group" aria-label="Фильтр по коллекции" id="cchips">
+            <span class="lbl">Коллекция:</span>
+            <button class="chip" id="c-all" data-c="all" aria-pressed="true">Любая</button>
+            <button class="chip" id="c-granat" data-c="Гранат" aria-pressed="false">Гранат</button>
+            <button class="chip" id="c-svetila" data-c="Светила" aria-pressed="false">Светила</button>
+            <button class="chip" id="c-nachalo" data-c="Начало" aria-pressed="false">Начало</button>
+            <button class="chip" id="c-nadezhda" data-c="Цвет надежды" aria-pressed="false">Цвет надежды</button>
+            <button class="chip" id="c-nikogda" data-c="Никогда не поздно" aria-pressed="false">Никогда не поздно</button>
+          </div>
+        </div>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="grid" id="grid"></div>
+      <div class="more-wrap"><button class="btn ghost" id="more" type="button">Показать ещё</button></div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="orn a">__SEEDS_ABOUT__</div>
+    <div class="wrap" style="position:relative;z-index:1">
+      <img src="img/pomegranate.jpg" alt="Гранаты, символ MEMORIA">
+      <div class="txt">
+        <div class="eyebrow">О бренде</div>
+        <h2>Память о рае</h2>
+        <p>В сердце каждого из нас есть пустота, которая ничем земным не заполняется. Не потому, что нам чего-то не хватает, а потому что это место предназначено для Того, Кто больше нас. И у всех нас есть базовая настройка стремиться туда, оказаться там, в этой безусловной любви и наполненности.</p>
+        <p>Всё это об утерянном людьми райском саде Эдем. Это не миф о прошлом, это изначальное предназначение человека — жить в согласии с Творцом. Эдем — это не про место, а про состояние человека, живущего в согласии с Богом. Состояние вечного цветения, полноты, любви и красоты жизни.</p>
+        <blockquote>Мы верим, что рай — это не далёкое обещание. Его можно обрести уже сегодня.</blockquote>
+        <p style="margin-top:24px">Наши украшения — об этом состоянии. Чтобы, надевая их, вы вспоминали: вы любимы, и Он рядом.</p>
+        <p>А гранат — наш символ. Простой снаружи и полный внутри, как сердце человека.</p>
+        <div class="script">вдохновлена красотой рая</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote wrap" style="padding-top:88px"><q>Всё соделал Он прекрасным в своё время</q><cite>Екклесиаст 3:11</cite></div>
+
+  <section id="delivery" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div><div class="eyebrow">Как заказать</div><h2>Просто напишите нам</h2></div></div>
+      <div class="info">
+        <div><h3>Заказ</h3><p>Нажмите «Заказать» под украшением и выберите, где удобнее переписываться: Telegram, WhatsApp или MAX. Поможем подобрать комплект и размер.</p></div>
+        <div><h3>Доставка</h3><p>Отправляем по всей России, доставка уже включена в цену. Каждое украшение в подарочной коробке.</p></div>
+        <div><h3>Гарантия</h3><p>6 месяцев на каждое украшение. Если что-то случится, напишите нам, и мы постараемся решить вопрос.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="orn f">__SEEDS_FOOT__</div>
+  <div class="wrap">
+    <div><a class="logo" href="#top">MEMORIA</a><p style="color:var(--muted);font-size:14px;max-width:24em">Украшения, вдохновлённые красотой рая. Москва, доставка по всей России.</p></div>
+    <div><h4>Мы в соцсетях</h4><ul>
+      <li><a href="https://t.me/memoria_jewellry" target="_blank" rel="noopener">Telegram-канал</a></li>
+      <li><a href="https://instagram.com/memoria_jewellry" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://max.ru/join/ZBqpzvuP8yNTh2XU7gOUBBmdaqPUnAjPjS5tBFzDk1Q" target="_blank" rel="noopener">Канал в MAX</a></li>
+    </ul></div>
+    <div><h4>Заказать</h4><ul>
+      <li><a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram: @ellaMua</a></li>
+      <li><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a></li>
+      <li>Телефон: +7 926 615-93-09</li>
+      <li><a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a></li>
+    </ul></div>
+  </div>
+  <div class="wrap fine">© MEMORIA, 2026</div>
+</footer>
+
+<div class="pv" id="pv" hidden>
+  <div class="pv-box" role="dialog" aria-modal="true" aria-labelledby="pv-t">
+    <button class="close" id="pv-x" type="button">Закрыть ✕</button>
+    <div class="gal">
+      <div class="gal-win"><div class="gal-track" id="pv-track"></div></div>
+      <button class="arr l" id="pv-prev" type="button" aria-label="Предыдущее фото">‹</button>
+      <button class="arr r" id="pv-next" type="button" aria-label="Следующее фото">›</button>
+      <div class="gal-dots" id="pv-dots"></div>
+    </div>
+    <div class="pv-info">
+      <div class="sku" id="pv-sku"></div>
+      <h3 id="pv-t"></h3>
+      <div class="price" id="pv-price"></div>
+      <ul class="meta" id="pv-meta"></ul>
+      <div class="pv-q" id="pv-q" hidden></div>
+      <button class="btn" id="pv-order" type="button">Заказать</button>
+      <p class="hint">Доставка по России уже включена в цену. Украшение приедет в подарочной коробке.</p>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <button class="close" id="sh-x" type="button">Закрыть ✕</button>
+    <h3 id="sh-t">Заказать</h3>
+    <p id="sh-p">Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.</p>
+    <div class="msg" id="sh-msg"></div>
+    <div class="opts">
+      <a class="btn" id="sh-tg" target="_blank" rel="noopener">Telegram <span>→</span></a>
+      <a class="btn ghost" id="sh-wa" target="_blank" rel="noopener">WhatsApp <span>→</span></a>
+      <a class="btn ghost" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX <span>→</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const items=__CATALOG__;
+const rub=n=>n.toLocaleString("ru-RU")+" ₽";
+const grid=document.getElementById("grid"), more=document.getElementById("more"), count=document.getElementById("count");
+let fT="all",fC="all",shown=12;
+const plural=n=>{const d=n%10,h=n%100;return d===1&&h!==11?"украшение":(d>=2&&d<=4&&(h<12||h>14)?"украшения":"украшений")};
+function title(it){return it.nm?`<span class="nm">«${it.nm}»</span><span class="ds">${it.name}</span>`:it.name}
+function render(){
+  const list=items.map((it,i)=>[it,i]).filter(([it])=>(fT==="all"||it.t===fT||(fT==="new"&&it.new))&&(fC==="all"||it.c===fC));
+  count.textContent=`${list.length} ${plural(list.length)}`;
+  grid.innerHTML=list.length?list.slice(0,shown).map(([it,i])=>`<article class="card">
+  <button class="ph" type="button" data-open="${i}" aria-label="Открыть: ${it.nm||it.name}">${it.hit?'<span class="badge">Хит</span>':it.new?'<span class="badge">Новинка</span>':''}${it.photos.length>1?`<span class="badge n">${it.photos.length} фото</span>`:''}<img src="${it.th||it.photos[0]}" alt="" loading="lazy"></button>
+  <div class="sku">${it.sku}${it.c?` · <span class="coll">${it.c}</span>`:''}</div><h3><button type="button" class="lnk" data-open="${i}">${title(it)}</button></h3>
+  <div class="row"><span class="price">${rub(it.price)}</span><button class="btn sm ghost" type="button" data-i="${i}">Заказать</button></div>
+</article>`).join(""):'<p class="empty">Таких украшений пока нет. Попробуйте другую коллекцию или категорию.</p>';
+  more.hidden=list.length<=shown;
+}
+more.addEventListener("click",()=>{shown+=12;render();});
+function press(group,attr,val){document.querySelectorAll(group+" .chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset[attr]===val));}
+document.querySelectorAll(".chip[data-f]").forEach(c=>c.addEventListener("click",()=>{fT=c.dataset.f;shown=12;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===c));render();}));
+document.querySelectorAll(".chip[data-c]").forEach(c=>c.addEventListener("click",()=>{fC=c.dataset.c;if(fC!=="all"){fT="all";document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));}shown=12;press("#cchips","c",fC);render();}));
+document.querySelectorAll(".col[data-c]").forEach(a=>a.addEventListener("click",()=>{fC=a.dataset.c;fT="all";shown=12;press("#cchips","c",fC);document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));render();}));
+render();
+
+/* order sheet */
+document.getElementById("ask").addEventListener("click",()=>{
+  const sh=document.getElementById("sheet");
+  document.getElementById("sh-t").textContent="Написать нам";
+  document.getElementById("sh-p").textContent="Подскажем по размеру, подберём подарок, ответим на любой вопрос. Выберите, где вам удобнее.";
+  document.getElementById("sh-msg").hidden=true;
+  document.getElementById("sh-tg").href="https://t.me/ellaMua";
+  document.getElementById("sh-wa").href="https://wa.me/79266159309";
+  sh.hidden=false; document.getElementById("sh-x").focus();
+});
+const sheet=document.getElementById("sheet");
+function order(it){
+  const full=(it.nm?`«${it.nm}», `:"")+it.name.toLowerCase();
+  const msg=`Здравствуйте! Хочу заказать: ${full} (${it.sku}), ${rub(it.price)}.`;
+  document.getElementById("sh-t").textContent=it.nm?`«${it.nm}»`:it.name;
+  document.getElementById("sh-p").textContent="Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.";
+  document.getElementById("sh-msg").hidden=false;
+  document.getElementById("sh-msg").textContent=msg;
+  document.getElementById("sh-tg").href="https://t.me/ellaMua";
+  document.getElementById("sh-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(msg);
+  sheet.hidden=false; document.getElementById("sh-x").focus();
+}
+
+/* product view with gallery */
+const pv=document.getElementById("pv"), track=document.getElementById("pv-track"), dots=document.getElementById("pv-dots");
+let cur=null,ph=0;
+function openP(i){
+  cur=items[i]; ph=0;
+  track.innerHTML=cur.photos.map(src=>`<img src="${src}" alt="">`).join("");
+  dots.innerHTML=cur.photos.length>1?cur.photos.map((_,k)=>`<button type="button" aria-label="Фото ${k+1}" data-k="${k}"></button>`).join(""):"";
+  pv.classList.toggle("one",cur.photos.length<2);
+  document.getElementById("pv-sku").innerHTML=cur.sku+(cur.c?` · <span class="coll">Коллекция «${cur.c}»</span>`:"");
+  document.getElementById("pv-t").innerHTML=title(cur);
+  document.getElementById("pv-price").textContent=rub(cur.price);
+  document.getElementById("pv-meta").innerHTML=`<li><b>Материал</b>нержавеющая сталь, ${cur.metal}</li>${cur.det?`<li><b>Размер</b>${cur.det}</li>`:""}<li><b>Свойства</b>гипоаллергенно, не боится воды</li><li><b>Гарантия</b>6 месяцев</li>`;
+  const q=document.getElementById("pv-q");
+  if(cur.q){q.hidden=false;q.innerHTML=`<q>${cur.q[0]}</q><cite>${cur.q[1]}</cite>`}else q.hidden=true;
+  go(0); pv.hidden=false; document.body.style.overflow="hidden"; document.getElementById("pv-x").focus();
+}
+function go(k){const n=cur.photos.length;ph=(k+n)%n;track.style.transform=`translateX(${-100*ph}%)`;dots.querySelectorAll("button").forEach((d,j)=>d.setAttribute("aria-current",j===ph))}
+function closeP(){pv.hidden=true;document.body.style.overflow=""}
+document.getElementById("pv-prev").addEventListener("click",()=>go(ph-1));
+document.getElementById("pv-next").addEventListener("click",()=>go(ph+1));
+dots.addEventListener("click",e=>{const d=e.target.closest("[data-k]");if(d)go(+d.dataset.k)});
+let sx=null;track.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});
+track.addEventListener("touchend",e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(ph+(dx<0?1:-1));sx=null});
+document.getElementById("pv-x").addEventListener("click",closeP);
+pv.addEventListener("click",e=>{if(e.target===pv)closeP()});
+document.getElementById("pv-order").addEventListener("click",()=>order(cur));
+
+grid.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"); if(o){openP(+o.dataset.open);return}
+  const b=e.target.closest("button[data-i]"); if(b) order(items[b.dataset.i]);
+});
+const close=()=>sheet.hidden=true;
+document.getElementById("sh-x").addEventListener("click",close);
+sheet.addEventListener("click",e=>{if(e.target===sheet)close()});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){if(!sheet.hidden)close();else if(!pv.hidden)closeP()}
+  if(!pv.hidden&&sheet.hidden){if(e.key==="ArrowLeft")go(ph-1);if(e.key==="ArrowRight")go(ph+1)}
+});
+</script>
