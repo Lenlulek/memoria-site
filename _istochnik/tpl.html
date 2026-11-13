@@ -353,6 +353,13 @@ footer .wrap.fine{display:block}
             <button class="chip" id="c-nadezhda" data-c="Цвет надежды" aria-pressed="false">Цвет надежды</button>
             <button class="chip" id="c-nikogda" data-c="Никогда не поздно" aria-pressed="false">Никогда не поздно</button>
           </div>
+          <div class="chips" role="group" aria-label="Фильтр по оттенку" id="mchips">
+            <span class="lbl">Оттенок:</span>
+            <button class="chip" data-m="all" aria-pressed="true">Любой</button>
+            <button class="chip" data-m="gold" aria-pressed="false">Золотистые</button>
+            <button class="chip" data-m="silver" aria-pressed="false">Серебристые</button>
+            <button class="chip" data-m="mix" aria-pressed="false">Золото + серебро</button>
+          </div>
         </div>
       </div>
       <p class="count" id="count"></p>
@@ -478,11 +485,12 @@ footer .wrap.fine{display:block}
 const items=__CATALOG__;
 const rub=n=>n.toLocaleString("ru-RU")+" руб.";
 const grid=document.getElementById("grid"), more=document.getElementById("more"), count=document.getElementById("count");
-let fT="all",fC="all",shown=12;
+let fT="all",fC="all",fM="all",shown=12;
+const tone=it=>/золотистое и серебристое/.test(it.metal)?"mix":/золотист/.test(it.metal)?"gold":/серебрист/.test(it.metal)?"silver":"";
 const plural=n=>{const d=n%10,h=n%100;return d===1&&h!==11?"украшение":(d>=2&&d<=4&&(h<12||h>14)?"украшения":"украшений")};
 function title(it){return it.nm?`<span class="nm">«${it.nm}»</span><span class="ds">${it.name}</span>`:it.name}
 function render(){
-  const list=items.map((it,i)=>[it,i]).filter(([it])=>(fT==="all"||it.t===fT||(fT==="new"&&it.new))&&(fC==="all"||it.c===fC));
+  const list=items.map((it,i)=>[it,i]).filter(([it])=>(fT==="all"||it.t===fT||(fT==="new"&&it.new))&&(fC==="all"||it.c===fC)&&(fM==="all"||tone(it)===fM));
   count.textContent=`${list.length} ${plural(list.length)}`;
   grid.innerHTML=list.length?list.slice(0,shown).map(([it,i])=>`<article class="card">
   <button class="ph" type="button" data-open="${i}" aria-label="Открыть: ${it.nm||it.name}">${it.hit?'<span class="badge">Хит</span>':it.new?'<span class="badge">Новинка</span>':''}${it.photos.length>1?`<span class="badge n">${it.photos.length} фото</span>`:''}<img src="${it.th||it.photos[0]}" alt="" loading="lazy"></button>
@@ -496,6 +504,7 @@ function press(group,attr,val){document.querySelectorAll(group+" .chip").forEach
 document.querySelectorAll(".chip[data-f]").forEach(c=>c.addEventListener("click",()=>{fT=c.dataset.f;shown=12;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===c));render();}));
 document.querySelectorAll(".chip[data-c]").forEach(c=>c.addEventListener("click",()=>{fC=c.dataset.c;if(fC!=="all"){fT="all";document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));}shown=12;press("#cchips","c",fC);render();}));
 document.querySelectorAll(".col[data-c]").forEach(a=>a.addEventListener("click",()=>{fC=a.dataset.c;fT="all";shown=12;press("#cchips","c",fC);document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));render();}));
+document.querySelectorAll(".chip[data-m]").forEach(c=>c.addEventListener("click",()=>{fM=c.dataset.m;shown=12;press("#mchips","m",fM);render();}));
 render();
 
 /* order sheet */
