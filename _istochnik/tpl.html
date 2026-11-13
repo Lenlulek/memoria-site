@@ -54,7 +54,18 @@ h1 em{font-style:italic;color:var(--granat)}
 .gift h3{font-family:var(--display);font-weight:500;font-size:clamp(28px,3.4vw,38px);margin:6px 0 8px;line-height:1.1;color:var(--granat)}
 .gift p{margin:0;color:var(--muted);max-width:34em}
 .giftm .box{max-width:680px;max-height:calc(100dvh - 32px);overflow:auto;padding:22px}
-.giftm iframe{width:100%;min-height:720px;border:0;background:#fff;border-radius:10px}
+.giftm iframe{width:100%;min-height:720px;border:0;background:transparent;border-radius:10px}
+.giftm .gm-head{text-align:center;padding:4px 8px 14px}
+.giftm .gm-head h3{font-family:var(--display);font-weight:500;font-size:30px;margin:4px 0 6px;color:var(--granat);line-height:1.1}
+.giftm .gm-head p{margin:0 auto;max-width:30em}
+.giftm .gm-head svg{width:44px;height:44px;color:var(--granat)}
+.pop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;width:min(360px,calc(100vw - 32px));background:var(--milk);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 50px rgba(43,36,39,.22);padding:20px 20px 18px;display:grid;gap:10px;animation:up .35s ease}
+.pop .px{position:absolute;top:8px;right:10px;background:none;border:0;font-size:18px;color:var(--muted);cursor:pointer;padding:6px;line-height:1}
+.pop .pt{display:flex;gap:12px;align-items:center;padding-right:24px}
+.pop svg{width:40px;height:40px;flex:none;color:var(--granat)}
+.pop b{font-family:var(--display);font-weight:500;font-size:24px;line-height:1.1;color:var(--granat)}
+.pop p{margin:0;font-size:14px;color:var(--muted)}
+.pop .btn{width:100%}
 .promo-link{justify-self:start;background:none;border:0;padding:0;color:var(--granat);font:400 13px var(--body);text-decoration:underline;cursor:pointer}
 .quote q{display:block;font-family:var(--script);color:var(--granat);font-size:clamp(30px,4vw,46px);line-height:1.2;quotes:"«" "»";text-wrap:balance}
 .quote cite{display:block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -451,8 +462,15 @@ footer .wrap.fine{display:block}
 <div class="sheet giftm" id="giftm" hidden>
   <div class="box" role="dialog" aria-modal="true" aria-label="Скидка 10% на первый заказ">
     <button class="close" id="gm-x" type="button">Закрыть ✕</button>
+    <div class="gm-head">__POM__<div class="eyebrow">Для новых покупателей</div><h3>Скидка 10% на первый заказ</h3><p>Оставьте контакты — и сразу получите промокод. А в день рождения вас ждёт подарок от MEMORIA 🤍</p></div>
     <div id="gm-body"></div>
   </div>
+</div>
+<div class="pop" id="pop" hidden role="dialog" aria-label="Скидка 10% на первый заказ">
+  <button class="px" type="button" id="pop-x" aria-label="Закрыть">✕</button>
+  <div class="pt">__POM__<b>−10% на первый заказ</b></div>
+  <p>Оставьте контакты и получите промокод. Без звонков и спама.</p>
+  <button class="btn" type="button" data-gift>Получить промокод</button>
 </div>
 <div class="toast" id="toast" hidden role="status"><span id="toast-t"></span><button type="button" id="toast-go">Открыть корзину</button></div>
 
@@ -610,4 +628,16 @@ document.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))openGif
 document.getElementById("gm-x").addEventListener("click",()=>gm.hidden=true);
 gm.addEventListener("click",e=>{if(e.target===gm)gm.hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!gm.hidden)gm.hidden=true});
+/* всплывающее предложение: через 20 секунд или после прокрутки ниже коллекций, не чаще раза в 7 дней */
+const pop=document.getElementById("pop");
+function popSeen(){try{const t=+localStorage.getItem("memoria-pop")||0;return Date.now()-t<7*864e5}catch(e){return false}}
+function popMark(){try{localStorage.setItem("memoria-pop",Date.now())}catch(e){}}
+let popDone=popSeen();
+function showPop(){if(popDone)return;popDone=true;if(!gm.hidden||!cartEl.hidden||!pv.hidden||!sheet.hidden){popDone=false;return}pop.hidden=false;popMark()}
+setTimeout(showPop,20000);
+const gEl=document.getElementById("gift");
+function popScroll(){if(popDone){removeEventListener("scroll",popScroll);return}if(gEl&&gEl.getBoundingClientRect().bottom<0)showPop()}
+addEventListener("scroll",popScroll,{passive:true});
+document.getElementById("pop-x").addEventListener("click",()=>{pop.hidden=true;popMark()});
+pop.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))pop.hidden=true});
 </script>

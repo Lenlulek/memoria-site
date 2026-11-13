@@ -57,7 +57,7 @@ for slug, title, desc in PAGES:
     page = f"""<!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title} — MEMORIA</title><meta name="description" content="{desc}">
-<link rel="icon" href="data:,">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Commissioner:wght@300;400&display=swap">
 <style>{CSS}</style></head><body>
 <header><div class="wrap"><a class="logo" href="/">MEMORIA</a><a class="back" href="/">← Вернуться к украшениям</a></div></header>
