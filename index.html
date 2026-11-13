@@ -63,6 +63,12 @@ h1 em{font-style:italic;color:var(--granat)}
 .hero-pom figcaption{text-align:center;font-size:13px;color:var(--muted);max-width:22em;display:grid}
 .hero-pom .script{font-size:34px}
 .quote{text-align:center;padding-block:72px 8px}
+.gift{margin-top:72px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:36px clamp(20px,4vw,48px);display:flex;gap:24px 40px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.gift h3{font-family:var(--display);font-weight:500;font-size:clamp(28px,3.4vw,38px);margin:6px 0 8px;line-height:1.1;color:var(--granat)}
+.gift p{margin:0;color:var(--muted);max-width:34em}
+.giftm .box{max-width:680px;max-height:calc(100dvh - 32px);overflow:auto;padding:22px}
+.giftm iframe{width:100%;min-height:720px;border:0;background:#fff;border-radius:10px}
+.promo-link{justify-self:start;background:none;border:0;padding:0;color:var(--granat);font:400 13px var(--body);text-decoration:underline;cursor:pointer}
 .quote q{display:block;font-family:var(--script);color:var(--granat);font-size:clamp(30px,4vw,46px);line-height:1.2;quotes:"«" "»";text-wrap:balance}
 .quote cite{display:block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .card h3 .nm{display:block;font-size:24px;color:var(--granat)}
@@ -320,6 +326,10 @@ footer .wrap.fine{display:block}
         <a class="col" href="#catalog" data-c="Цвет надежды"><img src="img/eyes.jpg" alt=""><div><b>Цвет надежды</b><span>бусы из натуральных камней</span></div></a>
         <a class="col" href="#catalog" data-c="Никогда не поздно"><img src="img/nikogda.jpg" alt=""><div><b>Никогда не поздно</b><span>маленькие напоминания о главном</span></div></a>
       </div>
+      <div class="gift" id="gift">
+        <div><div class="eyebrow">Для новых покупателей</div><h3>Скидка 10% на первый заказ</h3><p>Оставьте контакты — и сразу получите промокод. А в день рождения вас ждёт подарок от MEMORIA 🤍 Без звонков и спама.</p></div>
+        <button class="btn" type="button" data-gift>Получить промокод</button>
+      </div>
     </div>
   </section>
 
@@ -453,6 +463,12 @@ footer .wrap.fine{display:block}
     <div id="ct-body"></div>
   </div>
 </div>
+<div class="sheet giftm" id="giftm" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-label="Скидка 10% на первый заказ">
+    <button class="close" id="gm-x" type="button">Закрыть ✕</button>
+    <div id="gm-body"></div>
+  </div>
+</div>
 <div class="toast" id="toast" hidden role="status"><span id="toast-t"></span><button type="button" id="toast-go">Открыть корзину</button></div>
 
 <script>
@@ -566,6 +582,7 @@ function drawCart(){
   <div class="tot"><span>Итого</span><b>${rub(sum)}</b></div>
   <p style="font-size:13px;color:var(--muted);margin:0">Доставка по России включена в стоимость.</p>
   <div class="promo"><input id="ct-promo" placeholder="Промокод, если есть" value="${promo.replace(/"/g,"")}" autocomplete="off"></div>
+  <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
   <p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>
   <div class="msg" id="ct-msg"></div>
   <button type="button" class="copy" id="ct-copy">Скопировать список</button>
@@ -596,6 +613,18 @@ document.getElementById("toast-go").addEventListener("click",openCart);
 document.getElementById("ct-x").addEventListener("click",()=>cartEl.hidden=true);
 cartEl.addEventListener("click",e=>{if(e.target===cartEl)cartEl.hidden=true});
 cnt();
+/* gift form (Яндекс Формы) */
+const gm=document.getElementById("giftm");
+function openGift(){
+  const b=document.getElementById("gm-body");
+  if(!b.firstChild){b.innerHTML='<iframe src="https://forms.yandex.ru/u/6af6cb276f1ca4381b70d07b/?iframe=1" name="ya-form-6af6cb276f1ca4381b70d07b" title="Скидка 10% на первый заказ" loading="lazy"></iframe>';
+    const sc=document.createElement("script");sc.src="https://forms.yandex.ru/_static/embed.js";document.body.appendChild(sc);}
+  cartEl.hidden=true;gm.hidden=false;document.getElementById("gm-x").focus();
+}
+document.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))openGift()});
+document.getElementById("gm-x").addEventListener("click",()=>gm.hidden=true);
+gm.addEventListener("click",e=>{if(e.target===gm)gm.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!gm.hidden)gm.hidden=true});
 </script>
 
 </body>
