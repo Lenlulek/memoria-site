@@ -178,7 +178,8 @@ footer .wrap.fine{display:block}
 .promo{display:flex;gap:8px}
 .promo input{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:11px 16px;font:400 14px var(--body);background:#fff}
 .copy{justify-self:start;background:none;border:0;padding:0;color:var(--granat);font:500 13px var(--body);text-decoration:underline;cursor:pointer}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--milk);padding:12px 18px;border-radius:999px;font-size:14px;z-index:30;display:flex;gap:12px;align-items:center;max-width:calc(100vw - 32px)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--milk);padding:12px 18px;border-radius:14px;font-size:14px;z-index:30;display:flex;gap:16px;align-items:center;justify-content:space-between;width:max-content;max-width:calc(100vw - 32px)}
+.toast span{min-width:0}.toast button{white-space:nowrap;flex:none}
 .toast button{background:none;border:0;color:#F2C9A8;font:500 14px var(--body);text-decoration:underline;cursor:pointer;padding:0}
 @media (max-width:560px){.cartbtn .w{display:none}.hdr-r #ask{padding:10px 14px;white-space:nowrap;font-size:13px}.cartbtn{padding:8px 10px}header .wrap{gap:10px}.hdr-r{gap:6px}.logo{font-size:20px;letter-spacing:.24em;white-space:nowrap}}
 
@@ -441,7 +442,7 @@ footer .wrap.fine{display:block}
 
 <script>
 const items=__CATALOG__;
-const rub=n=>n.toLocaleString("ru-RU")+" ₽";
+const rub=n=>n.toLocaleString("ru-RU")+" руб.";
 const grid=document.getElementById("grid"), more=document.getElementById("more"), count=document.getElementById("count");
 let fT="all",fC="all",shown=12;
 const plural=n=>{const d=n%10,h=n%100;return d===1&&h!==11?"украшение":(d>=2&&d<=4&&(h<12||h>14)?"украшения":"украшений")};
@@ -534,7 +535,7 @@ function save(){try{localStorage.setItem("memoria-cart",JSON.stringify(cart))}ca
 function cnt(){const n=cart.reduce((a,x)=>a+x.q,0);cartn.textContent=n?n:"";document.getElementById("cartbtn").setAttribute("aria-label",n?`Корзина: ${n}`:"Корзина")}
 let tt=null;
 function toast(t){const el=document.getElementById("toast");document.getElementById("toast-t").textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,3500)}
-function add(sku){const x=cart.find(c=>c.sku===sku);if(x)x.q++;else cart.push({sku,q:1});save();cnt();const it=bySku[sku];toast(`${it.nm?"«"+it.nm+"»":it.name} — в корзине`)}
+function add(sku){const x=cart.find(c=>c.sku===sku);if(x)x.q++;else cart.push({sku,q:1});save();cnt();const it=bySku[sku];toast(`Добавлено в корзину`)}
 const lc=t=>t.charAt(0).toLowerCase()+t.slice(1);
 const fullName=it=>(it.nm?`«${it.nm}», `:"")+lc(it.name);
 function cartMsg(){
