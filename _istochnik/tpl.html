@@ -637,7 +637,7 @@ const certIt=sku=>{const m=/^CERT-(\d+)-([EP])$/.exec(sku);if(!m)return null;con
 let cart=[];
 try{cart=JSON.parse(localStorage.getItem("memoria-cart")||"[]").filter(x=>(bySku[x.sku]||certIt(x.sku))&&x.q>0)}catch(e){cart=[]}
 let promo="",email="";
-const PAY=""; // адрес функции оплаты в Яндекс Облаке
+const PAY="https://functions.yandexcloud.net/d4ef9um0daqagriliaco"; // адрес функции оплаты в Яндекс Облаке
 try{email=localStorage.getItem("memoria-email")||""}catch(e){}
 function save(){try{localStorage.setItem("memoria-cart",JSON.stringify(cart))}catch(e){}}
 function cnt(){const n=cart.reduce((a,x)=>a+x.q,0);cartn.textContent=n?n:"";document.getElementById("cartbtn").setAttribute("aria-label",n?`Корзина: ${n}`:"Корзина")}
@@ -663,8 +663,8 @@ function drawCart(){
   <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
   ${PAY?`<div class="pay"><b style="font-weight:500">Оплатить на сайте</b>
     <input id="ct-email" type="email" inputmode="email" autocomplete="email" placeholder="Почта для чека" value="${email.replace(/"/g,"")}">
-    <button type="button" class="btn" data-pay="sbp">Оплатить по СБП</button>
-    <button type="button" class="btn ghost" data-pay="card">Оплатить картой</button>
+    <button type="button" class="btn" data-pay="card">Оплатить онлайн</button>
+    <p style="font-size:12px;color:var(--muted);margin:0">Картой или по СБП, оплата через защищённую страницу Точка Банка.</p>
     <p class="err" id="ct-err" hidden></p>
     <p style="font-size:12px;color:var(--muted);margin:0">После оплаты напишите нам адрес доставки, ссылки появятся на экране.</p></div>
   <p style="margin:6px 0 0">Или отправьте нам список в мессенджер:</p>`:`<p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>`}

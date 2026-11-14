@@ -22,7 +22,7 @@ def _req(url, data=None, auth=True):
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace")
         print("TOCHKA ERROR", e.code, url, body[:2000])
-        raise RuntimeError("tochka %s" % e.code)
+        raise RuntimeError("tochka %s %s: %s" % (e.code, url.replace(API, ""), body[:600]))
 
 def _ids():
     cc = os.environ.get("CUSTOMER_CODE") or _cache.get("cc")
@@ -113,14 +113,24 @@ def handler(event, context):
         order = time.strftime("%d%m-%H%M%S", time.gmtime(time.time() + 3 * 3600))
         data = {"customerCode": cc, "merchantId": mid, "amount": total,
                 "purpose": ("Заказ %s с сайта MEMORIA: %s" % (order, ", ".join(skus)))[:140],
-                "paymentMode": [mode],
+                "paymentMode": ["sbp", "card"],
                 "redirectUrl": SITE + "/?oplata=ok&z=" + order,
                 "failRedirectUrl": SITE + "/?oplata=fail",
                 "Client": {"email": email},
                 "Items": items}
-        r = _req(API + "/acquiring/v1.0/payments_with_receipt", {"Data": data})["Data"]
+        # СБП и карта на одной странице Точки; если СБП ещё не включена, только карта
+        try:
+            r = _req(API + "/acquiring/v1.0/payments_with_receipt", {"Data": data})["Data"]
+        except RuntimeError as e1:
+            if "Payment type" not in str(e1):
+                raise
+            data["paymentMode"] = ["card"]
+            r = _req(API + "/acquiring/v1.0/payments_with_receipt", {"Data": data})["Data"]
         print("ORDER", order, total, r.get("operationId"))
         return _out(200, {"url": r["paymentLink"], "order": order, "total": total}, origin)
     except Exception as e:
         print("PAY ERROR", repr(e))
-        return _out(502, {"error": "Оплата временно недоступна. Напишите нам в мессенджер, пришлём ссылку."}, origin)
+        res = {"error": "Оплата временно недоступна. Напишите нам в мессенджер, пришлём ссылку."}
+        if h.get("x-debug"):
+            res["detail"] = str(e)[:900]
+        return _out(502, res, origin)
