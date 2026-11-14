@@ -166,6 +166,14 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4vw,52px);lin
 .about .script{color:#F4DCD6;font-size:28px;margin-top:28px}
 
 
+
+.pay{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.pay input{font:400 15px var(--body);padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+.pay .btn{width:100%}
+.pay .err{color:var(--granat);font-size:13px;margin:0}
+.paid{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:rgba(43,36,39,.45);padding:16px}
+.paid .box{background:var(--milk);max-width:440px;border-radius:14px;padding:26px;display:grid;gap:12px}
+
 /* certificate */
 .cert{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
 .cert-card{aspect-ratio:3/2;background:#FDFBF8;border:1px solid var(--line);border-radius:6px;box-shadow:0 18px 40px rgba(43,36,39,.10);display:grid;place-items:center;padding:18px;position:relative}
@@ -644,7 +652,9 @@ const bySku=Object.fromEntries(items.map(it=>[it.sku,it]));
 const certIt=sku=>{const m=/^CERT-(\d+)-([EP])$/.exec(sku);if(!m)return null;const n=+m[1];return bySku[sku]={sku,price:n,name:`Подарочный сертификат на ${rub(n)}, ${m[2]==="E"?"электронный":"бумажный"}`,photos:["img/sertifikat.jpg"],cert:1}};
 let cart=[];
 try{cart=JSON.parse(localStorage.getItem("memoria-cart")||"[]").filter(x=>(bySku[x.sku]||certIt(x.sku))&&x.q>0)}catch(e){cart=[]}
-let promo="";
+let promo="",email="";
+const PAY=""; // адрес функции оплаты в Яндекс Облаке
+try{email=localStorage.getItem("memoria-email")||""}catch(e){}
 function save(){try{localStorage.setItem("memoria-cart",JSON.stringify(cart))}catch(e){}}
 function cnt(){const n=cart.reduce((a,x)=>a+x.q,0);cartn.textContent=n?n:"";document.getElementById("cartbtn").setAttribute("aria-label",n?`Корзина: ${n}`:"Корзина")}
 let tt=null;
@@ -663,10 +673,17 @@ function drawCart(){
   cbody.innerHTML=`<ul class="cl">${cart.map(x=>{const it=bySku[x.sku];return `<li><img src="${it.th||it.photos[0]}" alt=""><div class="t">${it.nm?"«"+it.nm+"» ":""}${it.name}<small>${it.cert?"":it.sku+" · "}${rub(it.price)}</small></div>
   <div class="qty"><button type="button" data-m="${x.sku}" aria-label="Меньше">−</button><span>${x.q}</span><button type="button" data-p="${x.sku}" aria-label="Больше">+</button><button type="button" class="rm" data-r="${x.sku}">убрать</button></div></li>`}).join("")}</ul>
   <div class="tot"><span>Итого</span><b>${rub(sum)}</b></div>
+  <p class="disc" id="ct-disc" style="margin:0;font-size:14px;color:var(--granat)"></p>
   <p style="font-size:13px;color:var(--muted);margin:0">Доставка по России включена в стоимость.</p>
   <div class="promo"><input id="ct-promo" placeholder="Промокод, если есть" value="${promo.replace(/"/g,"")}" autocomplete="off"></div>
   <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
-  <p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>
+  ${PAY?`<div class="pay"><b style="font-weight:500">Оплатить на сайте</b>
+    <input id="ct-email" type="email" inputmode="email" autocomplete="email" placeholder="Почта для чека" value="${email.replace(/"/g,"")}">
+    <button type="button" class="btn" data-pay="sbp">Оплатить по СБП</button>
+    <button type="button" class="btn ghost" data-pay="card">Оплатить картой</button>
+    <p class="err" id="ct-err" hidden></p>
+    <p style="font-size:12px;color:var(--muted);margin:0">После оплаты напишите нам адрес доставки, ссылки появятся на экране.</p></div>
+  <p style="margin:6px 0 0">Или отправьте нам список в мессенджер:</p>`:`<p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>`}
   <div class="msg" id="ct-msg"></div>
   <button type="button" class="copy" id="ct-copy">Скопировать список</button>
   <div class="opts">
@@ -677,8 +694,11 @@ function drawCart(){
   <p style="font-size:12px;color:var(--muted);margin:0">Оформляя заказ, вы соглашаетесь с условиями <a href="/oferta/" style="color:inherit">публичной оферты</a>.</p>`;
   upd();
   document.getElementById("ct-promo").addEventListener("input",e=>{promo=e.target.value.trim();upd()});
+  const em=document.getElementById("ct-email");if(em)em.addEventListener("input",e=>{email=e.target.value.trim();try{localStorage.setItem("memoria-email",email)}catch(_){}});
 }
-function upd(){const m=cartMsg();document.getElementById("ct-msg").textContent=m;document.getElementById("ct-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(m)}
+const PROMOS={MEMORIA10:.1};
+function discSum(){const d=PROMOS[promo.toUpperCase()]||0;return d?cart.reduce((a,x)=>{const it=bySku[x.sku];return a+x.q*(it.cert?it.price:Math.round(it.price*(1-d)*100)/100)},0):0}
+function upd(){const ds=discSum(),de=document.getElementById("ct-disc");if(de)de.textContent=ds&&PAY?`При оплате на сайте с промокодом: ${rub(ds)}`:"";const m=cartMsg();document.getElementById("ct-msg").textContent=m;document.getElementById("ct-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(m)}
 async function copyMsg(){const m=cartMsg();try{await navigator.clipboard.writeText(m);return true}catch(e){return false}}
 cbody.addEventListener("click",async e=>{
   const t=e.target;
@@ -687,6 +707,7 @@ cbody.addEventListener("click",async e=>{
   else if(t.dataset.r){cart=cart.filter(c=>c.sku!==t.dataset.r)}
   else if(t.id==="ct-copy"){const ok=await copyMsg();t.textContent=ok?"Скопировано ✓":"Выделите текст выше и скопируйте";return}
   else if(t.closest("#ct-tg,#ct-max")){copyMsg();return}
+  else if(t.dataset.pay){pay(t);return}
   else return;
   save();cnt();drawCart();
 });
@@ -697,6 +718,39 @@ document.getElementById("ct-x").addEventListener("click",()=>cartEl.hidden=true)
 cartEl.addEventListener("click",e=>{if(e.target===cartEl)cartEl.hidden=true});
 cnt();
 
+
+async function pay(b){
+  const err=document.getElementById("ct-err");err.hidden=true;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Укажите почту: туда придёт чек.";err.hidden=false;document.getElementById("ct-email").focus();return}
+  const txt=b.textContent;b.disabled=true;b.textContent="Переходим к оплате…";
+  try{
+    const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,promo,email,mode:b.dataset.pay})});
+    const d=await r.json();
+    if(!r.ok||!d.url)throw new Error(d.error||"Ошибка");
+    try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total}))}catch(e){}
+    location.href=d.url;
+  }catch(e){err.textContent=e.message&&e.message!=="Failed to fetch"?e.message:"Не получилось открыть оплату. Напишите нам в мессенджер.";err.hidden=false;b.disabled=false;b.textContent=txt}
+}
+(function(){const q=new URLSearchParams(location.search).get("oplata");if(!q)return;
+  history.replaceState(null,"",location.pathname+location.hash);
+  let last={};try{last=JSON.parse(localStorage.getItem("memoria-last")||"{}")}catch(e){}
+  const ok=q==="ok";
+  if(ok){cart=[];save();cnt()}
+  const m=ok?`Здравствуйте! Я оплатил(а) заказ ${last.order||""} на сайте${last.total?" на "+rub(last.total):""}\n${(last.msg||"").split("\n").slice(1).filter(l=>!/^Итого/.test(l)).join("\n")}\nАдрес доставки: `:"";
+  const el=document.createElement("div");el.className="paid";
+  el.innerHTML=ok?`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:28px;margin:0;color:var(--granat)">Спасибо, оплата прошла!</h3>
+    <p style="margin:0">Чек придёт на почту. Чтобы мы отправили заказ, напишите нам, куда доставить: город и удобный пункт выдачи Ozon, СДЭК или Яндекс.</p>
+    <div class="msg">${m.replace(/</g,"&lt;")}</div>
+    <a class="btn" href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram</a>
+    <a class="btn ghost" href="https://wa.me/79266159309?text=${encodeURIComponent(m)}" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn ghost" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a>
+    <button type="button" class="close" style="justify-self:center;background:none;border:0;color:var(--muted);cursor:pointer">Закрыть</button></div>`
+   :`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:26px;margin:0">Оплата не прошла</h3><p style="margin:0">Деньги не списаны. Товары остались в корзине: попробуйте ещё раз или напишите нам.</p><button type="button" class="btn close">Хорошо</button></div>`;
+  document.body.appendChild(el);
+  if(ok)navigator.clipboard&&navigator.clipboard.writeText(m).catch(()=>{});
+  el.addEventListener("click",e=>{if(e.target===el||e.target.classList.contains("close"))el.remove()});
+  try{localStorage.setItem("memoria-pop",String(Date.now()))}catch(e){}
+})();
 /* certificate */
 let cN=5000,cV="e";
 const cIn=document.getElementById("cert-in"),cOwn=document.getElementById("cert-own"),cSum=document.getElementById("cert-sum");
