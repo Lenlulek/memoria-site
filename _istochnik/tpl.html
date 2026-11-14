@@ -737,17 +737,16 @@ async function pay(b){
     const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,promo,email,phone,delivery:dl,mode:b.dataset.pay})});
     const d=await r.json();
     if(!r.ok||!d.url)throw new Error(d.error||"Ошибка");
-    try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total,op:d.op,delivery:dl,phone,email}))}catch(e){}
+    try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total,op:d.op,ts:Date.now(),delivery:dl,phone,email}))}catch(e){}
     location.href=d.url;
   }catch(e){err.textContent=e.message&&e.message!=="Failed to fetch"?e.message:"Не получилось открыть оплату. Напишите нам в мессенджер.";err.hidden=false;b.disabled=false;b.textContent=txt}
 }
-(function(){const q=new URLSearchParams(location.search).get("oplata");if(!q)return;
-  history.replaceState(null,"",location.pathname+location.hash);
-  let last={};try{last=JSON.parse(localStorage.getItem("memoria-last")||"{}")}catch(e){}
-  const ok=q==="ok";
+function notifyBody(last){return JSON.stringify({action:"notify",operationId:last.op,delivery:last.delivery,phone:last.phone,email:last.email,lines:(last.msg||"").split("\n").slice(1).join("\n")})}
+function getLast(){try{return JSON.parse(localStorage.getItem("memoria-last")||"{}")}catch(e){return {}}}
+function dropOp(last){try{delete last.op;localStorage.setItem("memoria-last",JSON.stringify(last))}catch(e){}}
+function showPaid(ok,last){
+  if(document.querySelector(".paid"))return;
   if(ok){cart=[];save();cnt()}
-  if(ok&&last.op){fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"notify",operationId:last.op,delivery:last.delivery,phone:last.phone,email:last.email,lines:(last.msg||"").split("\n").slice(1).join("\n")})}).catch(()=>{});
-    try{delete last.op;localStorage.setItem("memoria-last",JSON.stringify(last))}catch(e){}}
   const el=document.createElement("div");el.className="paid";
   el.innerHTML=ok?`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:28px;margin:0;color:var(--granat)">Спасибо, оплата прошла!</h3>
     <p style="margin:0">Заказ ${esc(last.order||"")} принят. Чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер.</p>
@@ -757,7 +756,29 @@ async function pay(b){
   document.body.appendChild(el);
   el.addEventListener("click",e=>{if(e.target===el||e.target.classList.contains("close"))el.remove()});
   try{localStorage.setItem("memoria-pop",String(Date.now()))}catch(e){}
+}
+(function(){const q=new URLSearchParams(location.search).get("oplata");if(!q)return;
+  history.replaceState(null,"",location.pathname+location.hash);
+  const last=getLast(), ok=q==="ok";
+  if(ok&&last.op){fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:notifyBody(last)}).catch(()=>{});dropOp(last)}
+  showPaid(ok,last);
 })();
+/* покупательница вернулась кнопкой «Назад», минуя страницу «оплата прошла»: спрашиваем Точку сами */
+let checking=false;
+async function checkPaid(){
+  if(checking||!PAY||new URLSearchParams(location.search).get("oplata"))return;
+  const last=getLast();if(!last.op)return;
+  if(last.ts&&Date.now()-last.ts>864e5){dropOp(last);return}
+  checking=true;
+  try{const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:notifyBody(last)});const d=await r.json();
+    const cur=getLast();
+    if(d.paid===true){if(cur.op===last.op){dropOp(cur);showPaid(true,cur)}}
+    else if(d.paid===false&&!last.ts&&cur.op===last.op)dropOp(cur);
+  }catch(e){}finally{checking=false}
+}
+checkPaid();
+window.addEventListener("pageshow",e=>{if(e.persisted)checkPaid()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkPaid()});
 /* certificate */
 let cN=5000,cV="e";
 const cIn=document.getElementById("cert-in"),cOwn=document.getElementById("cert-own"),cSum=document.getElementById("cert-sum");
