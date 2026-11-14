@@ -1,7 +1,7 @@
 # MEMORIA: создание оплаты в Точке (функция Яндекс Облака, Python 3.12, без библиотек)
 # Переменные окружения: TOCHKA_JWT (ключ Точки, обязательно),
 #   CUSTOMER_CODE и MERCHANT_ID (необязательно: если пусто, узнаём сами).
-import json, os, re, time, urllib.request, urllib.error
+import json, os, re, time, hashlib, urllib.request, urllib.error
 
 API = "https://enter.tochka.com/uapi"
 SITE = "https://memoria-jewelry.ru"
@@ -47,6 +47,25 @@ def _prices():
             p = (time.time(), json.loads(f.read().decode()))
         _cache["prices"] = p
     return p[1]
+
+def _phone_tag(phone):
+    """Короткая метка телефона (сам номер в банк не уходит)."""
+    d = re.sub(r"\D", "", str(phone))[-10:]
+    if len(d) != 10:
+        return None
+    salt = os.environ.get("PROMO_SALT", "memoria-pom")
+    return hashlib.sha256((salt + d).encode()).hexdigest()[:8]
+
+def _promo_used(cc, tag):
+    """Был ли уже ОПЛАЧЕННЫЙ заказ с промокодом на этот телефон (по истории Точки за год)."""
+    t = time.gmtime()
+    q = "customerCode=%s&fromDate=%s&toDate=%s" % (cc, time.strftime("%Y-%m-%d", time.gmtime(time.time() - 365 * 86400)),
+                                                  time.strftime("%Y-%m-%d", time.gmtime(time.time() + 86400)))
+    ops = _req(API + "/acquiring/v1.0/payments?" + q)["Data"].get("Operation", [])
+    for o in ops:
+        if ("#" + tag) in str(o.get("purpose", "")) and str(o.get("status", "")).upper() in ("APPROVED", "AUTHORIZED", "PAID"):
+            return True
+    return False
 
 def _cors(origin):
     o = origin if origin in ORIGINS else SITE
@@ -102,6 +121,12 @@ def handler(event, context):
         if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email) or len(email) > 100:
             return _out(400, {"error": "Укажите почту для чека"}, origin)
         mode = "card" if body.get("mode") == "card" else "sbp"
+        promo = str(body.get("promo", "")).strip().upper()
+        tag = None
+        if promo in PROMO:
+            tag = _phone_tag(body.get("phone", ""))
+            if not tag:
+                return _out(400, {"error": "Укажите телефон, на который получали промокод"}, origin)
         items, skus, total = build_order(body, _prices())
     except ValueError as e:
         return _out(400, {"error": str(e)}, origin)
@@ -110,9 +135,19 @@ def handler(event, context):
         return _out(400, {"error": "Не удалось прочитать заказ"}, origin)
     try:
         cc, mid = _ids()
+        if tag:
+            try:
+                used = _promo_used(cc, tag)
+            except Exception as e2:
+                print("PROMO CHECK FAILED", repr(e2))
+                used = False
+                if h.get("x-debug"):
+                    return _out(502, {"error": "promo check", "detail": str(e2)[:900]}, origin)
+            if used:
+                return _out(400, {"error": "Промокод действует только на первый заказ. Уберите его, и можно оплатить."}, origin)
         order = time.strftime("%d%m-%H%M%S", time.gmtime(time.time() + 3 * 3600))
         data = {"customerCode": cc, "merchantId": mid, "amount": total,
-                "purpose": ("Заказ %s с сайта MEMORIA: %s" % (order, ", ".join(skus)))[:140],
+                "purpose": ("Заказ %s с сайта MEMORIA%s: %s" % (order, (" промокод #" + tag) if tag else "", ", ".join(skus)))[:140],
                 "paymentMode": ["sbp", "card"],
                 "redirectUrl": SITE + "/?oplata=ok&z=" + order,
                 "failRedirectUrl": SITE + "/?oplata=fail",

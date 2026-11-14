@@ -636,7 +636,8 @@ const bySku=Object.fromEntries(items.map(it=>[it.sku,it]));
 const certIt=sku=>{const m=/^CERT-(\d+)-([EP])$/.exec(sku);if(!m)return null;const n=+m[1];return bySku[sku]={sku,price:n,name:`Подарочный сертификат на ${rub(n)}, ${m[2]==="E"?"электронный":"бумажный"}`,photos:["img/sertifikat.jpg"],cert:1}};
 let cart=[];
 try{cart=JSON.parse(localStorage.getItem("memoria-cart")||"[]").filter(x=>(bySku[x.sku]||certIt(x.sku))&&x.q>0)}catch(e){cart=[]}
-let promo="",email="";
+let promo="",email="",phone="";
+const PROMOS={MEMORIA10:.1};
 const PAY="https://functions.yandexcloud.net/d4ef9um0daqagriliaco"; // адрес функции оплаты в Яндекс Облаке
 try{email=localStorage.getItem("memoria-email")||""}catch(e){}
 function save(){try{localStorage.setItem("memoria-cart",JSON.stringify(cart))}catch(e){}}
@@ -663,6 +664,7 @@ function drawCart(){
   <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
   ${PAY?`<div class="pay"><b style="font-weight:500">Оплатить на сайте</b>
     <input id="ct-email" type="email" inputmode="email" autocomplete="email" placeholder="Почта для чека" value="${email.replace(/"/g,"")}">
+    <input id="ct-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Телефон, на который получали промокод" value="${phone.replace(/"/g,"")}" ${PROMOS[promo.toUpperCase()]?"":"hidden"}>
     <button type="button" class="btn" data-pay="card">Оплатить онлайн</button>
     <p style="font-size:12px;color:var(--muted);margin:0">Картой или по СБП, оплата через защищённую страницу Точка Банка.</p>
     <p class="err" id="ct-err" hidden></p>
@@ -677,10 +679,10 @@ function drawCart(){
   </div>
   <p style="font-size:12px;color:var(--muted);margin:0">Оформляя заказ, вы соглашаетесь с условиями <a href="/oferta/" style="color:inherit">публичной оферты</a>.</p>`;
   upd();
-  document.getElementById("ct-promo").addEventListener("input",e=>{promo=e.target.value.trim();upd()});
+  document.getElementById("ct-promo").addEventListener("input",e=>{promo=e.target.value.trim();const p=document.getElementById("ct-phone");if(p)p.hidden=!PROMOS[promo.toUpperCase()];upd()});
+  const ph=document.getElementById("ct-phone");if(ph)ph.addEventListener("input",e=>{phone=e.target.value.trim()});
   const em=document.getElementById("ct-email");if(em)em.addEventListener("input",e=>{email=e.target.value.trim();try{localStorage.setItem("memoria-email",email)}catch(_){}});
 }
-const PROMOS={MEMORIA10:.1};
 function discSum(){const d=PROMOS[promo.toUpperCase()]||0;return d?cart.reduce((a,x)=>{const it=bySku[x.sku];return a+x.q*(it.cert?it.price:Math.round(it.price*(1-d)*100)/100)},0):0}
 function upd(){const ds=discSum(),de=document.getElementById("ct-disc");if(de)de.textContent=ds&&PAY?`При оплате на сайте с промокодом: ${rub(ds)}`:"";const m=cartMsg();document.getElementById("ct-msg").textContent=m;document.getElementById("ct-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(m)}
 async function copyMsg(){const m=cartMsg();try{await navigator.clipboard.writeText(m);return true}catch(e){return false}}
@@ -706,9 +708,10 @@ cnt();
 async function pay(b){
   const err=document.getElementById("ct-err");err.hidden=true;
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Укажите почту: туда придёт чек.";err.hidden=false;document.getElementById("ct-email").focus();return}
+  if(PROMOS[promo.toUpperCase()]&&phone.replace(/\D/g,"").length<10){err.textContent="Укажите телефон, на который получали промокод.";err.hidden=false;document.getElementById("ct-phone").focus();return}
   const txt=b.textContent;b.disabled=true;b.textContent="Переходим к оплате…";
   try{
-    const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,promo,email,mode:b.dataset.pay})});
+    const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,promo,email,phone,mode:b.dataset.pay})});
     const d=await r.json();
     if(!r.ok||!d.url)throw new Error(d.error||"Ошибка");
     try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total}))}catch(e){}
