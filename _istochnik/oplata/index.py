@@ -1,6 +1,7 @@
 # MEMORIA: создание оплаты в Точке (функция Яндекс Облака, Python 3.12, без библиотек)
 # Переменные окружения: TOCHKA_JWT (ключ Точки, обязательно), TG_TOKEN и TG_CHAT (бот уведомлений),
 #   MAIL_USER и MAIL_PASS (почта Яндекса для писем о заказах, пароль приложения),
+#   SHEET_URL (адрес скрипта Google Таблицы для листа «ЗАКАЗЫ», необязательно),
 #   CUSTOMER_CODE и MERCHANT_ID (необязательно: если пусто, узнаём сами).
 import json, os, re, time, hashlib, smtplib, urllib.request, urllib.error, urllib.parse
 from email.mime.text import MIMEText
@@ -151,6 +152,34 @@ def _mail(subject, text, to=None):
         srv.sendmail(user, [to], m.as_string())
     return "ok"
 
+def _sheet(payload):
+    """Строка в лист «ЗАКАЗЫ» Google Таблицы через скрипт таблицы (без имени, телефона и адреса)."""
+    url = os.environ.get("SHEET_URL", "").strip()
+    if not url:
+        return "no sheet settings"
+    r = urllib.request.Request(url, data=json.dumps(payload, ensure_ascii=False).encode(),
+                               headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(r, timeout=20) as f:
+        return f.read().decode(errors="replace")[:200]
+
+def _sheet_items(purpose):
+    """Из назначения платежа «Заказ … : MEM-055, MEM-075 x2, сертификат 3000» собираем позиции с ценами сайта."""
+    part = purpose.split(": ", 1)[1] if ": " in purpose else ""
+    try:
+        prices = _prices()
+    except Exception:
+        prices = {}
+    out = []
+    for x in [y.strip() for y in part.split(",") if y.strip()]:
+        m = re.fullmatch(r"сертификат (\d+)", x)
+        if m:
+            out.append({"sku": "сертификат", "cert": True, "q": 1, "price": int(m.group(1))})
+            continue
+        m = re.fullmatch(r"(MEM-\d+)(?: x(\d+))?", x)
+        if m:
+            out.append({"sku": m.group(1), "q": int(m.group(2) or 1), "price": (prices.get(m.group(1)) or {}).get("price", 0)})
+    return out
+
 def _notify(body):
     """Покупатель вернулся с оплаты: проверяем в Точке, что заказ оплачен, и сообщаем Элле."""
     op = re.sub(r"[^0-9a-fA-F-]", "", str(body.get("operationId", "")))[:64]
@@ -178,12 +207,14 @@ def _notify(body):
     client = ("Здравствуйте%s!\n\nСпасибо за заказ в MEMORIA 🤍\nЗаказ № %s оплачен и принят в работу.\n\n"
               "Состав:\n%s\n\nСумма: %s руб.\nДоставка: %s, пункт выдачи: %s, %s\n\n"
               "Отправим за 1–3 рабочих дня и пришлём трек-номер. Чек об оплате придёт отдельным письмом от Точка Банка.\n\n"
-              "Если есть вопросы, просто ответьте на это письмо или напишите нам: t.me/ellaMua\n\nMEMORIA\nmemoria-jewelry.ru\n") % (
+              "Если есть вопросы, ответьте на это письмо или напишите нам в Telegram, MAX или WhatsApp по номеру +7 926 615-93-09.\n\nMEMORIA\nmemoria-jewelry.ru\n") % (
         (", " + _clean(d.get("name"), 100).split(" ")[0]) if _clean(d.get("name"), 100) else "", num,
         "\n".join(x for x in _lines(body.get("lines")).split("\n") if not x.startswith("Итого")), amount, sv, _clean(d.get("city"), 100), _clean(d.get("point"), 300))
     jobs = [("tg", lambda: _tg(short)), ("mail", lambda: _mail("Новый заказ с сайта MEMORIA: %s руб." % amount, full))]
     if re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", buyer):
         jobs.append(("client", lambda: _mail("Ваш заказ № %s в MEMORIA принят" % num, client, buyer)))
+    jobs.append(("sheet", lambda: _sheet({"order": num, "items": _sheet_items(purpose), "promo": " промокод" in purpose,
+                                          "service": sv, "amount": amount})))
     for name, fn in jobs:
         try:
             res[name] = fn()
@@ -221,6 +252,11 @@ def handler(event, context):
             except Exception as e:
                 print("NOTIFY ERROR", repr(e))
                 return _out(200, {"paid": None, "error": str(e)[:300]}, origin)
+        if action == "testsheet":
+            try:
+                return _out(200, {"sheet": _sheet({"ping": True})}, origin)
+            except Exception as e:
+                return _out(200, {"sheet": "error: %s" % e}, origin)
         if action == "testnotify":
             res = {}
             for name, fn in (("tg", lambda: _tg("Проверка: уведомления MEMORIA работают 🤍")),
