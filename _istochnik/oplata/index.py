@@ -4,6 +4,8 @@
 #   CUSTOMER_CODE и MERCHANT_ID (необязательно: если пусто, узнаём сами).
 import json, os, re, time, hashlib, smtplib, urllib.request, urllib.error, urllib.parse
 from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formataddr
 
 API = "https://enter.tochka.com/uapi"
 SITE = "https://memoria-jewelry.ru"
@@ -116,6 +118,9 @@ SERVICES = {"ozon": "Ozon", "cdek": "СДЭК", "yandex": "Яндекс Дост
 def _clean(v, n=200):
     return re.sub(r"[\x00-\x1f<>]", " ", str(v or "")).strip()[:n]
 
+def _lines(v):
+    return "\n".join(_clean(x, 300) for x in str(v or "").split("\n") if x.strip())[:2000]
+
 def _delivery(body):
     d = body.get("delivery") or {}
     res = {"name": _clean(d.get("name"), 100), "city": _clean(d.get("city"), 100),
@@ -133,15 +138,17 @@ def _tg(text):
     with urllib.request.urlopen("https://api.telegram.org/bot%s/sendMessage" % tok, data=data, timeout=10) as f:
         return f.status
 
-def _mail(subject, text):
+def _mail(subject, text, to=None):
     user, pw = os.environ.get("MAIL_USER", "").strip(), os.environ.get("MAIL_PASS", "").strip()
     if not user or not pw:
         return "no mail settings"
+    to = to or user
     m = MIMEText(text, "plain", "utf-8")
-    m["Subject"], m["From"], m["To"] = subject, user, user
+    m["Subject"], m["To"] = Header(subject, "utf-8"), to
+    m["From"] = formataddr((str(Header("MEMORIA", "utf-8")), user))
     with smtplib.SMTP_SSL("smtp.yandex.ru", 465, timeout=15) as srv:
         srv.login(user, pw)
-        srv.sendmail(user, [user], m.as_string())
+        srv.sendmail(user, [to], m.as_string())
     return "ok"
 
 def _notify(body):
@@ -162,9 +169,22 @@ def _notify(body):
             "Получатель: %s\nТелефон: %s\nПочта: %s\nДоставка: %s\nГород: %s\nПункт выдачи: %s\nКомментарий: %s\n\nСостав:\n%s\n") % (
         purpose, amount, op, _clean(d.get("name"), 100), phone, _clean(body.get("email"), 100),
         SERVICES.get(d.get("service"), "Ozon"), _clean(d.get("city"), 100), _clean(d.get("point"), 300),
-        _clean(d.get("comment"), 300), _clean(body.get("lines"), 2000))
+        _clean(d.get("comment"), 300), _lines(body.get("lines")))
     res = {"paid": True}
-    for name, fn in (("tg", lambda: _tg(short)), ("mail", lambda: _mail("Новый заказ с сайта MEMORIA: %s руб." % amount, full))):
+    buyer = _clean(body.get("email"), 100)
+    num = re.search(r"Заказ (\S+)", purpose)
+    num = num.group(1) if num else ""
+    sv = SERVICES.get(d.get("service"), "Ozon")
+    client = ("Здравствуйте%s!\n\nСпасибо за заказ в MEMORIA 🤍\nЗаказ № %s оплачен и принят в работу.\n\n"
+              "Состав:\n%s\n\nСумма: %s руб.\nДоставка: %s, пункт выдачи: %s, %s\n\n"
+              "Отправим за 1–3 рабочих дня и пришлём трек-номер. Чек об оплате придёт отдельным письмом от Точка Банка.\n\n"
+              "Если есть вопросы, просто ответьте на это письмо или напишите нам: t.me/ellaMua\n\nMEMORIA\nmemoria-jewelry.ru\n") % (
+        (", " + _clean(d.get("name"), 100).split(" ")[0]) if _clean(d.get("name"), 100) else "", num,
+        "\n".join(x for x in _lines(body.get("lines")).split("\n") if not x.startswith("Итого")), amount, sv, _clean(d.get("city"), 100), _clean(d.get("point"), 300))
+    jobs = [("tg", lambda: _tg(short)), ("mail", lambda: _mail("Новый заказ с сайта MEMORIA: %s руб." % amount, full))]
+    if re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", buyer):
+        jobs.append(("client", lambda: _mail("Ваш заказ № %s в MEMORIA принят" % num, client, buyer)))
+    for name, fn in jobs:
         try:
             res[name] = fn()
         except Exception as e:

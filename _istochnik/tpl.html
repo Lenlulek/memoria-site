@@ -676,7 +676,8 @@ function drawCart(){
   <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
   ${PAY?`<div class="pay"><b style="font-weight:500">Оформить и оплатить на сайте</b>
     <span class="lbl">Доставка до пункта выдачи</span>
-    <div class="chips" role="group" aria-label="Служба доставки" id="ct-svc">${[["ozon","Ozon"],["cdek","СДЭК"],["yandex","Яндекс"]].map(([k,t])=>`<button type="button" class="chip" data-svc="${k}" aria-pressed="${dl.service===k}">${t}</button>`).join("")}</div>
+    <div class="chips" role="group" aria-label="Служба доставки" id="ct-svc">${[["ozon","Ozon ★ рекомендуем"],["cdek","СДЭК"],["yandex","Яндекс"]].map(([k,t])=>`<button type="button" class="chip" data-svc="${k}" aria-pressed="${dl.service===k}">${t}</button>`).join("")}</div>
+    <p style="font-size:12px;color:var(--granat);margin:-2px 0 0">В Ozon отправляем быстрее всего.</p>
     <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
     <input data-k="point" placeholder="Адрес пункта выдачи ${({ozon:"Ozon",cdek:"СДЭК",yandex:"Яндекс"})[dl.service]}" value="${esc(dl.point)}">
     <span class="lbl">Получатель</span>
@@ -713,7 +714,7 @@ cbody.addEventListener("click",async e=>{
   else if(t.id==="ct-copy"){const ok=await copyMsg();t.textContent=ok?"Скопировано ✓":"Выделите текст выше и скопируйте";return}
   else if(t.closest("#ct-tg,#ct-max")){copyMsg();return}
   else if(t.dataset.pay){pay(t);return}
-  else if(t.dataset.svc){dl.service=t.dataset.svc;saveDl();cbody.querySelectorAll("[data-svc]").forEach(c=>c.setAttribute("aria-pressed",c===t));cbody.querySelector('[data-k="point"]').placeholder="Адрес пункта выдачи "+t.textContent;return}
+  else if(t.dataset.svc){dl.service=t.dataset.svc;saveDl();cbody.querySelectorAll("[data-svc]").forEach(c=>c.setAttribute("aria-pressed",c===t));cbody.querySelector('[data-k="point"]').placeholder="Адрес пункта выдачи "+({ozon:"Ozon",cdek:"СДЭК",yandex:"Яндекс"})[t.dataset.svc];return}
   else return;
   save();cnt();drawCart();
 });
