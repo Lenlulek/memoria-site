@@ -106,7 +106,7 @@ h1 em{font-style:italic;color:var(--granat)}
 .hero .wrap{position:relative;z-index:1}
 .orn.h{inset:0}
 .orn.s{inset:0;opacity:.13}
-.about{position:relative;overflow:hidden}
+.about{position:relative;overflow:hidden;overflow:clip}
 .orn.a{inset:0;color:var(--granat);opacity:.10}
 footer{position:relative;overflow:hidden}
 footer .wrap{position:relative;z-index:1}
@@ -181,7 +181,11 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4vw,52px);lin
 .about .eyebrow{color:var(--granat)}
 .about h2{color:var(--ink)}
 .about p{max-width:34em}
-.about img.founder{object-position:50% 30%}
+.about img.founder{object-position:50% 30%;position:sticky;top:120px;align-self:start;height:auto;min-height:0;aspect-ratio:2/3;margin-top:72px}
+.about .role{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.about h3.q{font-family:var(--display);font-style:italic;font-weight:500;font-size:24px;color:var(--granat);margin:36px 0 10px}
+.about .welcome{font-family:var(--display);font-size:22px;margin-top:28px}
+.about .wrap{align-items:start}
 .about .script{color:var(--granat);font-size:28px;margin-top:28px}
 
 
@@ -306,7 +310,7 @@ footer .wrap.fine{display:block}
   .promise ul{grid-template-columns:repeat(2,1fr)}
   .about .wrap{grid-template-columns:1fr;gap:0}
   .about img{max-height:420px}
-  .about img.founder{max-height:none;aspect-ratio:4/5}
+  .about img.founder{max-height:none;aspect-ratio:4/5;position:static;margin-top:0}
   .about .txt{padding-block:40px 56px}
   .info{grid-template-columns:1fr}
   footer .wrap{grid-template-columns:1fr}
@@ -431,7 +435,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
     </div>
   </section>
 
-  <div class="quote wrap" data-on="home o-brende" hidden><q>Вся ты прекрасна, возлюбленная моя</q><cite>Песнь песней 4:7</cite></div>
+  <div class="quote wrap" data-on="home" hidden><q>Вся ты прекрасна, возлюбленная моя</q><cite>Песнь песней 4:7</cite></div>
 
   <section id="catalog" class="sec" data-on="home katalog coll" hidden>
     <div class="wrap">
@@ -518,13 +522,22 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
       <img class="founder" src="img/ella-shlyapa.jpg" alt="Элла Курбатова, основательница MEMORIA">
       <div class="txt">
         <div class="eyebrow">О бренде</div>
-        <h2>Память о рае</h2>
-        <p>В сердце каждого из нас есть пустота, которая ничем земным не заполняется. Не потому, что нам чего-то не хватает, а потому что это место предназначено для Того, Кто больше нас. И у всех нас есть базовая настройка стремиться туда, оказаться там, в этой безусловной любви и наполненности.</p>
-        <p>Всё это об утерянном людьми райском саде Эдем. Это не миф о прошлом, это изначальное предназначение человека — жить в согласии с Творцом. Эдем — это не про место, а про состояние человека, живущего в согласии с Богом. Состояние вечного цветения, полноты, любви и красоты жизни.</p>
-        <blockquote>Мы верим, что рай — это не далёкое обещание. Его можно обрести уже сегодня.</blockquote>
-        <p style="margin-top:24px">Наши украшения — об этом состоянии. Чтобы, надевая их, вы вспоминали: вы любимы, и Он рядом.</p>
-        <p>А гранат — наш символ. Простой снаружи и полный внутри, как сердце человека.</p>
-        <div class="script">вдохновлена красотой рая</div>
+        <h2>Элла</h2>
+        <div class="role">Основательница и душа бренда MEMORIA</div>
+        <blockquote>Рай — это не про место. Это про состояние…</blockquote>
+        <h3 class="q">— Почему бренд называется Memoria?</h3>
+        <p>Memoria в переводе с латинского означает «память». Для меня это память о рае. Не только как о месте, а как о состоянии человека, живущего в согласии с Богом: где есть мир, безусловная любовь, доверие и внутренняя целостность.</p>
+        <p>Мне очень близка мысль, что в сердце каждого человека есть память о такой жизни.</p>
+        <h3 class="q">— Откуда родилась философия Memoria?</h3>
+        <p>Прямиком из моей жизни. Мы привыкли думать, что счастье придёт когда-то: когда закончим университет, построим карьеру, создадим семью, купим дом. Я тоже так ждала. Но даже когда многое сбылось, внутри оставалась незавершённость, пустота, которая продолжает искать что-то большее.</p>
+        <p>Наверное, в сердце каждого человека есть пустота, которая ничем земным не заполняется. Кто я? Зачем я здесь? В чём смысл? Когда эти вопросы встали передо мной, я поняла, что мой бренд тоже не может быть только про красоту. Мне хотелось, чтобы за украшениями стоял смысл.</p>
+        <h3 class="q">— Где вы начали искать этот смысл?</h3>
+        <p>Я долго ходила вокруг да около: по натуре я люблю всё усложнять, и мне казалось, что ответ не может лежать на поверхности. А самое важное уже давно было в моей жизни.</p>
+        <p>Смысл стал открываться через живую веру. Не через традицию и не через набор правил, а через живые отношения с Богом. Это та опора, которая остаётся с человеком при любых обстоятельствах и которую никто не может отнять. Тогда я и поняла, что хочу создавать украшения, которые будут напоминать не только о красоте, но и о самом главном.</p>
+        <h3 class="q">— О чём украшения Memoria?</h3>
+        <p>Они, несомненно, про красоту. Можете представить себе райский сад? Вот они про это. Но не только.</p>
+        <p>Мне хочется, чтобы каждое украшение стало маленьким напоминанием: рай — это состояние, к которому каждый из нас призван уже здесь, на земле. Если благодаря Memoria кто-то найдёт не только украшение, но и повод остановиться среди суеты и задуматься о главном, значит, бренд родился не зря.</p>
+        <p class="welcome">Добро пожаловать в Memoria.</p>
       </div>
     </div>
   </section>
