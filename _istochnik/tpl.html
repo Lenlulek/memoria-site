@@ -308,10 +308,31 @@ footer .wrap.fine{display:block}
   header .btn{padding:10px 14px;font-size:12px}
   .logo{font-size:20px}
 }
+
+/* ticker */
+.ticker{background:var(--granat);color:var(--milk);overflow:hidden;font-size:12.5px;letter-spacing:.06em;white-space:nowrap}
+.tk{display:flex;width:max-content;animation:tk 40s linear infinite}
+.tk span{display:block;padding:8px 0}
+.tk i{font-style:normal;margin:0 22px;opacity:.7}
+@keyframes tk{to{transform:translateX(-50%)}}
+.ticker:hover .tk{animation-play-state:paused}
+/* brand teaser */
+.ateaser h2 .script{font-family:var(--script);color:var(--granat);font-size:1.05em;white-space:nowrap}
+.story{display:inline-flex;align-items:center;gap:16px;margin-top:20px;text-decoration:none;color:var(--ink);text-align:left}
+.story img{width:72px;height:72px;border-radius:50%;object-fit:cover}
+.story b{display:block;font-family:var(--display);font-size:20px;font-weight:500}
+.story .u{font-size:13px;color:var(--granat);text-decoration:underline;text-underline-offset:3px}
+/* footer icons */
+.ics{display:flex;gap:10px;margin-top:4px}
+.ic{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--milk);display:grid;place-items:center;color:var(--granat)!important;transition:background .2s,color .2s}
+.ic svg{width:21px;height:21px}
+.ic:hover{background:var(--granat);color:var(--milk)!important}
+footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 
+<div class="ticker" aria-label="Доставка по всей России включена в цену. Гарантия 6 месяцев. Каждое украшение в подарочной коробке."><div class="tk" aria-hidden="true"><span>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i></span><span>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i></span></div></div>
 <header>
   <div class="wrap">
     <a class="logo" href="/">__POM__MEMORIA</a>
@@ -509,17 +530,8 @@ footer .wrap.fine{display:block}
   <div class="orn f">__SEEDS_FOOT__</div>
   <div class="wrap">
     <div><a class="logo" href="/">MEMORIA</a><p style="color:var(--muted);font-size:14px;max-width:24em">Украшения, вдохновлённые красотой рая. Москва, доставка по всей России.</p></div>
-    <div><h4>Мы в соцсетях</h4><ul>
-      <li><a href="https://t.me/memoria_jewellry" target="_blank" rel="noopener">Telegram-канал</a></li>
-      <li><a href="https://instagram.com/memoria_jewellry" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://max.ru/join/ZBqpzvuP8yNTh2XU7gOUBBmdaqPUnAjPjS5tBFzDk1Q" target="_blank" rel="noopener">Канал в MAX</a></li>
-    </ul></div>
-    <div><h4>Заказать</h4><ul>
-      <li><a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram: @ellaMua</a></li>
-      <li><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a></li>
-      <li>Телефон: +7 926 615-93-09</li>
-      <li><a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a></li>
-    </ul></div>
+    <div><h4>Служба поддержки клиентов</h4><p class="sup">Ответим на вопросы, поможем с размером и заказом. Пишите в Telegram, MAX или WhatsApp: +7 926 615-93-09</p><div class="ics"><a class="ic" href="https://t.me/ellaMua" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.5 4.3 2.9 11.5c-1 .4-1 1.6 0 1.9l4.6 1.5 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.6 3.4c.6.4 1.4.1 1.6-.6l3.1-15.6c.2-.9-.6-1.6-1.4-1.3zM9.6 14.6l8.3-7.4-6.7 8.6-.3 3.2z"/></svg></a><a class="ic" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener" aria-label="Написать в MAX" title="Написать в MAX"><svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="15.6" text-anchor="middle" font-family="Commissioner,Arial,sans-serif" font-size="8.6" font-weight="700" fill="currentColor" letter-spacing=".3">MAX</text></svg></a><a class="ic" href="https://wa.me/79266159309" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a9.4 9.4 0 0 0-8.1 14.2L2.6 21.5l4.9-1.3A9.4 9.4 0 1 0 12 2.5zm0 17.1c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 12 19.6zm4.3-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-2.8-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.5-.2z"/></svg></a></div></div>
+    <div><h4>Мы в соцсетях</h4><div class="ics"><a class="ic" href="https://t.me/memoria_jewellry" target="_blank" rel="noopener" aria-label="Telegram-канал MEMORIA" title="Telegram-канал MEMORIA"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.5 4.3 2.9 11.5c-1 .4-1 1.6 0 1.9l4.6 1.5 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.6 3.4c.6.4 1.4.1 1.6-.6l3.1-15.6c.2-.9-.6-1.6-1.4-1.3zM9.6 14.6l8.3-7.4-6.7 8.6-.3 3.2z"/></svg></a><a class="ic" href="https://max.ru/join/ZBqpzvuP8yNTh2XU7gOUBBmdaqPUnAjPjS5tBFzDk1Q" target="_blank" rel="noopener" aria-label="Канал MEMORIA в MAX" title="Канал MEMORIA в MAX"><svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="15.6" text-anchor="middle" font-family="Commissioner,Arial,sans-serif" font-size="8.6" font-weight="700" fill="currentColor" letter-spacing=".3">MAX</text></svg></a><a class="ic" href="https://instagram.com/memoria_jewellry" target="_blank" rel="noopener" aria-label="Instagram MEMORIA" title="Instagram MEMORIA"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17" cy="7" r=".9" fill="currentColor" stroke="none"/></svg></a></div></div>
     <div><h4>Покупателям</h4><ul>
       <li><a href="/sertifikaty/">Подарочные сертификаты</a></li>
       <li><a href="/pokupatelyam/">Оплата и доставка</a></li>
