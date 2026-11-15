@@ -28,9 +28,9 @@ a{color:inherit}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--milk) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:14px}
 .logo{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:.32em;text-decoration:none;color:var(--granat)}
-nav{display:flex;gap:28px;font-size:14px}
-nav a{text-decoration:none;color:var(--muted)}
-nav a:hover{color:var(--granat)}
+nav{display:flex;gap:30px;font-size:15px;letter-spacing:.02em}
+nav a{text-decoration:none;color:var(--ink);padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+nav a:hover{color:var(--granat);border-bottom-color:var(--granat)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:500 14px/1 var(--body);letter-spacing:.04em;padding:14px 22px;border-radius:999px;border:1px solid var(--granat);background:var(--granat);color:var(--milk);text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
 .btn:hover{background:var(--granat-deep);border-color:var(--granat-deep)}
 .btn.ghost{background:transparent;color:var(--granat)}
@@ -111,7 +111,7 @@ footer .wrap{position:relative;z-index:1}
 
 section{scroll-margin-top:80px}
 .mnav{display:none}
-nav a[aria-current]{color:var(--granat)}
+nav a[aria-current]{color:var(--granat);border-bottom-color:var(--granat)}
 @media (max-width:980px){.mnav{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}.mnav::-webkit-scrollbar{display:none}.mnav a{flex:none;font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:var(--milk)}.mnav a[aria-current]{background:var(--granat);color:var(--milk);border-color:var(--granat)}}
 .cats{padding-block:28px 0}
 .cats-row{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
@@ -315,9 +315,9 @@ footer .wrap.fine{display:block}
 
 /* ticker */
 .ticker{background:var(--granat);color:var(--milk);overflow:hidden;font-size:12.5px;letter-spacing:.06em;white-space:nowrap}
-.tk{display:flex;width:max-content;animation:tk 40s linear infinite}
+.tk{display:flex;width:max-content;animation:tk 90s linear infinite}
 .tk span{display:block;padding:8px 0}
-.tk i{font-style:normal;margin:0 22px;opacity:.7}
+.tk i{font-style:normal;margin:0 64px;opacity:.6}
 @keyframes tk{to{transform:translateX(-50%)}}
 .ticker:hover .tk{animation-play-state:paused}
 /* brand teaser */
