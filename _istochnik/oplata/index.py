@@ -100,7 +100,7 @@ def build_order(body, prices):
             if not skus:
                 raise ValueError("Корзина пуста")
             return ([{"name": "Предоплата доставки СДЭК (зачитывается при выкупе)", "amount": CDEK_DEPOSIT, "quantity": 1,
-                      "paymentMethod": "advance", "paymentObject": "payment", "vatType": "none", "measure": "шт."}],
+                      "paymentMethod": "full_prepayment", "paymentObject": "service", "vatType": "none", "measure": "шт."}],
                     skus, CDEK_DEPOSIT)
         if not 1 <= q <= 20:
             raise ValueError("Неверное количество")
@@ -110,7 +110,7 @@ def build_order(body, prices):
             if not MIN_CERT <= n <= MAX_CERT:
                 raise ValueError("Неверная сумма сертификата")
             items.append({"name": "Подарочный сертификат MEMORIA на %d руб." % n, "amount": n,
-                          "quantity": q, "paymentMethod": "advance", "paymentObject": "payment",
+                          "quantity": q, "paymentMethod": "full_prepayment", "paymentObject": "goods",
                           "vatType": "none", "measure": "шт."})
             skus.append("сертификат %d" % n)
             continue
