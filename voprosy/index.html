@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ru">
-<head><meta name="robots" content="noindex">
+<head>
 <meta charset="utf-8">
 <base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -127,7 +127,10 @@ footer .wrap{position:relative;z-index:1}
 section{scroll-margin-top:80px}
 .mnav{display:none}
 nav a[aria-current]{color:var(--granat);border-bottom-color:var(--granat)}
-@media (max-width:980px){.mnav{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}.mnav::-webkit-scrollbar{display:none}.mnav a{flex:none;font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:var(--milk)}.mnav a[aria-current]{background:var(--granat);color:var(--milk);border-color:var(--granat)}}
+nav a{white-space:nowrap}
+@media (max-width:1240px){nav{gap:20px;font-size:14px}}
+@media (max-width:1120px){nav{display:none}}
+@media (max-width:1120px){.mnav{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}.mnav::-webkit-scrollbar{display:none}.mnav a{flex:none;font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:var(--milk)}.mnav a[aria-current]{background:var(--granat);color:var(--milk);border-color:var(--granat)}}
 .cats{padding-block:28px 0}
 .cats-row{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
 .cats-row a{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-size:13px;width:88px;text-align:center}
@@ -414,6 +417,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
       <a href="/sertifikaty/" data-nav="sertifikaty">Сертификаты</a>
       <a href="/o-brende/" data-nav="o-brende">О бренде</a>
       <a href="/dostavka/" data-nav="dostavka">Доставка и гарантия</a>
+      <a href="/voprosy/" data-nav="voprosy">Вопросы</a>
     </nav>
     <div class="hdr-r">
       <button class="btn sm" type="button" id="ask">Написать нам</button>
@@ -421,7 +425,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
     </div>
   </div>
   <nav class="mnav" aria-label="Разделы">
-    <a href="/katalog/" data-nav="katalog">Каталог</a><a href="/kollekcii/" data-nav="kollekcii">Коллекции</a><a href="/sertifikaty/" data-nav="sertifikaty">Сертификаты</a><a href="/o-brende/" data-nav="o-brende">О бренде</a><a href="/dostavka/" data-nav="dostavka">Доставка</a>
+    <a href="/katalog/" data-nav="katalog">Каталог</a><a href="/kollekcii/" data-nav="kollekcii">Коллекции</a><a href="/sertifikaty/" data-nav="sertifikaty">Сертификаты</a><a href="/o-brende/" data-nav="o-brende">О бренде</a><a href="/dostavka/" data-nav="dostavka">Доставка</a><a href="/voprosy/" data-nav="voprosy">Вопросы</a>
   </nav>
 </header>
 
@@ -462,7 +466,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
   <section class="cpage" data-on="coll" hidden>
     <div class="wrap cp">
       <img src="" alt="">
-      <div class="cp-txt"><a class="cp-back" href="/kollekcii/">← Все коллекции</a><div class="eyebrow">Коллекция MEMORIA</div><h1></h1><p></p><a class="btn" href="/proba-voprosy/#catalog">Смотреть украшения</a></div>
+      <div class="cp-txt"><a class="cp-back" href="/kollekcii/">← Все коллекции</a><div class="eyebrow">Коллекция MEMORIA</div><h1></h1><p></p><a class="btn" href="/voprosy/#catalog">Смотреть украшения</a></div>
     </div>
   </section>
 
@@ -682,6 +686,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
       <li><a href="/sertifikaty/">Подарочные сертификаты</a></li>
       <li><a href="/pokupatelyam/">Оплата и доставка</a></li>
       <li><a href="/pokupatelyam/#vozvrat">Гарантия и возврат</a></li>
+      <li><a href="/voprosy/">Вопросы и ответы</a></li>
       <li><a href="/oferta/">Публичная оферта</a></li>
       <li><a href="/privacy/">Политика конфиденциальности</a></li>
     </ul></div>

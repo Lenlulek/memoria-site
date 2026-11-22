@@ -35,7 +35,7 @@ PAGES = [  # путь, страница, заголовок каталога, ti
     ("sertifikaty/", "sertifikaty", "", "Подарочные сертификаты — MEMORIA"),
     ("o-brende/", "o-brende", "", "О бренде — MEMORIA"),
     ("dostavka/", "dostavka", "", "Доставка и гарантия — MEMORIA"),
-    ("proba-voprosy/", "voprosy", "", "Вопросы и ответы — MEMORIA"),
+    ("voprosy/", "voprosy", "", "Вопросы и ответы — MEMORIA"),
 ] + [("kollekcii/%s/" % sl, "coll", "Украшения коллекции", "Коллекция «%s» — MEMORIA" % nm) for sl, nm, _, _ in COLLS]
 
 def page(path, pg, cath, title, coll=None):
