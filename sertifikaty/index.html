@@ -576,7 +576,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
       <h3 class="shead" style="text-align:left;font-size:26px">Два способа получить заказ</h3>
       <div class="ways">
         <div class="way"><span class="wn">Способ 1</span><h3>Ozon: рядом с домом</h3><ul><li>Оплата сразу на сайте, картой или по СБП.</li><li>Пункты Ozon почти в каждом дворе.</li><li>Заказ сразу виден в вашем приложении Ozon.</li><li>В среднем 2–5 дней.</li></ul><p class="wnote">Доставка уже включена в цену.</p></div>
-        <div class="way"><span class="wn">Способ 2</span><h3>СДЭК: с примеркой</h3><ul><li>Оплата при получении, после примерки.</li><li>Откройте посылку в пункте СДЭК и примерьте украшения.</li><li>Оплатите только то, что понравилось, остальное вернётся к нам.</li></ul><p class="wnote">Доставка до пункта включена в цену. Если не подойдёт ничего, оплачиваете только доставку туда и обратно по тарифу СДЭК.</p></div>
+        <div class="way"><span class="wn">Способ 2</span><h3>СДЭК: с примеркой</h3><ul><li>На сайте вносите только 500 рублей предоплаты за доставку.</li><li>Откройте посылку в пункте СДЭК и примерьте украшения.</li><li>Оплатите на месте только то, что понравилось, остальное вернётся к нам.</li></ul><p class="wnote">Если что-то оставите, 500 рублей зачтём в стоимость украшений. Если не подойдёт ничего, они покрывают доставку туда и обратно.</p></div>
       </div>
       <p class="shead">Как проходит заказ через Ozon</p>
       <ol class="scheme">
@@ -815,14 +815,18 @@ function drawCart(){
   <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
   ${PAY?`<div class="pay"><b style="font-weight:500">Как получить заказ</b>
     <div class="chips" role="group" aria-label="Способ получения">${[["pay","Оплата на сайте"],["try","СДЭК с примеркой, оплата при получении"]].map(([k,t])=>`<button type="button" class="chip" data-way="${k}" aria-pressed="${(dl.way||"pay")===k}">${t}</button>`).join("")}</div>
-    ${dl.way==="try"?`<p style="font-size:13px;color:var(--muted);margin:0">Примерьте в пункте СДЭК и оплатите только то, что понравилось. Если не подойдёт ничего, оплачиваете только доставку туда и обратно по тарифу СДЭК.</p>
+    ${dl.way==="try"?`<p style="font-size:13px;color:var(--muted);margin:0">Сейчас вносите 500 рублей предоплаты за доставку. В пункте СДЭК примерьте и оплатите только то, что понравилось: 500 рублей зачтём в стоимость. Если не подойдёт ничего, они покрывают доставку туда и обратно.</p>
     <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
     <input data-k="point" placeholder="Адрес пункта выдачи СДЭК" value="${esc(dl.point)}">
     <span class="lbl">Получатель</span>
     <input data-k="name" autocomplete="name" placeholder="Имя и фамилия" value="${esc(dl.name)}">
     <input id="ct-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Телефон" value="${esc(phone)}">
-    <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}"></div>
-  <p style="margin:6px 0 0">Отправьте заказ нам в мессенджер, мы подтвердим и отправим СДЭК:</p>`:`
+    <input id="ct-email" type="email" inputmode="email" autocomplete="email" placeholder="Почта для чека" value="${esc(email)}">
+    <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}">
+    <button type="button" class="btn" data-pay="cdek">Внести 500 руб. и оформить</button>
+    <p style="font-size:12px;color:var(--muted);margin:0">Картой или по СБП через защищённую страницу Точка Банка. Отправим СДЭК за 1–3 рабочих дня и пришлём трек-номер.</p>
+    <p class="err" id="ct-err" hidden></p></div>
+  <p style="margin:6px 0 0">Или отправьте нам список в мессенджер:</p>`:`
     <span class="lbl">Доставка до пункта выдачи</span>
     <div class="chips" role="group" aria-label="Служба доставки" id="ct-svc">${[["ozon","Ozon ★ рекомендуем"],["cdek","СДЭК"],["yandex","Яндекс"]].map(([k,t])=>`<button type="button" class="chip" data-svc="${k}" aria-pressed="${dl.service===k}">${t}</button>`).join("")}</div>
     <p style="font-size:12px;color:var(--granat);margin:-2px 0 0">В Ozon отправляем быстрее всего.</p>
@@ -883,10 +887,11 @@ async function pay(b){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Укажите почту: туда придёт чек.";err.hidden=false;document.getElementById("ct-email").focus();return}
   const txt=b.textContent;b.disabled=true;b.textContent="Переходим к оплате…";
   try{
-    const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,promo,email,phone,delivery:dl,mode:b.dataset.pay})});
+    const dep=b.dataset.pay==="cdek",dlv=dep?Object.assign({},dl,{service:"cdektry"}):dl;
+    const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(dep?{items:[{sku:"CDEK-DEPOSIT",q:1}],cart,promo,email,phone,delivery:dlv,mode:"cdek"}:{items:cart,promo,email,phone,delivery:dl,mode:b.dataset.pay})});
     const d=await r.json();
-    if(!r.ok||!d.url)throw new Error(d.error||"Ошибка");
-    try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total,op:d.op,ts:Date.now(),delivery:dl,phone,email}))}catch(e){}
+    if(!r.ok||!d.url)throw new Error(/CDEK-DEPOSIT/.test(d.error||"")?"Оплата временно недоступна. Напишите нам в мессенджер.":(d.error||"Ошибка"));
+    try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total,op:d.op,ts:Date.now(),delivery:dlv,phone,email,dep}))}catch(e){}
     location.href=d.url;
   }catch(e){err.textContent=e.message&&e.message!=="Failed to fetch"?e.message:"Не получилось открыть оплату. Напишите нам в мессенджер.";err.hidden=false;b.disabled=false;b.textContent=txt}
 }
@@ -898,7 +903,7 @@ function showPaid(ok,last){
   if(ok){cart=[];save();cnt()}
   const el=document.createElement("div");el.className="paid";
   el.innerHTML=ok?`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:28px;margin:0;color:var(--granat)">Спасибо, оплата прошла!</h3>
-    <p style="margin:0">Заказ ${esc(last.order||"")} принят. Чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер.</p>
+    <p style="margin:0">${last.dep?`Заказ ${esc(last.order||"")} принят: СДЭК с примеркой. Предоплата доставки внесена, чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер СДЭК. Украшения оплатите в пункте после примерки.`:`Заказ ${esc(last.order||"")} принят. Чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер.`}</p>
     <p style="margin:0;color:var(--muted);font-size:14px">Если есть вопросы, напишите нам: <a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram</a>, <a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a> или <a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a>.</p>
     <button type="button" class="btn close">Хорошо</button></div>`
    :`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:26px;margin:0">Оплата не прошла</h3><p style="margin:0">Деньги не списаны. Товары остались в корзине: попробуйте ещё раз или напишите нам.</p><button type="button" class="btn close">Хорошо</button></div>`;
