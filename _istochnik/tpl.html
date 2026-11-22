@@ -798,8 +798,8 @@ function cartMsg(){
   return `Здравствуйте! Хочу оформить заказ с сайта:\n${lines.join("\n")}\nИтого: ${rub(sum)}`+(promo?`\nПромокод: ${promo}`:"")+tr;
 }
 let agree=false,news=false,cert="";
-const DOPT=[["ozon","Ozon","в среднем 2–5 дн.","включено в цену","рекомендуем"],["cdektry","СДЭК с примеркой","оплата при получении","предоплата 500 руб.",""],["cdek","СДЭК","срок зависит от города","включено в цену",""],["yandex","Яндекс Доставка","срок зависит от города","включено в цену",""]];
-function dkey(){return dl.way==="try"?"cdektry":(dl.service||"ozon")}
+const DOPT=[["ozon","Ozon","у дома, в среднем 2–5 дн.","оплата сразу на сайте",""],["cdektry","СДЭК с примеркой","примерка в пункте СДЭК","500 руб. сейчас, остальное после примерки",""]];
+function dkey(){if(dl.way!=="try")dl.service="ozon";return dl.way==="try"?"cdektry":"ozon"}
 function payBlock(){
   const k=dkey(),tr=k==="cdektry",svc={ozon:"Ozon",cdektry:"СДЭК",cdek:"СДЭК",yandex:"Яндекс"}[k];
   return `<div class="pay"><b style="font-weight:500">Оформление заказа</b>
