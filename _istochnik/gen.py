@@ -35,6 +35,7 @@ PAGES = [  # путь, страница, заголовок каталога, ti
     ("sertifikaty/", "sertifikaty", "", "Подарочные сертификаты — MEMORIA"),
     ("o-brende/", "o-brende", "", "О бренде — MEMORIA"),
     ("dostavka/", "dostavka", "", "Доставка и гарантия — MEMORIA"),
+    ("proba-voprosy/", "voprosy", "", "Вопросы и ответы — MEMORIA"),
 ] + [("kollekcii/%s/" % sl, "coll", "Украшения коллекции", "Коллекция «%s» — MEMORIA" % nm) for sl, nm, _, _ in COLLS]
 
 def page(path, pg, cath, title, coll=None):
@@ -56,6 +57,9 @@ def page(path, pg, cath, title, coll=None):
     open(tmp, "w", encoding="utf-8").write(s)
     os.makedirs(os.path.join(ROOT, path), exist_ok=True)
     subprocess.run([sys.executable, "wrap.py", tmp, os.path.join(ROOT, path, "index.html")], check=True)
+    if path.startswith("proba-"):
+        f = os.path.join(ROOT, path, "index.html"); h = open(f, encoding="utf-8").read()
+        open(f, "w", encoding="utf-8").write(h.replace("<head>", '<head><meta name="robots" content="noindex">', 1))
 
 for path, pg, cath, title in PAGES:
     coll = None
