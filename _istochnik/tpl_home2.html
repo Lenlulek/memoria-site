@@ -1,0 +1,955 @@
+<title>MEMORIA — вдохновлена красотой рая</title>
+<meta name="description" content="MEMORIA — украшения, вдохновлённые красотой рая: колье, серьги, кольца и браслеты с натуральными камнями. Заказ в Telegram, WhatsApp и MAX.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Commissioner:wght@300;400;500&display=swap">
+<style>
+@font-face{font-family:"Ouvality";src:url(data:font/ttf;base64,__OUV__) format("truetype");font-display:swap}
+/* Layout: журнальная витрина — асимметричный первый экран, лента коллекций, сетка карточек с одной кнопкой «Заказать» (позже станет «В корзину») */
+:root{
+  --milk:#FBF7F1; --paper:#F3ECE2; --granat:#8C2A2E; --granat-deep:#5E1A1E;
+  --ink:#2B2427; --muted:#7A6E6C; --line:#E4D9CD;
+  --display:"Cormorant Garamond", "Times New Roman", serif;
+  --body:"Commissioner", "Segoe UI", Arial, sans-serif;
+  --script:"Ouvality", "Segoe Script", cursive;
+  --gut:max(16px, env(safe-area-inset-left, 0px));
+  --gutr:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--milk);color:var(--ink);font-family:var(--body);font-weight:300;font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--milk)}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gutr)}
+.draft{background:var(--granat);color:var(--milk);font-size:13px;text-align:center;padding-block:7px;letter-spacing:.02em}
+.draft .wrap{padding-block:0}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--milk) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:14px}
+.logo{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:.32em;text-decoration:none;color:var(--granat)}
+nav{display:flex;gap:30px;font-size:15px;letter-spacing:.02em}
+nav a{text-decoration:none;color:var(--ink);padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+nav a:hover{color:var(--granat);border-bottom-color:var(--granat)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:500 14px/1 var(--body);letter-spacing:.04em;padding:14px 22px;border-radius:999px;border:1px solid var(--granat);background:var(--granat);color:var(--milk);text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--granat-deep);border-color:var(--granat-deep)}
+.btn.ghost{background:transparent;color:var(--granat)}
+.btn.ghost:hover{background:var(--granat);color:var(--milk)}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--granat);outline-offset:3px}
+.btn.sm{padding:10px 16px;font-size:13px}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding-block:64px 72px}
+.script{font-family:var(--script);color:var(--granat);font-size:30px;line-height:1.25}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,5.6vw,72px);line-height:1.02;margin:18px 0 22px;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--granat)}
+.lead{max-width:30em;color:var(--muted);font-size:17px;margin:0 0 32px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-pom{margin:0;display:grid;justify-items:center;gap:6px;color:var(--granat)}
+.hero-pom svg{width:min(100%,440px);height:auto;aspect-ratio:1}
+.hero-pom figcaption{text-align:center;font-size:13px;color:var(--muted);max-width:22em;display:grid}
+.hero-pom .script{font-size:34px}
+.quote{text-align:center;padding-block:72px 8px}
+.gift{margin-top:72px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:36px clamp(20px,4vw,48px);display:flex;gap:24px 40px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.gift h3{font-family:var(--display);font-weight:500;font-size:clamp(28px,3.4vw,38px);margin:6px 0 8px;line-height:1.1;color:var(--granat)}
+.gift p{margin:0;color:var(--muted);max-width:34em}
+.giftm .box{max-width:680px;max-height:calc(100dvh - 32px);overflow:auto;padding:22px}
+.giftm iframe{width:100%;min-height:720px;border:0;background:transparent;border-radius:10px}
+.giftm .gm-head{text-align:center;padding:4px 8px 14px}
+.giftm .gm-head h3{font-family:var(--display);font-weight:500;font-size:30px;margin:4px 0 6px;color:var(--granat);line-height:1.1}
+.giftm .gm-head p{margin:0 auto;max-width:30em}
+.giftm .gm-head svg{width:44px;height:44px;color:var(--granat)}
+.pop{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:15;width:min(420px,calc(100vw - 32px));background:var(--granat);color:var(--milk);border-radius:18px;box-shadow:0 22px 60px rgba(43,36,39,.35);padding:28px 26px 24px;display:grid;gap:12px;animation:popin .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes popin{from{transform:translateY(30px) scale(.96);opacity:0}}
+.pop .px{position:absolute;top:10px;right:12px;background:none;border:0;font-size:20px;color:rgba(251,247,241,.75);cursor:pointer;padding:6px;line-height:1}
+.pop .pt{display:flex;gap:14px;align-items:center;padding-right:24px}
+.pop svg{width:52px;height:52px;flex:none;color:var(--milk)}
+.pop b{font-family:var(--display);font-weight:500;font-size:clamp(28px,3vw,34px);line-height:1.05}
+.pop p{margin:0;font-size:15px;color:rgba(251,247,241,.85)}
+.pop .btn{width:100%;background:var(--milk);color:var(--granat);border-color:var(--milk);padding:16px 22px;font-size:15px}
+.pop .btn:hover{background:#fff;border-color:#fff;color:var(--granat-deep)}
+.promo-link{justify-self:start;background:none;border:0;padding:0;color:var(--granat);font:400 13px var(--body);text-decoration:underline;cursor:pointer}
+.quote q{display:block;font-family:var(--script);color:var(--granat);font-size:clamp(30px,4vw,46px);line-height:1.2;quotes:"«" "»";text-wrap:balance}
+.quote cite{display:block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.card h3 .nm{display:block;font-size:24px;color:var(--granat)}
+.card h3 .ds{display:block;font-family:var(--body);font-weight:300;font-size:14px;line-height:1.45;color:var(--ink);margin-top:2px}
+.hero-art{position:relative;display:grid;grid-template-columns:1fr .62fr;gap:14px;align-items:end}
+.hero-art img{display:block;width:100%;object-fit:cover}
+.hero-art .main{aspect-ratio:3/4;border-radius:200px 200px 4px 4px}
+.hero-art .side{aspect-ratio:3/5;border-radius:4px}
+.hero-art figcaption{position:absolute;left:-22px;bottom:28px;background:var(--milk);padding:12px 16px;font-size:13px;border:1px solid var(--line);max-width:210px;line-height:1.4}
+.hero-art figcaption b{display:block;font-family:var(--display);font-size:19px;font-weight:500;color:var(--granat)}
+
+/* promises */
+.promise{background:var(--paper);border-block:1px solid var(--line)}
+.promise ul{list-style:none;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:24px;padding-block:26px;position:relative;z-index:1}
+.promise{position:relative;overflow:hidden}
+/* hand-drawn pomegranate seeds, as on the flyers */
+.orn{position:absolute;pointer-events:none;color:var(--granat);opacity:.17}
+.orn svg{display:block;width:100%;height:100%}
+.hero{position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:1}
+.orn.h{inset:0}
+.orn.s{inset:0;opacity:.13}
+.about{position:relative;overflow:hidden;overflow:clip}
+.orn.a{inset:0;color:var(--granat);opacity:.10}
+footer{position:relative;overflow:hidden}
+footer .wrap{position:relative;z-index:1}
+.orn.f{inset:0;opacity:.14}
+.logo{display:inline-flex;align-items:center;gap:10px}
+.logo svg{width:26px;height:26px;color:var(--granat)}
+.hero .lead em{font-style:normal;color:var(--ink)}
+.filters{display:grid;gap:10px;justify-items:end}
+.chips .lbl{font-size:12px;color:var(--muted);align-self:center;margin-right:4px}
+.coll{font-size:12px;color:var(--granat)}
+.badge{position:absolute;top:10px;left:10px;background:var(--milk);color:var(--granat);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.card .ph{position:relative}
+.empty{grid-column:1/-1;color:var(--muted)}
+.about blockquote{font-family:var(--display);font-style:italic;font-size:22px;line-height:1.35;margin:24px 0 0;color:var(--granat);max-width:28em}
+.promise li{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--muted)}
+.promise b{font-family:var(--display);font-size:20px;font-weight:500;color:var(--ink)}
+
+section{scroll-margin-top:80px}
+.mnav{display:none}
+nav a[aria-current]{color:var(--granat);border-bottom-color:var(--granat)}
+@media (max-width:980px){.mnav{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}.mnav::-webkit-scrollbar{display:none}.mnav a{flex:none;font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:var(--milk)}.mnav a[aria-current]{background:var(--granat);color:var(--milk);border-color:var(--granat)}}
+.cats{padding-block:48px 0}
+.cats-row{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.cats-row a{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-size:16px;font-family:var(--display);width:150px;text-align:center}
+.cats-row img{width:140px;height:140px;border-radius:50%;object-fit:cover;border:2px solid var(--milk);box-shadow:0 0 0 1px var(--line)}
+.cats-row a:hover img{box-shadow:0 0 0 2px var(--granat)}
+@media (max-width:560px){.cats-row{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none;padding-bottom:4px}.cats-row::-webkit-scrollbar{display:none}.cats-row a{flex:none;width:96px;font-size:14px}.cats-row img{width:88px;height:88px}}
+.cp{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:center;padding-block:40px 0}
+.cp img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;max-height:560px}
+.cp h1{margin:8px 0 18px;font-family:var(--display);font-weight:500;font-size:clamp(44px,6vw,72px);line-height:1;color:var(--granat)}
+.cp-txt p{font-family:var(--display);font-size:clamp(20px,2.2vw,25px);line-height:1.45;margin:0 0 26px}
+.cp-back{display:inline-block;font-size:13px;color:var(--muted);margin-bottom:22px}
+@media (max-width:760px){.cp{grid-template-columns:1fr;gap:24px;padding-top:20px}.cp img{aspect-ratio:4/3;max-height:none}}
+.ateaser .wrap{text-align:center;max-width:40em}
+.ateaser p{color:var(--muted)}
+.sec{padding-block:88px 24px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:36px;flex-wrap:wrap}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.05;margin:4px 0 0;text-wrap:balance}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--granat)}
+.sec-head p{max-width:30em;margin:0;color:var(--muted)}
+
+/* collections */
+.cols{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.col{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:3/4.4;text-decoration:none;color:#FBF7F1;background:var(--paper)}
+.col img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.col:hover img{transform:scale(1.04)}
+.col::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(43,20,22,.72),rgba(43,20,22,0) 55%)}
+.col div{position:absolute;left:16px;right:16px;bottom:16px;z-index:1}
+.col b{display:block;font-family:var(--display);font-size:26px;font-weight:500;line-height:1.05}
+.col span{font-size:12.5px;opacity:.9;line-height:1.4;display:block;margin-top:4px}
+
+/* catalog */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:400 13px/1 var(--body);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--milk)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 22px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card .ph{aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:var(--paper);margin-bottom:10px}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card:hover img{transform:scale(1.04)}
+.sku{font-size:11.5px;letter-spacing:.12em;color:var(--muted);font-variant-numeric:tabular-nums}
+.card h3{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.15;margin:0;flex:1}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+.price{font-family:var(--display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:13px;color:var(--muted);margin-top:28px}
+
+/* about */
+.about{background:var(--paper);color:var(--ink);margin-top:96px}
+.about .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center;padding-block:0}
+.about img{display:block;width:100%;height:100%;min-height:100%;object-fit:cover;align-self:stretch}
+.about .txt{padding-block:72px}
+.about .eyebrow{color:var(--granat)}
+.about h2{color:var(--ink)}
+.about p{max-width:34em}
+.about img.founder{object-position:50% 30%;position:sticky;top:120px;align-self:start;height:auto;min-height:0;aspect-ratio:2/3;margin-top:72px}
+.about .role{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.about h3.q{font-family:var(--display);font-style:italic;font-weight:500;font-size:24px;color:var(--granat);margin:36px 0 10px}
+.about .welcome{font-family:var(--display);font-size:22px;margin-top:28px}
+.about .wrap{align-items:start}
+.about .script{color:var(--granat);font-size:28px;margin-top:28px}
+
+
+
+.pay{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.pay input{font:400 15px var(--body);padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+.pay .btn{width:100%}
+.pay .lbl{font-size:13px;color:var(--muted);margin-top:4px}
+.pay .err{color:var(--granat);font-size:13px;margin:0}
+.paid{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:rgba(43,36,39,.45);padding:16px}
+.paid .box{background:var(--milk);max-width:440px;border-radius:14px;padding:26px;display:grid;gap:12px}
+
+/* certificate */
+.cert{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.cert-card{aspect-ratio:3/2;background:#FDFBF8;border:1px solid var(--line);border-radius:6px;box-shadow:0 18px 40px rgba(43,36,39,.10);display:grid;place-items:center;padding:18px;position:relative}
+.cert-card:before{content:"";position:absolute;inset:14px;border:1px solid #D7A9A9}
+.cert-card>div{text-align:center;position:relative}
+.cert-card svg{width:38px;height:38px}
+.cert-card .lg{font-family:var(--display);letter-spacing:.42em;font-size:15px;margin:4px 0 2px;padding-left:.42em}
+.cert-card .script{font-size:clamp(28px,4vw,40px);line-height:1.1}
+.cert-card .sum{font-family:var(--display);font-weight:500;font-size:clamp(26px,3.4vw,34px);margin-top:6px}
+.cert-card .sub{font-family:var(--display);font-style:italic;color:var(--muted);font-size:14px}
+.cert h3{font-family:var(--display);font-weight:500;font-size:20px;margin:18px 0 8px}
+.cert .chips{flex-wrap:wrap}
+.cert-own{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px;color:var(--muted)}
+.cert-own input{width:130px;font:400 15px var(--body);padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink)}
+.cert ul{margin:18px 0 0;padding-left:18px;color:var(--muted);font-size:14.5px;display:grid;gap:4px}
+.cert .btn{margin-top:22px}
+@media (max-width:820px){.cert{grid-template-columns:1fr;gap:28px}}
+
+/* delivery */
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.info div{border-top:1px solid var(--granat);padding-top:18px}
+.info h3{font-family:var(--display);font-weight:500;font-size:24px;margin:0 0 8px}
+.info p{margin:0;color:var(--muted);font-size:15px}
+
+footer{margin-top:96px;background:var(--paper);border-top:1px solid var(--line)}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px;padding-block:56px}
+footer h4{font-family:var(--display);font-size:20px;font-weight:500;margin:0 0 12px}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:6px;font-size:14px}
+footer a{text-decoration:none;color:var(--muted)}
+footer a:hover{color:var(--granat)}
+footer .wrap.fine{display:block}
+.fine{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-block:18px}
+
+/* order sheet */
+.sheet{position:fixed;inset:0;z-index:20;display:grid;place-items:end center;background:rgba(43,36,39,.45);padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet .box{background:var(--milk);width:100%;max-width:440px;border-radius:14px;padding:26px;display:grid;gap:14px;animation:up .25s ease}
+@keyframes up{from{transform:translateY(16px);opacity:.4}}
+.sheet h3{font-family:var(--display);font-weight:500;font-size:26px;margin:0;line-height:1.1}
+.sheet p{margin:0;color:var(--muted);font-size:14px}
+.sheet .opts{display:grid;gap:8px}
+.sheet .opts a{justify-content:space-between}
+.sheet .close{justify-self:end;background:none;border:0;font:400 14px var(--body);color:var(--muted);cursor:pointer;padding:4px}
+.msg{font-size:13px;background:var(--paper);padding:10px 12px;border-radius:8px;user-select:all;white-space:pre-line;max-height:160px;overflow:auto}
+/* cart */
+.hdr-r{display:flex;align-items:center;gap:10px}
+.cartbtn{position:relative;display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--granat);color:var(--granat);border-radius:999px;padding:9px 14px;font:500 14px/1 var(--body);cursor:pointer}
+.cartbtn svg{width:18px;height:18px}
+.cartbtn .n{min-width:20px;height:20px;border-radius:10px;background:var(--granat);color:var(--milk);font-size:12px;display:inline-grid;place-items:center;padding:0 5px}
+.cartbtn .n:empty{display:none}
+.cart .box{max-width:520px;max-height:calc(100dvh - 32px);overflow:auto}
+.cl{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.cl li{display:grid;grid-template-columns:56px 1fr;gap:4px 12px;align-items:start}
+.cl img{grid-row:span 2}
+.cl img{width:56px;height:70px;object-fit:cover;border-radius:6px;background:#fff}
+.cl .t{font-size:14px;line-height:1.35}
+.cl .t small{display:block;color:var(--muted);font-size:12px}
+.qty{display:flex;align-items:center;gap:8px;justify-content:flex-start}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:15px;color:var(--ink)}
+.qty .rm{border:0;background:none;width:auto;color:var(--muted);font-size:12px;text-decoration:underline}
+.tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;font-size:15px}
+.tot b{font-family:var(--display);font-size:26px;font-weight:500}
+.promo{display:flex;gap:8px}
+.promo input{flex:1;min-width:0;border:1px solid var(--line);border-radius:999px;padding:11px 16px;font:400 14px var(--body);background:#fff}
+.copy{justify-self:start;background:none;border:0;padding:0;color:var(--granat);font:500 13px var(--body);text-decoration:underline;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--milk);padding:12px 18px;border-radius:14px;font-size:14px;z-index:30;display:flex;gap:16px;align-items:center;justify-content:space-between;width:max-content;max-width:calc(100vw - 32px)}
+.toast span{min-width:0}.toast button{white-space:nowrap;flex:none}
+.toast button{background:none;border:0;color:#F2C9A8;font:500 14px var(--body);text-decoration:underline;cursor:pointer;padding:0}
+@media (max-width:560px){.cartbtn .w{display:none}.hdr-r #ask{padding:10px 14px;white-space:nowrap;font-size:13px}.cartbtn{padding:8px 10px}header .wrap{gap:10px}.hdr-r{gap:6px}.logo{font-size:20px;letter-spacing:.24em;white-space:nowrap}}
+
+
+.count{color:var(--muted);font-size:13px;margin:-16px 0 20px}
+.more-wrap{display:flex;justify-content:center;margin-top:40px}
+.card .ph{display:block;width:100%;padding:0;border:0;cursor:pointer}
+.badge.n{left:auto;right:10px;color:var(--muted)}
+.lnk{all:unset;cursor:pointer;display:block}
+.lnk:hover .nm,.lnk:hover{color:var(--granat)}
+.lnk:focus-visible{outline:2px solid var(--granat);outline-offset:3px}
+.pv{position:fixed;inset:0;z-index:15;background:rgba(43,36,39,.5);display:grid;place-items:center;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto}
+.pv-box{position:relative;background:var(--milk);width:100%;max-width:960px;border-radius:14px;display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;animation:up .25s ease}
+.pv-box>.close{position:absolute;top:12px;right:14px;z-index:2;background:var(--milk);border:0;border-radius:999px;padding:8px 12px;font:400 13px var(--body);color:var(--muted);cursor:pointer}
+.gal{position:relative;background:var(--paper)}
+.gal-win{overflow:hidden;aspect-ratio:4/5}
+.card img[src$="-r.jpg"],.gal-track img[src$="-r.jpg"]{object-fit:contain;background:#fff}
+.gal-track{display:flex;height:100%;transition:transform .35s ease}
+.gal-track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;min-width:0}
+.arr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:rgba(251,247,241,.9);color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.arr.l{left:12px}.arr.r{right:12px}
+.gal-dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.gal-dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(251,247,241,.6);cursor:pointer}
+.gal-dots button[aria-current="true"]{background:var(--milk);width:20px;border-radius:4px}
+.pv.one .arr{display:none}
+.pv-info{padding:44px 32px 32px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pv-info h3{font-family:var(--display);font-weight:500;font-size:28px;line-height:1.15;margin:0}
+.pv-info h3 .nm{display:block;font-size:34px;color:var(--granat)}
+.pv-info h3 .ds{display:block;font-family:var(--body);font-weight:300;font-size:16px;line-height:1.45;margin-top:4px}
+.pv-info .price{font-size:28px}
+.meta{list-style:none;padding:0;margin:4px 0;display:grid;gap:8px;font-size:14px;border-top:1px solid var(--line);padding-top:14px}
+.meta b{display:block;font-weight:500;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pv-q q{display:block;font-family:var(--script);color:var(--granat);font-size:24px;line-height:1.25;quotes:"«" "»"}
+.pv-q cite{font-style:normal;font-size:12px;color:var(--muted)}
+.pv-info .btn{align-self:flex-start;margin-top:6px}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+@media (min-width:761px){.gal-win{aspect-ratio:auto;height:100%;min-height:420px}}
+@media (max-width:760px){.pv{place-items:start center}.pv-box{grid-template-columns:1fr}.pv-info{padding:22px 20px 26px}}
+@media (max-width:980px){
+  nav{display:none}
+  .hero .wrap{grid-template-columns:1fr;gap:40px;padding-block:40px 56px}
+  .cols{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .promise ul{grid-template-columns:repeat(2,1fr)}
+  .about .wrap{grid-template-columns:1fr;gap:0}
+  .about img{max-height:420px}
+  .about img.founder{max-height:none;aspect-ratio:4/5;position:static;margin-top:0}
+  .about .txt{padding-block:40px 56px}
+  .info{grid-template-columns:1fr}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .cols{grid-template-columns:repeat(2,1fr)}
+  .cols .col:last-child{grid-column:span 2;aspect-ratio:16/10}
+  .grid{gap:30px 14px}
+  .card h3{font-size:18px}
+  .price{font-size:19px}
+  .card .row{flex-direction:column;align-items:stretch}
+  .hero-art figcaption{position:static;grid-column:1/-1;max-width:none}
+  .promise b{line-height:1.2}
+  header .btn{padding:10px 14px;font-size:12px}
+  .logo{font-size:20px}
+}
+
+/* ticker */
+.ticker{background:var(--granat);color:var(--milk);overflow:hidden;font-size:12.5px;letter-spacing:.06em;white-space:nowrap}
+.tk{display:flex;width:max-content;animation:tk 90s linear infinite}
+.tk span{display:block;padding:8px 0}
+.tk i{font-style:normal;margin:0 64px;opacity:.6}
+@keyframes tk{to{transform:translateX(-50%)}}
+.ticker:hover .tk{animation-play-state:paused}
+/* brand teaser */
+.ateaser h2 .script{font-family:var(--script);color:var(--granat);font-size:1.05em;white-space:nowrap}
+.story{display:inline-flex;align-items:center;gap:16px;margin-top:20px;text-decoration:none;color:var(--ink);text-align:left}
+.story img{width:72px;height:72px;border-radius:50%;object-fit:cover}
+.story b{display:block;font-family:var(--display);font-size:20px;font-weight:500}
+.story .u{font-size:13px;color:var(--granat);text-decoration:underline;text-underline-offset:3px}
+/* footer icons */
+.ics{display:flex;gap:10px;margin-top:4px}
+.ic{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--milk);display:grid;place-items:center;color:var(--granat)!important;transition:background .2s,color .2s}
+.ic svg{width:21px;height:21px}
+.ic:hover{background:var(--granat);color:var(--milk)!important}
+footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
+.more-link{align-self:center;color:var(--granat);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;font-size:15px}
+.more-link span{transition:margin .2s}.more-link:hover span{margin-left:4px}
+.dlead{font-size:18px;max-width:40em;margin:0 0 32px}
+.info.two{grid-template-columns:repeat(2,1fr)}
+.dsub{margin-top:72px}
+.steps{margin:12px 0 0;padding-left:20px;color:var(--muted);font-size:15px;display:grid;gap:6px}
+.dnote{margin-top:36px;color:var(--muted);font-size:14px}
+@media (max-width:760px){.info.two{grid-template-columns:1fr}}
+.scheme{list-style:none;padding:0;margin:8px 0 0;display:flex;align-items:flex-start;gap:12px}
+.scheme li{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.scheme li.sarr{flex:none;font-size:28px;color:var(--granat);padding-top:22px}
+.scheme .si{width:68px;height:68px;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;color:var(--granat);margin-bottom:8px}
+.scheme .si svg{width:30px;height:30px}
+.scheme b{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.2}
+.scheme span:not(.si){color:var(--muted);font-size:14px}
+.ways{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:0 0 56px}
+.way{background:var(--paper);border:1px solid var(--line);padding:28px 28px 24px;display:flex;flex-direction:column;gap:10px}
+.way .wn{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--granat)}
+.way h3{margin:0;font-family:var(--display);font-weight:500;font-size:26px;line-height:1.2}
+.way ul{margin:4px 0 0;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.way .wnote{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+.shead{font-family:var(--display);font-weight:500;font-size:22px;text-align:center;margin:0 0 20px}
+@media (max-width:760px){.ways{grid-template-columns:1fr}.way{padding:22px 20px}}
+.snote{text-align:center;color:var(--muted);font-size:15px;margin:28px auto 0;max-width:40em}
+.snote b{color:var(--ink);font-weight:500}
+.msg{background:none!important;padding:0!important;border:0!important;display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;margin:4px 0}
+.msg a{font-size:13px;text-decoration:none;color:var(--granat);border:1px solid var(--granat);border-radius:999px;padding:3px 12px;line-height:1.4}
+.msg a:hover{background:var(--granat);color:var(--milk)}
+@media (max-width:760px){.scheme{flex-direction:column;align-items:stretch}.scheme li.sarr{transform:rotate(90deg);padding:0;align-self:center}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+
+<div class="ticker" aria-label="Доставка по всей России включена в цену. Гарантия 6 месяцев. Каждое украшение в подарочной коробке."><div class="tk" aria-hidden="true"><span>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i></span><span>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i>Доставка по всей России включена в цену<i>·</i>Гарантия 6 месяцев<i>·</i>Каждое украшение в подарочной коробке<i>·</i></span></div></div>
+<header>
+  <div class="wrap">
+    <a class="logo" href="/">__POM__MEMORIA</a>
+    <nav aria-label="Разделы">
+      <a href="/katalog/" data-nav="katalog">Каталог</a>
+      <a href="/kollekcii/" data-nav="kollekcii">Коллекции</a>
+      <a href="/sertifikaty/" data-nav="sertifikaty">Сертификаты</a>
+      <a href="/o-brende/" data-nav="o-brende">О бренде</a>
+      <a href="/dostavka/" data-nav="dostavka">Доставка и гарантия</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="btn sm" type="button" id="ask">Написать нам</button>
+      <button class="cartbtn" type="button" id="cartbtn" aria-label="Корзина"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="w">Корзина</span><span class="n" id="cartn"></span></button>
+    </div>
+  </div>
+  <nav class="mnav" aria-label="Разделы">
+    <a href="/katalog/" data-nav="katalog">Каталог</a><a href="/kollekcii/" data-nav="kollekcii">Коллекции</a><a href="/sertifikaty/" data-nav="sertifikaty">Сертификаты</a><a href="/o-brende/" data-nav="o-brende">О бренде</a><a href="/dostavka/" data-nav="dostavka">Доставка</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" data-on="home">
+    <div class="orn h">__SEEDS_HERO__</div>
+    <div class="wrap">
+      <div>
+        <div class="script">Рай — это не про место. Это про состояние</div>
+        <h1>Memoria значит <em>«память»</em></h1>
+        <p class="lead">В каждом из нас есть память о месте, где царит гармония. О состоянии, где нет раскола внутри, где любовь не зависит от настроения и где тебя любят не благодаря, а вопреки. <em>Наши украшения напоминают о нём.</em></p>
+        <div class="cta">
+          <a class="btn" href="/katalog/">Смотреть каталог</a>
+          <a class="more-link" href="/o-brende/">Подробнее о бренде <span>→</span></a>
+        </div>
+      </div>
+      <figure class="hero-pom">
+        __POM_BIG__
+      </figure>
+    </div>
+  </section>
+
+  <div class="promise" data-on="dostavka">
+    <div class="orn s">__SEEDS_STRIP__</div>
+    <ul class="wrap">
+      <li><b>Гипоаллергенно</b>нержавеющая сталь и гипоаллергенное покрытие</li>
+      <li><b>Водостойко</b>не боятся воды, можно в душ</li>
+      <li><b>Гарантия 6 месяцев</b>на покрытие и конструкцию</li>
+      <li><b>В подарочной коробке</b>сразу можно дарить</li>
+      <li><b>Доставка по России</b>уже включена в цену</li>
+    </ul>
+  </div>
+
+  <section class="cats" data-on="home katalog">
+    <div class="wrap"><div class="cats-row">__CATS__</div></div>
+  </section>
+
+  <section class="cpage" data-on="coll">
+    <div class="wrap cp">
+      <img src="__CIMG__" alt="">
+      <div class="cp-txt"><a class="cp-back" href="/kollekcii/">← Все коллекции</a><div class="eyebrow">Коллекция MEMORIA</div><h1>__CNAME__</h1><p>__CTXT__</p><a class="btn" href="#catalog">Смотреть украшения</a></div>
+    </div>
+  </section>
+
+  <section id="catalog" class="sec" data-on="home katalog coll">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Каталог</div><h2>__CATH__</h2></div>
+        <div class="filters">
+          <div class="chips" role="group" aria-label="Фильтр по типу">
+            <button class="chip" id="f-all" data-f="all" aria-pressed="true">Все</button>
+            <button class="chip" id="f-new" data-f="new" aria-pressed="false">Новинки</button>
+            <button class="chip" id="f-neck" data-f="neck" aria-pressed="false">Колье и цепочки</button>
+            <button class="chip" id="f-ear" data-f="ear" aria-pressed="false">Серьги</button>
+            <button class="chip" id="f-ring" data-f="ring" aria-pressed="false">Кольца</button>
+            <button class="chip" id="f-br" data-f="br" aria-pressed="false">Браслеты</button>
+          </div>
+          <div class="chips" role="group" aria-label="Фильтр по коллекции" id="cchips">
+            <span class="lbl">Коллекция:</span>
+            <button class="chip" id="c-all" data-c="all" aria-pressed="true">Любая</button>
+            <button class="chip" id="c-granat" data-c="Гранат" aria-pressed="false">Гранат</button>
+            <button class="chip" id="c-svetila" data-c="Светила" aria-pressed="false">Светила</button>
+            <button class="chip" id="c-nachalo" data-c="Начало" aria-pressed="false">Начало</button>
+            <button class="chip" id="c-nadezhda" data-c="Цвет надежды" aria-pressed="false">Цвет надежды</button>
+            <button class="chip" id="c-nikogda" data-c="Никогда не поздно" aria-pressed="false">Никогда не поздно</button>
+          </div>
+          <div class="chips" role="group" aria-label="Фильтр по оттенку" id="mchips">
+            <span class="lbl">Оттенок:</span>
+            <button class="chip" data-m="all" aria-pressed="true">Любой</button>
+            <button class="chip" data-m="gold" aria-pressed="false">Золотистые</button>
+            <button class="chip" data-m="silver" aria-pressed="false">Серебристые</button>
+            <button class="chip" data-m="mix" aria-pressed="false">Золото + серебро</button>
+          </div>
+          <div class="chips" role="group" aria-label="Сортировка по цене" id="schips">
+            <span class="lbl">Цена:</span>
+            <button class="chip" data-s="" aria-pressed="true">По умолчанию</button>
+            <button class="chip" data-s="up" aria-pressed="false">Сначала дешевле</button>
+            <button class="chip" data-s="down" aria-pressed="false">Сначала дороже</button>
+          </div>
+        </div>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="grid" id="grid"></div>
+      <div class="more-wrap"><button class="btn ghost" id="more" type="button">Показать ещё</button></div>
+      <div class="more-wrap" data-on="home"><a class="btn" href="/katalog/">Смотреть весь каталог</a></div>
+    </div>
+  </section>
+
+  <section id="collections" class="sec" data-on="home kollekcii">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Коллекции</div><h2>У каждой своя история</h2></div>
+        <p>Названия коллекций взяты из Писания. Украшения легко сочетаются между собой, поэтому их удобно собирать в свой комплект.</p>
+      </div>
+      <div class="cols">
+        <a class="col" href="/kollekcii/granat/" data-c="Гранат"><img src="img/pomegranate.jpg" alt=""><div><b>Гранат</b><span>тёплое золото и красные вставки</span></div></a>
+        <a class="col" href="/kollekcii/svetila/" data-c="Светила"><img src="img/svetila.jpg" alt=""><div><b>Светила</b><span>солнце, луна и звёзды</span></div></a>
+        <a class="col" href="/kollekcii/nachalo/" data-c="Начало"><img src="img/nachalo.jpg" alt=""><div><b>Начало</b><span>базовые цепочки для каждого дня</span></div></a>
+        <a class="col" href="/kollekcii/cvet-nadezhdy/" data-c="Цвет надежды"><img src="img/eyes.jpg" alt=""><div><b>Цвет надежды</b><span>бусы из натуральных камней</span></div></a>
+        <a class="col" href="/kollekcii/nikogda-ne-pozdno/" data-c="Никогда не поздно"><img src="img/nikogda.jpg" alt=""><div><b>Никогда не поздно</b><span>маленькие напоминания о главном</span></div></a>
+      </div>
+      <div class="gift" id="gift">
+        <div><div class="eyebrow">Для новых покупателей</div><h3>Скидка 10% на первый заказ</h3><p>Оставьте контакты — и сразу получите промокод. А в день рождения вас ждёт подарок от MEMORIA 🤍 Без звонков и спама.</p></div>
+        <button class="btn" type="button" data-gift>Получить промокод</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote wrap" data-on="home"><q>Вся ты прекрасна, возлюбленная моя</q><cite>Песнь песней 4:7</cite></div>
+
+
+  <section id="certificate" class="sec" data-on="sertifikaty">
+    <div class="wrap cert">
+      <div class="cert-card" aria-hidden="true"><div>__POM__<div class="lg">MEMORIA</div><div class="script">Подарочный сертификат</div><div class="sum" id="cert-sum">5 000 руб.</div><div class="sub">украшения, вдохновлённые красотой рая</div></div></div>
+      <div>
+        <div class="eyebrow">Подарок, который точно понравится</div>
+        <h2>Подарочный сертификат</h2>
+        <p style="color:var(--muted);margin:0">Если не знаете, что выбрать, подарите сертификат: человек сам выберет украшения, которые ему по душе.</p>
+        <h3>Сумма</h3>
+        <div class="chips" role="group" aria-label="Сумма сертификата" id="cert-n">
+          <button class="chip" type="button" data-n="3000" aria-pressed="false">3 000 руб.</button>
+          <button class="chip" type="button" data-n="5000" aria-pressed="true">5 000 руб.</button>
+          <button class="chip" type="button" data-n="10000" aria-pressed="false">10 000 руб.</button>
+          <button class="chip" type="button" data-n="own" aria-pressed="false">Другая сумма</button>
+        </div>
+        <label class="cert-own" id="cert-own" hidden>Сумма: <input type="number" inputmode="numeric" min="1000" step="500" placeholder="от 1 000" id="cert-in"> руб.</label>
+        <h3>Вид</h3>
+        <div class="chips" role="group" aria-label="Вид сертификата" id="cert-v">
+          <button class="chip" type="button" data-v="e" aria-pressed="true">Электронный</button>
+          <button class="chip" type="button" data-v="p" aria-pressed="false">Бумажный</button>
+        </div>
+        <ul>
+          <li id="cert-vt">Электронный пришлём в мессенджер сразу после оплаты.</li>
+          <li>Действует 6 месяцев. Сумму можно потратить за один или несколько заказов.</li>
+          <li>Если заказ дороже, просто доплатите разницу.</li>
+          <li>Скидки и промокоды на покупку сертификата не действуют.</li>
+        </ul>
+        <button class="btn" type="button" id="cert-add">В корзину</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="ateaser sec" data-on="home">
+    <div class="wrap"><div class="eyebrow">О бренде</div><h2>Память о рае</h2><p>Наши украшения — о состоянии гармонии и любви, которое есть в каждом из нас. Чтобы, надевая их, вы вспоминали: вы любимы, и Он рядом.</p><a class="btn ghost" href="/o-brende/">Подробнее о бренде</a></div>
+  </section>
+
+  <section id="about" class="about" data-on="o-brende">
+    <div class="orn a">__SEEDS_ABOUT__</div>
+    <div class="wrap" style="position:relative;z-index:1">
+      <img class="founder" src="img/ella-shlyapa.jpg" alt="Элла Курбатова, основательница MEMORIA">
+      <div class="txt">
+        <div class="eyebrow">О бренде</div>
+        <h2>Элла</h2>
+        <div class="role">Основательница и душа бренда MEMORIA</div>
+        <blockquote>Рай — это не про место. Это про состояние…</blockquote>
+        <h3 class="q">— Почему бренд называется Memoria?</h3>
+        <p>Memoria в переводе с латинского означает «память». Для меня это память о рае. Не только как о месте, а как о состоянии человека, живущего в согласии с Богом: где есть мир, безусловная любовь, доверие и внутренняя целостность.</p>
+        <p>Мне очень близка мысль, что в сердце каждого человека есть память о такой жизни.</p>
+        <h3 class="q">— Откуда родилась философия Memoria?</h3>
+        <p>Прямиком из моей жизни. Мы привыкли думать, что счастье придёт когда-то: когда закончим университет, построим карьеру, создадим семью, купим дом. Я тоже так ждала. Но даже когда многое сбылось, внутри оставалась незавершённость, пустота, которая продолжает искать что-то большее.</p>
+        <p>Наверное, в сердце каждого человека есть пустота, которая ничем земным не заполняется. Кто я? Зачем я здесь? В чём смысл? Когда эти вопросы встали передо мной, я поняла, что мой бренд тоже не может быть только про красоту. Мне хотелось, чтобы за украшениями стоял смысл.</p>
+        <h3 class="q">— Где вы начали искать этот смысл?</h3>
+        <p>Я долго ходила вокруг да около: по натуре я люблю всё усложнять, и мне казалось, что ответ не может лежать на поверхности. А самое важное уже давно было в моей жизни.</p>
+        <p>Смысл стал открываться через живую веру. Не через традицию и не через набор правил, а через живые отношения с Богом. Это та опора, которая остаётся с человеком при любых обстоятельствах и которую никто не может отнять. Тогда я и поняла, что хочу создавать украшения, которые будут напоминать не только о красоте, но и о самом главном.</p>
+        <h3 class="q">— О чём украшения Memoria?</h3>
+        <p>Они, несомненно, про красоту. Можете представить себе райский сад? Вот они про это. Но не только.</p>
+        <p>Мне хочется, чтобы каждое украшение стало маленьким напоминанием: рай — это состояние, к которому каждый из нас призван уже здесь, на земле. Если благодаря Memoria кто-то найдёт не только украшение, но и повод остановиться среди суеты и задуматься о главном, значит, бренд родился не зря.</p>
+        <p class="welcome">Добро пожаловать в Memoria.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="dostavka-info" class="sec dpage" data-on="dostavka">
+    <div class="wrap">
+      <div class="sec-head"><div><div class="eyebrow">Доставка и гарантия</div><h2>Доставка</h2></div></div>
+      <p class="dlead">Доставка по всей России уже включена в цену. Каждое украшение в подарочной коробке.</p>
+      <h3 class="shead" style="text-align:left;font-size:26px">Два способа получить заказ</h3>
+      <div class="ways">
+        <div class="way"><span class="wn">Способ 1</span><h3>Ozon: рядом с домом</h3><ul><li>Оплата сразу на сайте, картой или по СБП.</li><li>Пункты Ozon почти в каждом дворе.</li><li>Заказ сразу виден в вашем приложении Ozon.</li><li>В среднем 2–5 дней.</li></ul><p class="wnote">Доставка уже включена в цену.</p></div>
+        <div class="way"><span class="wn">Способ 2</span><h3>СДЭК: с примеркой</h3><ul><li>Оплата при получении, после примерки.</li><li>Откройте посылку в пункте СДЭК и примерьте украшения.</li><li>Оплатите только то, что понравилось, остальное вернётся к нам.</li></ul><p class="wnote">Доставка до пункта включена в цену. Если не подойдёт ничего, оплачиваете только доставку туда и обратно по тарифу СДЭК.</p></div>
+      </div>
+      <p class="shead">Как проходит заказ через Ozon</p>
+      <ol class="scheme">
+        <li><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg></span><b>Заказываете на сайте</b><span>оплата картой или по СБП</span></li>
+        <li class="sarr" aria-hidden="true">→</li>
+        <li><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/></svg></span><b>Отправляем через Ozon</b><span>за 1–3 рабочих дня</span></li>
+        <li class="sarr" aria-hidden="true">→</li>
+        <li><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg></span><b>Забираете в пункте Ozon у дома</b><span>в среднем через 2–5 дней</span></li>
+      </ol>
+      <p class="snote">Заказ сразу виден в вашем приложении Ozon. Нет пункта Ozon рядом? Отправим <b>СДЭК</b> или <b>Яндекс Доставкой</b> с трек-номером.</p>
+      <div class="sec-head dsub"><div><h2>Гарантия и возврат</h2></div></div>
+      <div class="info two">
+        <div><h3>Гарантия 6 месяцев</h3><p>Мы уверены в своих украшениях. Если за полгода при обычной носке потемнело покрытие, сломался замочек или выпал камень, напишите нам: <span class="msg"><a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram</a><a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a></span> Заменим украшение, предложим другое на ваш выбор или вернём деньги. Гарантия не распространяется на механические повреждения и следы бытовой химии.</p></div>
+        <div><h3>Если украшение не подошло</h3><p>Его можно вернуть в течение 7 дней после получения, если вы его не носили и сохранили упаковку.</p><ol class="steps"><li>Напишите нам: <span class="msg"><a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram</a><a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a><a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a></span></li><li>Подскажем, как удобнее отправить: через Ozon или СДЭК.</li><li>Вернём деньги в течение 10 дней, как только украшение приедет к нам.</li></ol></div>
+      </div>
+      <p class="dnote">Подробные условия: <a href="/pokupatelyam/">Оплата и доставка</a> и <a href="/oferta/">публичная оферта</a>.</p>
+    </div>
+  </section>
+
+  <div class="quote wrap" style="padding-top:88px" data-on="o-brende dostavka"><q>Всё соделал Он прекрасным в своё время</q><cite>Екклесиаст 3:11</cite></div>
+
+  <section id="delivery" class="sec" data-on="home">
+    <div class="wrap">
+      <div class="sec-head"><div><div class="eyebrow">Как заказать</div><h2>Просто напишите нам</h2></div></div>
+      <div class="info">
+        <div><h3>Заказ</h3><p>Добавьте украшения в корзину и отправьте список, где вам удобнее: Telegram, WhatsApp или MAX. Подтвердим наличие, поможем с размером и пришлём ссылку на оплату.</p></div>
+        <div><h3>Доставка</h3><p>Отправляем по всей России, доставка уже включена в цену. Каждое украшение в подарочной коробке.</p></div>
+        <div><h3>Гарантия</h3><p>6 месяцев на покрытие и конструкцию каждого украшения. Если при обычной носке что-то сломалось или потемнело, заменим украшение или вернём деньги. <a href="/pokupatelyam/#garantiya">Подробнее</a></p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="orn f">__SEEDS_FOOT__</div>
+  <div class="wrap">
+    <div><a class="logo" href="/">MEMORIA</a><p style="color:var(--muted);font-size:14px;max-width:24em">Украшения, вдохновлённые красотой рая. Москва, доставка по всей России.</p></div>
+    <div><h4>Служба поддержки клиентов</h4><p class="sup">Ответим на вопросы, поможем с размером и заказом.<br>Пишите в Telegram, MAX или WhatsApp: <span style="white-space:nowrap">+7 926 615-93-09</span></p><div class="ics"><a class="ic" href="https://t.me/ellaMua" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Написать в Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.5 4.3 2.9 11.5c-1 .4-1 1.6 0 1.9l4.6 1.5 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.6 3.4c.6.4 1.4.1 1.6-.6l3.1-15.6c.2-.9-.6-1.6-1.4-1.3zM9.6 14.6l8.3-7.4-6.7 8.6-.3 3.2z"/></svg></a><a class="ic" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener" aria-label="Написать в MAX" title="Написать в MAX"><svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="15.6" text-anchor="middle" font-family="Commissioner,Arial,sans-serif" font-size="8.6" font-weight="700" fill="currentColor" letter-spacing=".3">MAX</text></svg></a><a class="ic" href="https://wa.me/79266159309" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="Написать в WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a9.4 9.4 0 0 0-8.1 14.2L2.6 21.5l4.9-1.3A9.4 9.4 0 1 0 12 2.5zm0 17.1c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 12 19.6zm4.3-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-2.8-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.5-.2z"/></svg></a></div></div>
+    <div><h4>Мы в соцсетях</h4><div class="ics"><a class="ic" href="https://t.me/memoria_jewellry" target="_blank" rel="noopener" aria-label="Telegram-канал MEMORIA" title="Telegram-канал MEMORIA"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.5 4.3 2.9 11.5c-1 .4-1 1.6 0 1.9l4.6 1.5 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.4 4.6 3.4c.6.4 1.4.1 1.6-.6l3.1-15.6c.2-.9-.6-1.6-1.4-1.3zM9.6 14.6l8.3-7.4-6.7 8.6-.3 3.2z"/></svg></a><a class="ic" href="https://max.ru/join/ZBqpzvuP8yNTh2XU7gOUBBmdaqPUnAjPjS5tBFzDk1Q" target="_blank" rel="noopener" aria-label="Канал MEMORIA в MAX" title="Канал MEMORIA в MAX"><svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="15.6" text-anchor="middle" font-family="Commissioner,Arial,sans-serif" font-size="8.6" font-weight="700" fill="currentColor" letter-spacing=".3">MAX</text></svg></a></div></div>
+    <div><h4>Покупателям</h4><ul>
+      <li><a href="/sertifikaty/">Подарочные сертификаты</a></li>
+      <li><a href="/pokupatelyam/">Оплата и доставка</a></li>
+      <li><a href="/pokupatelyam/#vozvrat">Гарантия и возврат</a></li>
+      <li><a href="/oferta/">Публичная оферта</a></li>
+      <li><a href="/privacy/">Политика конфиденциальности</a></li>
+    </ul></div>
+  </div>
+  <div class="wrap fine">© MEMORIA, 2026 · ИП Курбатова Элла · ИНН 771371492235 · ОГРНИП 323774600378873</div>
+</footer>
+
+<div class="pv" id="pv" hidden>
+  <div class="pv-box" role="dialog" aria-modal="true" aria-labelledby="pv-t">
+    <button class="close" id="pv-x" type="button">Закрыть ✕</button>
+    <div class="gal">
+      <div class="gal-win"><div class="gal-track" id="pv-track"></div></div>
+      <button class="arr l" id="pv-prev" type="button" aria-label="Предыдущее фото">‹</button>
+      <button class="arr r" id="pv-next" type="button" aria-label="Следующее фото">›</button>
+      <div class="gal-dots" id="pv-dots"></div>
+    </div>
+    <div class="pv-info">
+      <div class="sku" id="pv-sku"></div>
+      <h3 id="pv-t"></h3>
+      <div class="price" id="pv-price"></div>
+      <ul class="meta" id="pv-meta"></ul>
+      <div class="pv-q" id="pv-q" hidden></div>
+      <button class="btn" id="pv-order" type="button">В корзину</button>
+      <p class="hint">Доставка по России уже включена в цену. Украшение приедет в подарочной коробке.</p>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <button class="close" id="sh-x" type="button">Закрыть ✕</button>
+    <h3 id="sh-t">Заказать</h3>
+    <p id="sh-p">Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.</p>
+    <div class="msg" id="sh-msg"></div>
+    <div class="opts">
+      <a class="btn" id="sh-tg" target="_blank" rel="noopener">Telegram <span>→</span></a>
+      <a class="btn ghost" id="sh-wa" target="_blank" rel="noopener">WhatsApp <span>→</span></a>
+      <a class="btn ghost" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX <span>→</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="sheet cart" id="cart" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="ct-t">
+    <button class="close" id="ct-x" type="button">Закрыть ✕</button>
+    <h3 id="ct-t">Корзина</h3>
+    <div id="ct-body"></div>
+  </div>
+</div>
+<div class="sheet giftm" id="giftm" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-label="Скидка 10% на первый заказ">
+    <button class="close" id="gm-x" type="button">Закрыть ✕</button>
+    <div class="gm-head">__POM__<div class="eyebrow">Для новых покупателей</div><h3>Скидка 10% на первый заказ</h3><p>Оставьте контакты — и сразу получите промокод. А в день рождения вас ждёт подарок от MEMORIA 🤍</p></div>
+    <div id="gm-body"></div>
+  </div>
+</div>
+<div class="pop" id="pop" hidden role="dialog" aria-label="Скидка 10% на первый заказ">
+  <button class="px" type="button" id="pop-x" aria-label="Закрыть">✕</button>
+  <div class="pt">__POM__<b>−10% на первый заказ</b></div>
+  <p>Оставьте контакты — и сразу получите промокод на первый заказ. А в день рождения вас ждёт подарок 🤍 Без звонков и спама.</p>
+  <button class="btn" type="button" data-gift>Получить промокод</button>
+</div>
+<div class="toast" id="toast" hidden role="status"><span id="toast-t"></span><button type="button" id="toast-go">Открыть корзину</button></div>
+
+<script>
+const items=__CATALOG__;
+const rub=n=>n.toLocaleString("ru-RU")+" руб.";
+const grid=document.getElementById("grid"), more=document.getElementById("more"), count=document.getElementById("count");
+const PAGE="__PAGE__",PCOLL="__PCOLL__";
+document.querySelectorAll("[data-nav]").forEach(a=>{if(a.dataset.nav===PAGE||(PAGE==="coll"&&a.dataset.nav==="kollekcii"))a.setAttribute("aria-current","page")});
+let fT="all",fC=PCOLL||"all",fM="all",fS="",shown=PAGE==="home"?8:12;
+(function(){const q=new URLSearchParams(location.search),t=q.get("t");if(PAGE==="katalog"&&t&&document.querySelector('.chip[data-f="'+t+'"]')){fT=t;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f===t))}})();
+const tone=it=>/золотистое и серебристое/.test(it.metal)?"mix":/золотист/.test(it.metal)?"gold":/серебрист/.test(it.metal)?"silver":"";
+const plural=n=>{const d=n%10,h=n%100;return d===1&&h!==11?"украшение":(d>=2&&d<=4&&(h<12||h>14)?"украшения":"украшений")};
+function title(it){return it.nm?`<span class="nm">«${it.nm}»</span><span class="ds">${it.name}</span>`:it.name}
+function render(){
+  const list=items.map((it,i)=>[it,i]).filter(([it])=>(fT==="all"||it.t===fT||(fT==="new"&&it.new))&&(fC==="all"||it.c===fC)&&(fM==="all"||tone(it)===fM)&&(PAGE!=="home"||it.hit||it.new));
+  if(PAGE==="home")list.sort((x,y)=>(y[0].hit?1:0)-(x[0].hit?1:0));
+  if(fS)list.sort((x,y)=>fS==="up"?x[0].price-y[0].price:y[0].price-x[0].price);
+  count.textContent=`${list.length} ${plural(list.length)}`;
+  grid.innerHTML=list.length?list.slice(0,shown).map(([it,i])=>`<article class="card">
+  <button class="ph" type="button" data-open="${i}" aria-label="Открыть: ${it.nm||it.name}">${it.hit?'<span class="badge">Хит</span>':it.new?'<span class="badge">Новинка</span>':''}${it.photos.length>1?`<span class="badge n">${it.photos.length} фото</span>`:''}<img src="${it.th||it.photos[0]}" alt="" loading="lazy"></button>
+  <div class="sku">${it.sku}${it.c?` · <span class="coll">${it.c}</span>`:''}</div><h3><button type="button" class="lnk" data-open="${i}">${title(it)}</button></h3>
+  <div class="row"><span class="price">${rub(it.price)}</span><button class="btn sm ghost" type="button" data-i="${i}">В корзину</button></div>
+</article>`).join(""):'<p class="empty">Таких украшений пока нет. Попробуйте другую коллекцию или категорию.</p>';
+  more.hidden=PAGE==="home"||list.length<=shown;
+}
+more.addEventListener("click",()=>{shown+=12;render();});
+function press(group,attr,val){document.querySelectorAll(group+" .chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset[attr]===val));}
+document.querySelectorAll(".chip[data-f]").forEach(c=>c.addEventListener("click",()=>{fT=c.dataset.f;shown=12;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===c));render();}));
+document.querySelectorAll(".chip[data-c]").forEach(c=>c.addEventListener("click",()=>{fC=c.dataset.c;if(fC!=="all"){fT="all";document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));}shown=12;press("#cchips","c",fC);render();}));
+document.querySelectorAll(".col[data-c]").forEach(a=>a.addEventListener("click",()=>{fC=a.dataset.c;fT="all";shown=12;press("#cchips","c",fC);document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));render();}));
+document.querySelectorAll(".chip[data-m]").forEach(c=>c.addEventListener("click",()=>{fM=c.dataset.m;shown=12;press("#mchips","m",fM);render();}));
+document.querySelectorAll(".chip[data-s]").forEach(c=>c.addEventListener("click",()=>{fS=c.dataset.s;shown=12;press("#schips","s",fS);render();}));
+render();
+
+/* order sheet */
+document.getElementById("ask").addEventListener("click",()=>{
+  const sh=document.getElementById("sheet");
+  document.getElementById("sh-t").textContent="Написать нам";
+  document.getElementById("sh-p").textContent="Подскажем по размеру, подберём подарок, ответим на любой вопрос. Выберите, где вам удобнее.";
+  document.getElementById("sh-msg").hidden=true;
+  document.getElementById("sh-tg").href="https://t.me/ellaMua";
+  document.getElementById("sh-wa").href="https://wa.me/79266159309";
+  sh.hidden=false; document.getElementById("sh-x").focus();
+});
+const sheet=document.getElementById("sheet");
+function order(it){
+  const full=(it.nm?`«${it.nm}», `:"")+it.name.charAt(0).toLowerCase()+it.name.slice(1);
+  const msg=`Здравствуйте! Хочу заказать: ${full} (${it.sku}), ${rub(it.price)}.`;
+  document.getElementById("sh-t").textContent=it.nm?`«${it.nm}»`:it.name;
+  document.getElementById("sh-p").textContent="Выберите, где удобнее написать. Скопируйте сообщение ниже, чтобы мы сразу поняли, какое украшение вы выбрали.";
+  document.getElementById("sh-msg").hidden=false;
+  document.getElementById("sh-msg").textContent=msg;
+  document.getElementById("sh-tg").href="https://t.me/ellaMua";
+  document.getElementById("sh-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(msg);
+  sheet.hidden=false; document.getElementById("sh-x").focus();
+}
+
+/* product view with gallery */
+const pv=document.getElementById("pv"), track=document.getElementById("pv-track"), dots=document.getElementById("pv-dots");
+let cur=null,ph=0;
+function openP(i){
+  cur=items[i]; ph=0;
+  track.innerHTML=cur.photos.map(src=>`<img src="${src}" alt="">`).join("");
+  dots.innerHTML=cur.photos.length>1?cur.photos.map((_,k)=>`<button type="button" aria-label="Фото ${k+1}" data-k="${k}"></button>`).join(""):"";
+  pv.classList.toggle("one",cur.photos.length<2);
+  document.getElementById("pv-sku").innerHTML=cur.sku+(cur.c?` · <span class="coll">Коллекция «${cur.c}»</span>`:"");
+  document.getElementById("pv-t").innerHTML=title(cur);
+  document.getElementById("pv-price").textContent=rub(cur.price);
+  document.getElementById("pv-meta").innerHTML=`<li><b>Материал</b>нержавеющая сталь, ${cur.metal}</li>${cur.det?`<li><b>Размер</b>${cur.det}</li>`:""}<li><b>Свойства</b>гипоаллергенно, не боится воды</li><li><b>Гарантия</b>6 месяцев</li>`;
+  const q=document.getElementById("pv-q");
+  if(cur.q){q.hidden=false;q.innerHTML=`<q>${cur.q[0]}</q><cite>${cur.q[1]}</cite>`}else q.hidden=true;
+  go(0); pv.hidden=false; document.body.style.overflow="hidden"; document.getElementById("pv-x").focus();
+}
+function go(k){const n=cur.photos.length;ph=(k+n)%n;track.style.transform=`translateX(${-100*ph}%)`;dots.querySelectorAll("button").forEach((d,j)=>d.setAttribute("aria-current",j===ph))}
+function closeP(){pv.hidden=true;document.body.style.overflow=""}
+document.getElementById("pv-prev").addEventListener("click",()=>go(ph-1));
+document.getElementById("pv-next").addEventListener("click",()=>go(ph+1));
+dots.addEventListener("click",e=>{const d=e.target.closest("[data-k]");if(d)go(+d.dataset.k)});
+let sx=null;track.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});
+track.addEventListener("touchend",e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(ph+(dx<0?1:-1));sx=null});
+document.getElementById("pv-x").addEventListener("click",closeP);
+pv.addEventListener("click",e=>{if(e.target===pv)closeP()});
+document.getElementById("pv-order").addEventListener("click",()=>{add(cur.sku);closeP();});
+
+grid.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"); if(o){openP(+o.dataset.open);return}
+  const b=e.target.closest("button[data-i]"); if(b) add(items[b.dataset.i].sku);
+});
+const close=()=>sheet.hidden=true;
+document.getElementById("sh-x").addEventListener("click",close);
+sheet.addEventListener("click",e=>{if(e.target===sheet)close()});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){if(!cartEl.hidden)cartEl.hidden=true;else if(!sheet.hidden)close();else if(!pv.hidden)closeP()}
+  if(!pv.hidden&&sheet.hidden){if(e.key==="ArrowLeft")go(ph-1);if(e.key==="ArrowRight")go(ph+1)}
+});
+/* cart */
+const cartEl=document.getElementById("cart"), cbody=document.getElementById("ct-body"), cartn=document.getElementById("cartn");
+const bySku=Object.fromEntries(items.map(it=>[it.sku,it]));
+const certIt=sku=>{const m=/^CERT-(\d+)-([EP])$/.exec(sku);if(!m)return null;const n=+m[1];return bySku[sku]={sku,price:n,name:`Подарочный сертификат на ${rub(n)}, ${m[2]==="E"?"электронный":"бумажный"}`,photos:["img/sertifikat.jpg"],cert:1}};
+let cart=[];
+try{cart=JSON.parse(localStorage.getItem("memoria-cart")||"[]").filter(x=>(bySku[x.sku]||certIt(x.sku))&&x.q>0)}catch(e){cart=[]}
+let promo="",email="",phone="",dl={service:"ozon",city:"",point:"",name:"",comment:""};
+const esc=v=>String(v||"").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+try{Object.assign(dl,JSON.parse(localStorage.getItem("memoria-dl")||"{}"));phone=localStorage.getItem("memoria-phone")||""}catch(e){}
+function saveDl(){try{localStorage.setItem("memoria-dl",JSON.stringify(dl));localStorage.setItem("memoria-phone",phone)}catch(e){}}
+const PROMOS={MEMORIA10:.1};
+const PAY="https://functions.yandexcloud.net/d4ef9um0daqagriliaco"; // адрес функции оплаты в Яндекс Облаке
+try{email=localStorage.getItem("memoria-email")||""}catch(e){}
+function save(){try{localStorage.setItem("memoria-cart",JSON.stringify(cart))}catch(e){}}
+function cnt(){const n=cart.reduce((a,x)=>a+x.q,0);cartn.textContent=n?n:"";document.getElementById("cartbtn").setAttribute("aria-label",n?`Корзина: ${n}`:"Корзина")}
+let tt=null;
+function toast(t){const el=document.getElementById("toast");document.getElementById("toast-t").textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,3500)}
+function add(sku){const x=cart.find(c=>c.sku===sku);if(x)x.q++;else cart.push({sku,q:1});save();cnt();const it=bySku[sku];toast(`Добавлено в корзину`)}
+const lc=t=>t.charAt(0).toLowerCase()+t.slice(1);
+const fullName=it=>(it.nm?`«${it.nm}», `:"")+lc(it.name);
+function cartMsg(){
+  const lines=cart.map((x,k)=>{const it=bySku[x.sku];return `${k+1}. ${it.cert?it.name:fullName(it)+" ("+it.sku+")"} — ${x.q} шт. × ${rub(it.price)}`});
+  const sum=cart.reduce((a,x)=>a+x.q*bySku[x.sku].price,0);
+  const tr=PAY&&dl.way==="try"?`\n\nПолучение: СДЭК с примеркой, оплата при получении`+[["Город",dl.city],["Пункт СДЭК",dl.point],["Получатель",dl.name],["Телефон",phone],["Комментарий",dl.comment]].filter(x=>x[1]).map(x=>`\n${x[0]}: ${x[1]}`).join(""):"";
+  return `Здравствуйте! Хочу оформить заказ с сайта:\n${lines.join("\n")}\nИтого: ${rub(sum)}`+(promo?`\nПромокод: ${promo}`:"")+tr;
+}
+function drawCart(){
+  if(!cart.length){cbody.innerHTML='<p style="margin:8px 0 4px">Корзина пока пуста. Добавьте украшения кнопкой «В корзину».</p>';return}
+  const sum=cart.reduce((a,x)=>a+x.q*bySku[x.sku].price,0);
+  cbody.innerHTML=`<ul class="cl">${cart.map(x=>{const it=bySku[x.sku];return `<li><img src="${it.th||it.photos[0]}" alt=""><div class="t">${it.nm?"«"+it.nm+"» ":""}${it.name}<small>${it.cert?"":it.sku+" · "}${rub(it.price)}</small></div>
+  <div class="qty"><button type="button" data-m="${x.sku}" aria-label="Меньше">−</button><span>${x.q}</span><button type="button" data-p="${x.sku}" aria-label="Больше">+</button><button type="button" class="rm" data-r="${x.sku}">убрать</button></div></li>`}).join("")}</ul>
+  <div class="tot"><span>Итого</span><b>${rub(sum)}</b></div>
+  <p class="disc" id="ct-disc" style="margin:0;font-size:14px;color:var(--granat)"></p>
+  <p style="font-size:13px;color:var(--muted);margin:0">Доставка по России включена в стоимость.</p>
+  <div class="promo"><input id="ct-promo" placeholder="Промокод, если есть" value="${promo.replace(/"/g,"")}" autocomplete="off"></div>
+  <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
+  ${PAY?`<div class="pay"><b style="font-weight:500">Как получить заказ</b>
+    <div class="chips" role="group" aria-label="Способ получения">${[["pay","Оплата на сайте"],["try","СДЭК с примеркой, оплата при получении"]].map(([k,t])=>`<button type="button" class="chip" data-way="${k}" aria-pressed="${(dl.way||"pay")===k}">${t}</button>`).join("")}</div>
+    ${dl.way==="try"?`<p style="font-size:13px;color:var(--muted);margin:0">Примерьте в пункте СДЭК и оплатите только то, что понравилось. Если не подойдёт ничего, оплачиваете только доставку туда и обратно по тарифу СДЭК.</p>
+    <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
+    <input data-k="point" placeholder="Адрес пункта выдачи СДЭК" value="${esc(dl.point)}">
+    <span class="lbl">Получатель</span>
+    <input data-k="name" autocomplete="name" placeholder="Имя и фамилия" value="${esc(dl.name)}">
+    <input id="ct-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Телефон" value="${esc(phone)}">
+    <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}"></div>
+  <p style="margin:6px 0 0">Отправьте заказ нам в мессенджер, мы подтвердим и отправим СДЭК:</p>`:`
+    <span class="lbl">Доставка до пункта выдачи</span>
+    <div class="chips" role="group" aria-label="Служба доставки" id="ct-svc">${[["ozon","Ozon ★ рекомендуем"],["cdek","СДЭК"],["yandex","Яндекс"]].map(([k,t])=>`<button type="button" class="chip" data-svc="${k}" aria-pressed="${dl.service===k}">${t}</button>`).join("")}</div>
+    <p style="font-size:12px;color:var(--granat);margin:-2px 0 0">В Ozon отправляем быстрее всего.</p>
+    <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
+    <input data-k="point" placeholder="Адрес пункта выдачи ${({ozon:"Ozon",cdek:"СДЭК",yandex:"Яндекс"})[dl.service]}" value="${esc(dl.point)}">
+    <span class="lbl">Получатель</span>
+    <input data-k="name" autocomplete="name" placeholder="Имя и фамилия" value="${esc(dl.name)}">
+    <input id="ct-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Телефон" value="${esc(phone)}">
+    <input id="ct-email" type="email" inputmode="email" autocomplete="email" placeholder="Почта для чека" value="${esc(email)}">
+    <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}">
+    <button type="button" class="btn" data-pay="card">Оплатить онлайн</button>
+    <p style="font-size:12px;color:var(--muted);margin:0">Картой или по СБП, оплата через защищённую страницу Точка Банка. Отправим за 1–3 рабочих дня и пришлём трек-номер.</p>
+    <p class="err" id="ct-err" hidden></p></div>
+  <p style="margin:6px 0 0">Или отправьте нам список в мессенджер:</p>`}`:`<p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>`}
+  <div class="msg" id="ct-msg"></div>
+  <button type="button" class="copy" id="ct-copy">Скопировать список</button>
+  <div class="opts">
+    <a class="btn" href="https://t.me/ellaMua" target="_blank" rel="noopener" id="ct-tg">Telegram <span>→</span></a>
+    <a class="btn ghost" id="ct-wa" target="_blank" rel="noopener">WhatsApp <span>→</span></a>
+    <a class="btn ghost" href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener" id="ct-max">MAX <span>→</span></a>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin:0">Оформляя заказ, вы соглашаетесь с условиями <a href="/oferta/" style="color:inherit">публичной оферты</a>.</p>`;
+  upd();
+  document.getElementById("ct-promo").addEventListener("input",e=>{promo=e.target.value.trim();upd()});
+  const ph=document.getElementById("ct-phone");if(ph)ph.addEventListener("input",e=>{phone=e.target.value.trim();saveDl();upd()});
+  cbody.querySelectorAll("[data-k]").forEach(i=>i.addEventListener("input",e=>{dl[i.dataset.k]=e.target.value.trim();saveDl();upd()}));
+  const em=document.getElementById("ct-email");if(em)em.addEventListener("input",e=>{email=e.target.value.trim();try{localStorage.setItem("memoria-email",email)}catch(_){}});
+}
+function discSum(){const d=PROMOS[promo.toUpperCase()]||0;return d?cart.reduce((a,x)=>{const it=bySku[x.sku];return a+x.q*(it.cert?it.price:Math.round(it.price*(1-d)*100)/100)},0):0}
+function upd(){const ds=discSum(),de=document.getElementById("ct-disc");if(de)de.textContent=ds&&PAY?`При оплате на сайте с промокодом: ${rub(ds)}`:"";const m=cartMsg();document.getElementById("ct-msg").textContent=m;document.getElementById("ct-wa").href="https://wa.me/79266159309?text="+encodeURIComponent(m)}
+async function copyMsg(){const m=cartMsg();try{await navigator.clipboard.writeText(m);return true}catch(e){return false}}
+cbody.addEventListener("click",async e=>{
+  const t=e.target;
+  if(t.dataset.p){cart.find(c=>c.sku===t.dataset.p).q++}
+  else if(t.dataset.m){const x=cart.find(c=>c.sku===t.dataset.m);x.q--;if(x.q<1)cart=cart.filter(c=>c!==x)}
+  else if(t.dataset.r){cart=cart.filter(c=>c.sku!==t.dataset.r)}
+  else if(t.id==="ct-copy"){const ok=await copyMsg();t.textContent=ok?"Скопировано ✓":"Выделите текст выше и скопируйте";return}
+  else if(t.closest("#ct-tg,#ct-max")){copyMsg();return}
+  else if(t.dataset.pay){pay(t);return}
+  else if(t.dataset.way){dl.way=t.dataset.way;saveDl();drawCart();return}
+  else if(t.dataset.svc){dl.service=t.dataset.svc;saveDl();cbody.querySelectorAll("[data-svc]").forEach(c=>c.setAttribute("aria-pressed",c===t));cbody.querySelector('[data-k="point"]').placeholder="Адрес пункта выдачи "+({ozon:"Ozon",cdek:"СДЭК",yandex:"Яндекс"})[t.dataset.svc];return}
+  else return;
+  save();cnt();drawCart();
+});
+function openCart(){drawCart();cartEl.hidden=false;document.getElementById("toast").hidden=true;document.getElementById("ct-x").focus()}
+document.getElementById("cartbtn").addEventListener("click",openCart);
+document.getElementById("toast-go").addEventListener("click",openCart);
+document.getElementById("ct-x").addEventListener("click",()=>cartEl.hidden=true);
+cartEl.addEventListener("click",e=>{if(e.target===cartEl)cartEl.hidden=true});
+cnt();
+
+
+async function pay(b){
+  const err=document.getElementById("ct-err");err.hidden=true;
+  const need=[["city","Укажите город."],["point","Укажите адрес пункта выдачи."],["name","Укажите имя и фамилию получателя."]];
+  for(const [k,t] of need){if(!dl[k]){err.textContent=t;err.hidden=false;cbody.querySelector(`[data-k="${k}"]`).focus();return}}
+  if(phone.replace(/\D/g,"").length<10){err.textContent="Укажите телефон получателя.";err.hidden=false;document.getElementById("ct-phone").focus();return}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Укажите почту: туда придёт чек.";err.hidden=false;document.getElementById("ct-email").focus();return}
+  const txt=b.textContent;b.disabled=true;b.textContent="Переходим к оплате…";
+  try{
+    const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,promo,email,phone,delivery:dl,mode:b.dataset.pay})});
+    const d=await r.json();
+    if(!r.ok||!d.url)throw new Error(d.error||"Ошибка");
+    try{localStorage.setItem("memoria-last",JSON.stringify({order:d.order,msg:cartMsg(),total:d.total,op:d.op,ts:Date.now(),delivery:dl,phone,email}))}catch(e){}
+    location.href=d.url;
+  }catch(e){err.textContent=e.message&&e.message!=="Failed to fetch"?e.message:"Не получилось открыть оплату. Напишите нам в мессенджер.";err.hidden=false;b.disabled=false;b.textContent=txt}
+}
+function notifyBody(last){return JSON.stringify({action:"notify",operationId:last.op,delivery:last.delivery,phone:last.phone,email:last.email,lines:(last.msg||"").split("\n").slice(1).join("\n")})}
+function getLast(){try{return JSON.parse(localStorage.getItem("memoria-last")||"{}")}catch(e){return {}}}
+function dropOp(last){try{delete last.op;localStorage.setItem("memoria-last",JSON.stringify(last))}catch(e){}}
+function showPaid(ok,last){
+  if(document.querySelector(".paid"))return;
+  if(ok){cart=[];save();cnt()}
+  const el=document.createElement("div");el.className="paid";
+  el.innerHTML=ok?`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:28px;margin:0;color:var(--granat)">Спасибо, оплата прошла!</h3>
+    <p style="margin:0">Заказ ${esc(last.order||"")} принят. Чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер.</p>
+    <p style="margin:0;color:var(--muted);font-size:14px">Если есть вопросы, напишите нам: <a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram</a>, <a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a> или <a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a>.</p>
+    <button type="button" class="btn close">Хорошо</button></div>`
+   :`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:26px;margin:0">Оплата не прошла</h3><p style="margin:0">Деньги не списаны. Товары остались в корзине: попробуйте ещё раз или напишите нам.</p><button type="button" class="btn close">Хорошо</button></div>`;
+  document.body.appendChild(el);
+  el.addEventListener("click",e=>{if(e.target===el||e.target.classList.contains("close"))el.remove()});
+  try{localStorage.setItem("memoria-pop",String(Date.now()))}catch(e){}
+}
+(function(){const q=new URLSearchParams(location.search).get("oplata");if(!q)return;
+  history.replaceState(null,"",location.pathname+location.hash);
+  const last=getLast(), ok=q==="ok";
+  if(ok&&last.op){fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:notifyBody(last)}).catch(()=>{});dropOp(last)}
+  showPaid(ok,last);
+})();
+/* покупательница вернулась кнопкой «Назад», минуя страницу «оплата прошла»: спрашиваем Точку сами */
+let checking=false;
+async function checkPaid(){
+  if(checking||!PAY||new URLSearchParams(location.search).get("oplata"))return;
+  const last=getLast();if(!last.op)return;
+  if(last.ts&&Date.now()-last.ts>864e5){dropOp(last);return}
+  checking=true;
+  try{const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:notifyBody(last)});const d=await r.json();
+    const cur=getLast();
+    if(d.paid===true){if(cur.op===last.op){dropOp(cur);showPaid(true,cur)}}
+    else if(d.paid===false&&!last.ts&&cur.op===last.op)dropOp(cur);
+  }catch(e){}finally{checking=false}
+}
+checkPaid();
+window.addEventListener("pageshow",e=>{if(e.persisted)checkPaid()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkPaid()});
+/* certificate */
+let cN=5000,cV="e";
+const cIn=document.getElementById("cert-in"),cOwn=document.getElementById("cert-own"),cSum=document.getElementById("cert-sum");
+function cShow(){const n=cN==="own"?(+cIn.value||0):cN;cSum.textContent=n?rub(n):"на вашу сумму"}
+document.getElementById("cert-n").addEventListener("click",e=>{const b=e.target.closest("[data-n]");if(!b)return;
+  document.querySelectorAll("#cert-n .chip").forEach(c=>c.setAttribute("aria-pressed",c===b));cN=b.dataset.n==="own"?"own":+b.dataset.n;cOwn.hidden=cN!=="own";if(cN==="own")cIn.focus();cShow()});
+document.getElementById("cert-v").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;
+  document.querySelectorAll("#cert-v .chip").forEach(c=>c.setAttribute("aria-pressed",c===b));cV=b.dataset.v;
+  document.getElementById("cert-vt").textContent=cV==="e"?"Электронный пришлём в мессенджер сразу после оплаты.":"Бумажный в подарочном конверте отправим вместе с заказом или отдельно, доставка включена."});
+cIn.addEventListener("input",cShow);
+document.getElementById("cert-add").addEventListener("click",()=>{
+  const n=cN==="own"?Math.round(+cIn.value||0):cN;
+  if(n<1000){cIn.focus();cIn.setCustomValidity("Минимальная сумма 1 000 руб.");cIn.reportValidity();cIn.setCustomValidity("");return}
+  const sku=`CERT-${n}-${cV==="e"?"E":"P"}`;certIt(sku);add(sku)});
+/* gift form (Яндекс Формы) */
+const gm=document.getElementById("giftm");
+function openGift(){
+  const b=document.getElementById("gm-body");
+  if(!b.firstChild){b.innerHTML='<iframe src="https://forms.yandex.ru/u/6af6cb276f1ca4381b70d07b/?iframe=1" name="ya-form-6af6cb276f1ca4381b70d07b" title="Скидка 10% на первый заказ" loading="lazy"></iframe>';
+    const sc=document.createElement("script");sc.src="https://forms.yandex.ru/_static/embed.js";document.body.appendChild(sc);}
+  cartEl.hidden=true;gm.hidden=false;document.getElementById("gm-x").focus();
+}
+document.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))openGift()});
+document.getElementById("gm-x").addEventListener("click",()=>gm.hidden=true);
+gm.addEventListener("click",e=>{if(e.target===gm)gm.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!gm.hidden)gm.hidden=true});
+/* всплывающее предложение: через 15 секунд или после прокрутки ниже коллекций, не чаще раза в 7 дней */
+const pop=document.getElementById("pop");
+function popSeen(){try{const t=+localStorage.getItem("memoria-pop")||0;return Date.now()-t<7*864e5}catch(e){return false}}
+function popMark(){try{localStorage.setItem("memoria-pop",Date.now())}catch(e){}}
+let popDone=popSeen();
+function showPop(){if(popDone)return;popDone=true;if(!gm.hidden||!cartEl.hidden||!pv.hidden||!sheet.hidden){popDone=false;return}pop.hidden=false;popMark()}
+setTimeout(showPop,15000);
+const gEl=document.getElementById("gift");
+function popScroll(){if(popDone){removeEventListener("scroll",popScroll);return}if(gEl&&gEl.getBoundingClientRect().bottom<0)showPop()}
+addEventListener("scroll",popScroll,{passive:true});
+document.getElementById("pop-x").addEventListener("click",()=>{pop.hidden=true;popMark()});
+pop.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))pop.hidden=true});
+</script>

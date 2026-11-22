@@ -360,6 +360,14 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 .scheme .si svg{width:30px;height:30px}
 .scheme b{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.2}
 .scheme span:not(.si){color:var(--muted);font-size:14px}
+.ways{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:0 0 56px}
+.way{background:var(--paper);border:1px solid var(--line);padding:28px 28px 24px;display:flex;flex-direction:column;gap:10px}
+.way .wn{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--granat)}
+.way h3{margin:0;font-family:var(--display);font-weight:500;font-size:26px;line-height:1.2}
+.way ul{margin:4px 0 0;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.way .wnote{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+.shead{font-family:var(--display);font-weight:500;font-size:22px;text-align:center;margin:0 0 20px}
+@media (max-width:760px){.ways{grid-template-columns:1fr}.way{padding:22px 20px}}
 .snote{text-align:center;color:var(--muted);font-size:15px;margin:28px auto 0;max-width:40em}
 .snote b{color:var(--ink);font-weight:500}
 .msg{background:none!important;padding:0!important;border:0!important;display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;margin:4px 0}
@@ -565,6 +573,12 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
     <div class="wrap">
       <div class="sec-head"><div><div class="eyebrow">Доставка и гарантия</div><h2>Доставка</h2></div></div>
       <p class="dlead">Доставка по всей России уже включена в цену. Каждое украшение в подарочной коробке.</p>
+      <h3 class="shead" style="text-align:left;font-size:26px">Два способа получить заказ</h3>
+      <div class="ways">
+        <div class="way"><span class="wn">Способ 1</span><h3>Ozon: рядом с домом</h3><ul><li>Оплата сразу на сайте, картой или по СБП.</li><li>Пункты Ozon почти в каждом дворе.</li><li>Заказ сразу виден в вашем приложении Ozon.</li><li>В среднем 2–5 дней.</li></ul><p class="wnote">Доставка уже включена в цену.</p></div>
+        <div class="way"><span class="wn">Способ 2</span><h3>СДЭК: с примеркой</h3><ul><li>Оплата при получении, после примерки.</li><li>Откройте посылку в пункте СДЭК и примерьте украшения.</li><li>Оплатите только то, что понравилось, остальное вернётся к нам.</li></ul><p class="wnote">Доставка до пункта включена в цену. Если не подойдёт ничего, оплачиваете только доставку туда и обратно по тарифу СДЭК.</p></div>
+      </div>
+      <p class="shead">Как проходит заказ через Ozon</p>
       <ol class="scheme">
         <li><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg></span><b>Заказываете на сайте</b><span>оплата картой или по СБП</span></li>
         <li class="sarr" aria-hidden="true">→</li>
@@ -786,7 +800,8 @@ const fullName=it=>(it.nm?`«${it.nm}», `:"")+lc(it.name);
 function cartMsg(){
   const lines=cart.map((x,k)=>{const it=bySku[x.sku];return `${k+1}. ${it.cert?it.name:fullName(it)+" ("+it.sku+")"} — ${x.q} шт. × ${rub(it.price)}`});
   const sum=cart.reduce((a,x)=>a+x.q*bySku[x.sku].price,0);
-  return `Здравствуйте! Хочу оформить заказ с сайта:\n${lines.join("\n")}\nИтого: ${rub(sum)}`+(promo?`\nПромокод: ${promo}`:"");
+  const tr=PAY&&dl.way==="try"?`\n\nПолучение: СДЭК с примеркой, оплата при получении`+[["Город",dl.city],["Пункт СДЭК",dl.point],["Получатель",dl.name],["Телефон",phone],["Комментарий",dl.comment]].filter(x=>x[1]).map(x=>`\n${x[0]}: ${x[1]}`).join(""):"";
+  return `Здравствуйте! Хочу оформить заказ с сайта:\n${lines.join("\n")}\nИтого: ${rub(sum)}`+(promo?`\nПромокод: ${promo}`:"")+tr;
 }
 function drawCart(){
   if(!cart.length){cbody.innerHTML='<p style="margin:8px 0 4px">Корзина пока пуста. Добавьте украшения кнопкой «В корзину».</p>';return}
@@ -798,7 +813,16 @@ function drawCart(){
   <p style="font-size:13px;color:var(--muted);margin:0">Доставка по России включена в стоимость.</p>
   <div class="promo"><input id="ct-promo" placeholder="Промокод, если есть" value="${promo.replace(/"/g,"")}" autocomplete="off"></div>
   <button type="button" class="promo-link" data-gift>Нет промокода? Получите 10% на первый заказ</button>
-  ${PAY?`<div class="pay"><b style="font-weight:500">Оформить и оплатить на сайте</b>
+  ${PAY?`<div class="pay"><b style="font-weight:500">Как получить заказ</b>
+    <div class="chips" role="group" aria-label="Способ получения">${[["pay","Оплата на сайте"],["try","СДЭК с примеркой, оплата при получении"]].map(([k,t])=>`<button type="button" class="chip" data-way="${k}" aria-pressed="${(dl.way||"pay")===k}">${t}</button>`).join("")}</div>
+    ${dl.way==="try"?`<p style="font-size:13px;color:var(--muted);margin:0">Примерьте в пункте СДЭК и оплатите только то, что понравилось. Если не подойдёт ничего, оплачиваете только доставку туда и обратно по тарифу СДЭК.</p>
+    <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
+    <input data-k="point" placeholder="Адрес пункта выдачи СДЭК" value="${esc(dl.point)}">
+    <span class="lbl">Получатель</span>
+    <input data-k="name" autocomplete="name" placeholder="Имя и фамилия" value="${esc(dl.name)}">
+    <input id="ct-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Телефон" value="${esc(phone)}">
+    <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}"></div>
+  <p style="margin:6px 0 0">Отправьте заказ нам в мессенджер, мы подтвердим и отправим СДЭК:</p>`:`
     <span class="lbl">Доставка до пункта выдачи</span>
     <div class="chips" role="group" aria-label="Служба доставки" id="ct-svc">${[["ozon","Ozon ★ рекомендуем"],["cdek","СДЭК"],["yandex","Яндекс"]].map(([k,t])=>`<button type="button" class="chip" data-svc="${k}" aria-pressed="${dl.service===k}">${t}</button>`).join("")}</div>
     <p style="font-size:12px;color:var(--granat);margin:-2px 0 0">В Ozon отправляем быстрее всего.</p>
@@ -812,7 +836,7 @@ function drawCart(){
     <button type="button" class="btn" data-pay="card">Оплатить онлайн</button>
     <p style="font-size:12px;color:var(--muted);margin:0">Картой или по СБП, оплата через защищённую страницу Точка Банка. Отправим за 1–3 рабочих дня и пришлём трек-номер.</p>
     <p class="err" id="ct-err" hidden></p></div>
-  <p style="margin:6px 0 0">Или отправьте нам список в мессенджер:</p>`:`<p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>`}
+  <p style="margin:6px 0 0">Или отправьте нам список в мессенджер:</p>`}`:`<p style="margin:6px 0 0">Чтобы оформить заказ, отправьте нам список — выберите, где удобнее. Мы подтвердим наличие и пришлём ссылку на оплату.</p>`}
   <div class="msg" id="ct-msg"></div>
   <button type="button" class="copy" id="ct-copy">Скопировать список</button>
   <div class="opts">
@@ -823,8 +847,8 @@ function drawCart(){
   <p style="font-size:12px;color:var(--muted);margin:0">Оформляя заказ, вы соглашаетесь с условиями <a href="/oferta/" style="color:inherit">публичной оферты</a>.</p>`;
   upd();
   document.getElementById("ct-promo").addEventListener("input",e=>{promo=e.target.value.trim();upd()});
-  const ph=document.getElementById("ct-phone");if(ph)ph.addEventListener("input",e=>{phone=e.target.value.trim();saveDl()});
-  cbody.querySelectorAll("[data-k]").forEach(i=>i.addEventListener("input",e=>{dl[i.dataset.k]=e.target.value.trim();saveDl()}));
+  const ph=document.getElementById("ct-phone");if(ph)ph.addEventListener("input",e=>{phone=e.target.value.trim();saveDl();upd()});
+  cbody.querySelectorAll("[data-k]").forEach(i=>i.addEventListener("input",e=>{dl[i.dataset.k]=e.target.value.trim();saveDl();upd()}));
   const em=document.getElementById("ct-email");if(em)em.addEventListener("input",e=>{email=e.target.value.trim();try{localStorage.setItem("memoria-email",email)}catch(_){}});
 }
 function discSum(){const d=PROMOS[promo.toUpperCase()]||0;return d?cart.reduce((a,x)=>{const it=bySku[x.sku];return a+x.q*(it.cert?it.price:Math.round(it.price*(1-d)*100)/100)},0):0}
@@ -838,6 +862,7 @@ cbody.addEventListener("click",async e=>{
   else if(t.id==="ct-copy"){const ok=await copyMsg();t.textContent=ok?"Скопировано ✓":"Выделите текст выше и скопируйте";return}
   else if(t.closest("#ct-tg,#ct-max")){copyMsg();return}
   else if(t.dataset.pay){pay(t);return}
+  else if(t.dataset.way){dl.way=t.dataset.way;saveDl();drawCart();return}
   else if(t.dataset.svc){dl.service=t.dataset.svc;saveDl();cbody.querySelectorAll("[data-svc]").forEach(c=>c.setAttribute("aria-pressed",c===t));cbody.querySelector('[data-k="point"]').placeholder="Адрес пункта выдачи "+({ozon:"Ozon",cdek:"СДЭК",yandex:"Яндекс"})[t.dataset.svc];return}
   else return;
   save();cnt();drawCart();
