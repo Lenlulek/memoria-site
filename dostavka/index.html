@@ -347,6 +347,12 @@ footer .wrap.fine{display:block}
 .ic svg{width:21px;height:21px}
 .ic:hover{background:var(--granat);color:var(--milk)!important}
 footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
+.dlead{font-size:18px;max-width:40em;margin:0 0 32px}
+.info.two{grid-template-columns:repeat(2,1fr)}
+.dsub{margin-top:72px}
+.steps{margin:12px 0 0;padding-left:20px;color:var(--muted);font-size:15px;display:grid;gap:6px}
+.dnote{margin-top:36px;color:var(--muted);font-size:14px}
+@media (max-width:760px){.info.two{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -398,7 +404,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
     <ul class="wrap">
       <li><b>Гипоаллергенно</b>нержавеющая сталь и гипоаллергенное покрытие</li>
       <li><b>Водостойко</b>не боятся воды, можно в душ</li>
-      <li><b>Гарантия 6 месяцев</b>на покрытие и конструкцию: заменим или вернём деньги (<a href="/pokupatelyam/#garantiya">условия</a>)</li>
+      <li><b>Гарантия 6 месяцев</b>на покрытие и конструкцию</li>
       <li><b>В подарочной коробке</b>сразу можно дарить</li>
       <li><b>Доставка по России</b>уже включена в цену</li>
     </ul>
@@ -542,9 +548,27 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
     </div>
   </section>
 
+  <section id="dostavka-info" class="sec dpage" data-on="dostavka">
+    <div class="wrap">
+      <div class="sec-head"><div><div class="eyebrow">Доставка и гарантия</div><h2>Доставка</h2></div></div>
+      <p class="dlead">Отправляем по всей России, доставка уже включена в цену. Каждое украшение приезжает в подарочной коробке, его можно сразу дарить.</p>
+      <div class="info">
+        <div><h3>Ozon: забрать рядом с домом</h3><p>Мы отправляем заказы через Ozon: пункты выдачи есть почти в каждом дворе, а может, вы и так заходите туда за своими заказами. Как только мы отправим посылку, она появится в вашем приложении Ozon: видно, где она и когда приедет. Забираете как обычный заказ с Ozon.</p></div>
+        <div><h3>Если пункта Ozon рядом нет</h3><p>Отправим СДЭК или Яндекс Доставкой и пришлём номер для отслеживания.</p></div>
+        <div><h3>Сроки</h3><p>Отправляем в течение 1–3 рабочих дней после оплаты. В пути в среднем 2–5 дней, в отдалённые регионы бывает дольше.</p></div>
+      </div>
+      <div class="sec-head dsub"><div><h2>Гарантия и возврат</h2></div></div>
+      <div class="info two">
+        <div><h3>Гарантия 6 месяцев</h3><p>Мы уверены в своих украшениях. Если за полгода при обычной носке потемнело покрытие, сломался замочек или выпал камень, напишите нам. Заменим украшение, предложим другое на ваш выбор или вернём деньги. Гарантия не распространяется на механические повреждения и следы бытовой химии.</p></div>
+        <div><h3>Если украшение не подошло</h3><p>Его можно вернуть в течение 7 дней после получения, если вы его не носили и сохранили упаковку.</p><ol class="steps"><li>Напишите нам в Telegram, MAX или WhatsApp.</li><li>Подскажем, как удобнее отправить: через Ozon или СДЭК.</li><li>Вернём деньги в течение 10 дней, как только украшение приедет к нам.</li></ol></div>
+      </div>
+      <p class="dnote">Подробные условия: <a href="/pokupatelyam/">Оплата и доставка</a> и <a href="/oferta/">публичная оферта</a>.</p>
+    </div>
+  </section>
+
   <div class="quote wrap" style="padding-top:88px" data-on="o-brende dostavka"><q>Всё соделал Он прекрасным в своё время</q><cite>Екклесиаст 3:11</cite></div>
 
-  <section id="delivery" class="sec" data-on="home dostavka">
+  <section id="delivery" class="sec" data-on="home" hidden>
     <div class="wrap">
       <div class="sec-head"><div><div class="eyebrow">Как заказать</div><h2>Просто напишите нам</h2></div></div>
       <div class="info">
