@@ -99,7 +99,9 @@ def build_order(body, prices):
                 skus.append(cs + (" x%d" % cq if cq > 1 else ""))
             if not skus:
                 raise ValueError("Корзина пуста")
-            return ([{"name": "Предоплата доставки СДЭК (зачитывается при выкупе)", "amount": CDEK_DEPOSIT, "quantity": 1,
+            if sum(int(c.get("q", 0)) for c in cart[:30]) > 5:
+                raise ValueError("Для примерки можно заказать до 5 украшений")
+            return ([{"name": "Доставка СДЭК с примеркой (туда и обратно)", "amount": CDEK_DEPOSIT, "quantity": 1,
                       "paymentMethod": "full_prepayment", "paymentObject": "service", "vatType": "none", "measure": "шт."}],
                     skus, CDEK_DEPOSIT)
         if not 1 <= q <= 20:
@@ -220,11 +222,11 @@ def _notify(body):
     num = re.search(r"Заказ (\S+)", purpose)
     num = num.group(1) if num else ""
     sv = SERVICES.get(d.get("service"), "Ozon")
-    dep = purpose.startswith("Предоплата СДЭК")
+    dep = purpose.startswith("Доставка СДЭК")
     if dep:
-        num = (re.search(r"Предоплата СДЭК (\S+)", purpose) or [None, ""])[1]
-        short = "🛍 Новый заказ: СДЭК с примеркой, предоплата %s руб. внесена!\n%s\nДанные доставки — в письме на почте." % (amount, purpose)
-        full = full.replace("Новый оплаченный заказ", "Новый заказ «СДЭК с примеркой» (внесена предоплата доставки %s руб., украшения — оплата при получении)" % amount, 1)
+        num = (re.search(r"Доставка СДЭК (\S+)", purpose) or [None, ""])[1]
+        short = "🛍 Новый заказ: СДЭК с примеркой, доставка %s руб. оплачена!\n%s\nДанные доставки — в письме на почте." % (amount, purpose)
+        full = full.replace("Новый оплаченный заказ", "Новый заказ «СДЭК с примеркой» (оплачена доставка %s руб., украшения — оплата при получении)" % amount, 1)
     client = ("Здравствуйте%s!\n\nСпасибо за заказ в MEMORIA 🤍\nЗаказ № %s оплачен и принят в работу.\n\n"
               "Состав:\n%s\n\nСумма: %s руб.\nДоставка: %s, пункт выдачи: %s, %s\n\n"
               "Отправим за 1–3 рабочих дня и пришлём трек-номер. Чек об оплате придёт отдельным письмом от Точка Банка.\n\n"
@@ -233,13 +235,13 @@ def _notify(body):
         "\n".join(x for x in _lines(body.get("lines")).split("\n") if not x.startswith("Итого")), amount, sv, _clean(d.get("city"), 100), _clean(d.get("point"), 300))
     if dep:
         client = ("Здравствуйте%s!\n\nСпасибо за заказ в MEMORIA 🤍\nЗаказ № %s принят: СДЭК с примеркой.\n\n"
-                  "Состав:\n%s\n\nПредоплата доставки: %s руб. Она зачтётся в стоимость украшений, если вы что-то оставите себе. "
-                  "Остальное оплатите в пункте СДЭК после примерки, только за то, что понравилось.\n"
-                  "Пункт выдачи: %s, %s\n\nОтправим за 1–3 рабочих дня и пришлём трек-номер СДЭК. Чек о предоплате придёт отдельным письмом от Точка Банка.\n\n"
+                  "Состав:\n%s\n\nДоставка оплачена: %s руб. Украшения оплатите в пункте СДЭК после примерки, только те, что понравились. "
+                  "Если не подойдёт ничего, больше ничего платить не нужно.\n"
+                  "Пункт выдачи: %s, %s\n\nОтправим за 1–3 рабочих дня и пришлём трек-номер СДЭК. Чек об оплате доставки придёт отдельным письмом от Точка Банка.\n\n"
                   "Если есть вопросы, ответьте на это письмо или напишите нам в Telegram, MAX или WhatsApp по номеру +7 926 615-93-09.\n\nMEMORIA\nmemoria-jewelry.ru\n") % (
             (", " + _clean(d.get("name"), 100).split(" ")[0]) if _clean(d.get("name"), 100) else "", num,
             _lines(body.get("lines")), amount, _clean(d.get("city"), 100), _clean(d.get("point"), 300))
-    jobs = [("tg", lambda: _tg(short)), ("mail", lambda: _mail(("Новый заказ СДЭК с примеркой, предоплата %s руб." if dep else "Новый заказ с сайта MEMORIA: %s руб.") % amount, full))]
+    jobs = [("tg", lambda: _tg(short)), ("mail", lambda: _mail(("Новый заказ СДЭК с примеркой, доставка %s руб. оплачена" if dep else "Новый заказ с сайта MEMORIA: %s руб.") % amount, full))]
     if re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", buyer):
         jobs.append(("client", lambda: _mail("Ваш заказ № %s в MEMORIA принят" % num, client, buyer)))
     if not dep:
@@ -308,7 +310,7 @@ def handler(event, context):
         if promo not in PROMO:
             body["promo"] = ""
         items, skus, total = build_order(body, _prices())
-        dep = items[0]["name"].startswith("Предоплата доставки СДЭК")
+        dep = items[0]["name"].startswith("Доставка СДЭК с примеркой")
     except ValueError as e:
         return _out(400, {"error": str(e)}, origin)
     except Exception as e:
@@ -328,7 +330,7 @@ def handler(event, context):
                 return _out(400, {"error": "Промокод действует только на первый заказ. Уберите его, и можно оплатить."}, origin)
         order = time.strftime("%d%m-%H%M%S", time.gmtime(time.time() + 3 * 3600))
         data = {"customerCode": cc, "merchantId": mid, "amount": total,
-                "purpose": ("%s %s с сайта MEMORIA%s PR%s: %s" % ("Предоплата СДЭК" if dep else "Заказ", order, " промокод" if promo in PROMO else "", tag, ", ".join(skus)))[:140],
+                "purpose": ("%s %s с сайта MEMORIA%s PR%s: %s" % ("Доставка СДЭК" if dep else "Заказ", order, " промокод" if promo in PROMO else "", tag, ", ".join(skus)))[:140],
                 "paymentMode": ["sbp", "card"],
                 "redirectUrl": SITE + "/?oplata=ok&z=" + order,
                 "failRedirectUrl": SITE + "/?oplata=fail",

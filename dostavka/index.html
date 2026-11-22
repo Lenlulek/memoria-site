@@ -375,6 +375,8 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 .way{background:var(--paper);border:1px solid var(--line);padding:28px 28px 24px;display:flex;flex-direction:column;gap:10px}
 .way .wn{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--granat)}
 .way h3{margin:0;font-family:var(--display);font-weight:500;font-size:26px;line-height:1.2}
+.wbadge{margin:0;align-self:flex-start;background:var(--granat);color:var(--milk);font-size:14px;font-weight:500;padding:6px 14px;border-radius:999px}
+.wbadge.soft{background:transparent;color:var(--granat);border:1px solid var(--granat)}
 .way ul{margin:4px 0 0;padding-left:18px;display:grid;gap:6px;font-size:15px}
 .way .wnote{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
 .shead{font-family:var(--display);font-weight:500;font-size:22px;text-align:center;margin:0 0 20px}
@@ -586,11 +588,11 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
   <section id="dostavka-info" class="sec dpage" data-on="dostavka">
     <div class="wrap">
       <div class="sec-head"><div><div class="eyebrow">Доставка и гарантия</div><h2>Доставка</h2></div></div>
-      <p class="dlead">Мы выбрали самые удобные способы доставки: пункты Ozon рядом с домом или СДЭК, где можно примерить украшения перед покупкой. Доставка по всей России уже включена в цену, каждое украшение в подарочной коробке.</p>
+      <p class="dlead">Мы выбрали самые удобные способы доставки: пункты Ozon рядом с домом или СДЭК, где можно примерить украшения перед покупкой. Каждое украшение приезжает в подарочной коробке.</p>
       <h3 class="shead" style="text-align:left;font-size:26px">Два способа получить заказ</h3>
       <div class="ways">
-        <div class="way"><span class="wn">Способ 1</span><h3>Ozon: рядом с домом</h3><ul><li>Оплата сразу на сайте, картой или по СБП.</li><li>Пункты Ozon почти в каждом дворе.</li><li>Заказ сразу виден в вашем приложении Ozon.</li><li>В среднем 2–5 дней.</li></ul><p class="wnote">Доставка уже включена в цену.</p></div>
-        <div class="way"><span class="wn">Способ 2</span><h3>СДЭК: с примеркой</h3><ul><li>На сайте вносите только 500 рублей предоплаты за доставку.</li><li>Откройте посылку в пункте СДЭК и примерьте украшения.</li><li>Оплатите на месте только то, что понравилось, остальное вернётся к нам.</li></ul><p class="wnote">Если что-то оставите, 500 рублей зачтём в стоимость украшений. Если не подойдёт ничего, они покрывают доставку туда и обратно.</p></div>
+        <div class="way"><span class="wn">Способ 1</span><h3>Ozon: рядом с домом</h3><p class="wbadge">Доставка бесплатно, уже включена в цену</p><ul><li>Оплата сразу на сайте, картой или по СБП.</li><li>Пункты Ozon почти в каждом дворе.</li><li>Заказ сразу виден в вашем приложении Ozon.</li><li>В среднем 2–5 дней.</li></ul></div>
+        <div class="way"><span class="wn">Способ 2</span><h3>СДЭК: с примеркой</h3><p class="wbadge soft">Доставка 500 рублей, туда и обратно</p><ul><li>Доставку 500 рублей оплачиваете на сайте, украшения — в пункте СДЭК.</li><li>Откройте посылку и примерьте украшения, до 5 штук в заказе.</li><li>Оплатите только то, что понравилось, остальное вернётся к нам.</li></ul><p class="wnote">Если не подойдёт ничего, больше ничего платить не нужно.</p></div>
       </div>
       <div class="tryon">
         <p class="shead">Примерка перед покупкой</p>
@@ -828,7 +830,7 @@ function cartMsg(){
   return `Здравствуйте! Хочу оформить заказ с сайта:\n${lines.join("\n")}\nИтого: ${rub(sum)}`+(promo?`\nПромокод: ${promo}`:"")+tr;
 }
 let agree=false,news=false,cert="";
-const DOPT=[["ozon","Ozon","у дома, в среднем 2–5 дн.","оплата сразу на сайте",""],["cdektry","СДЭК с примеркой","примерка в пункте СДЭК","500 руб. сейчас, остальное после примерки",""]];
+const DOPT=[["ozon","Ozon","у дома, в среднем 2–5 дн.","доставка бесплатно",""],["cdektry","СДЭК с примеркой","до 5 украшений","доставка 500 руб.",""]];
 function dkey(){if(dl.way!=="try")dl.service="ozon";return dl.way==="try"?"cdektry":"ozon"}
 function payBlock(){
   const k=dkey(),tr=k==="cdektry",svc={ozon:"Ozon",cdektry:"СДЭК",cdek:"СДЭК",yandex:"Яндекс"}[k];
@@ -839,7 +841,7 @@ function payBlock(){
     <input id="ct-email" type="email" inputmode="email" autocomplete="email" placeholder="Почта для чека" value="${esc(email)}">
     <span class="step">2/3 <b>Доставка</b></span>
     <div class="dtiles" role="group" aria-label="Способ доставки">${DOPT.map(([v,t,d,c,r])=>`<button type="button" class="dt" data-dk="${v}" aria-pressed="${k===v}"><b>${t}</b><small>${d}</small><i>${c}${r?" · "+r:""}</i></button>`).join("")}</div>
-    ${tr?`<p style="font-size:13px;color:var(--muted);margin:0">Сейчас вносите 500 рублей предоплаты за доставку. В пункте СДЭК примерьте и оплатите только то, что понравилось: 500 рублей зачтём в стоимость. Если не подойдёт ничего, они покрывают доставку туда и обратно.</p>`:""}
+    ${tr?`<p style="font-size:13px;color:var(--muted);margin:0">Сейчас оплачиваете только доставку: 500 рублей туда и обратно. В пункте СДЭК примерьте украшения и оплатите те, что понравились. В заказе с примеркой — до 5 украшений.</p>${cart.reduce((a,x)=>a+x.q,0)>5?`<p class="err" style="margin:0">Для примерки можно заказать до 5 украшений. Уберите лишние или выберите Ozon.</p>`:""}`:""}
     <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
     <input data-k="point" placeholder="Адрес пункта выдачи ${svc}" value="${esc(dl.point)}">
     <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}">
@@ -847,12 +849,12 @@ function payBlock(){
     <input id="ct-cert" placeholder="Номер сертификата, если есть" value="${esc(cert)}" autocomplete="off">
     <label class="cb"><input type="checkbox" id="ct-agree" ${agree?"checked":""}><span>Даю <a href="/soglasie/" target="_blank" rel="noopener" style="color:inherit">согласие на обработку персональных данных</a> и принимаю условия <a href="/oferta/" target="_blank" rel="noopener" style="color:inherit">оферты</a></span></label>
     <label class="cb"><input type="checkbox" id="ct-news" ${news?"checked":""}><span>Хочу получать новости MEMORIA</span></label>
-    <button type="button" class="btn" data-pay="${tr?"cdek":"card"}" data-lbl="${tr?"Внести 500 руб. и оформить":"Оплатить онлайн"}" disabled>Заполните все поля</button>
+    <button type="button" class="btn" data-pay="${tr?"cdek":"card"}" data-lbl="${tr?"Оплатить доставку 500 руб.":"Оплатить онлайн"}" disabled>Заполните все поля</button>
     <p style="font-size:12px;color:var(--muted);margin:0">Картой или по СБП через защищённую страницу Точка Банка. Отправим за 1–3 рабочих дня${k==="ozon"?", заказ появится в вашем приложении Ozon.":" и пришлём трек-номер."}</p>
     <p class="err" id="ct-err" hidden></p></div>
   <p style="margin:6px 0 0">${cert?"С сертификатом оформим заказ вручную: отправьте нам список в мессенджер, мы вычтем сумму сертификата и пришлём ссылку на остаток.":"Или отправьте нам список в мессенджер:"}</p>`;
 }
-function okForm(){return dl.name&&dl.city&&dl.point&&phone.replace(/\D/g,"").length>=10&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)&&agree}
+function okForm(){if(dl.way==="try"&&cart.reduce((a,x)=>a+x.q,0)>5)return false;return dl.name&&dl.city&&dl.point&&phone.replace(/\D/g,"").length>=10&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)&&agree}
 function checkPay(){const b=cbody.querySelector("[data-pay]");if(!b)return;const ok=okForm()&&!cert;b.disabled=!ok;b.textContent=cert?"С сертификатом — через мессенджер ниже":ok?b.dataset.lbl:"Заполните все поля"}
 function drawCart(){
   if(!cart.length){cbody.innerHTML='<p style="margin:8px 0 4px">Корзина пока пуста. Добавьте украшения кнопкой «В корзину».</p>';return}
@@ -931,7 +933,7 @@ function showPaid(ok,last){
   if(ok){cart=[];save();cnt()}
   const el=document.createElement("div");el.className="paid";
   el.innerHTML=ok?`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:28px;margin:0;color:var(--granat)">Спасибо, оплата прошла!</h3>
-    <p style="margin:0">${last.dep?`Заказ ${esc(last.order||"")} принят: СДЭК с примеркой. Предоплата доставки внесена, чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер СДЭК. Украшения оплатите в пункте после примерки.`:`Заказ ${esc(last.order||"")} принят. Чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер.`}</p>
+    <p style="margin:0">${last.dep?`Заказ ${esc(last.order||"")} принят: СДЭК с примеркой. Доставка оплачена, чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер СДЭК. Украшения оплатите в пункте после примерки.`:`Заказ ${esc(last.order||"")} принят. Чек придёт на почту. Отправим за 1–3 рабочих дня и пришлём трек-номер.`}</p>
     <p style="margin:0;color:var(--muted);font-size:14px">Если есть вопросы, напишите нам: <a href="https://t.me/ellaMua" target="_blank" rel="noopener">Telegram</a>, <a href="https://wa.me/79266159309" target="_blank" rel="noopener">WhatsApp</a> или <a href="https://max.ru/u/f9LHodD0cOLJbjJW50s3gQ6pSPGADmXaQOg_j6GRC2yzuB6oFlstFlAm5Cg" target="_blank" rel="noopener">MAX</a>.</p>
     <button type="button" class="btn close">Хорошо</button></div>`
    :`<div class="box"><h3 style="font-family:var(--display);font-weight:500;font-size:26px;margin:0">Оплата не прошла</h3><p style="margin:0">Деньги не списаны. Товары остались в корзине: попробуйте ещё раз или напишите нам.</p><button type="button" class="btn close">Хорошо</button></div>`;
