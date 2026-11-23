@@ -821,9 +821,11 @@ function openP(i){
   const q=document.getElementById("pv-q");
   if(cur.q){q.hidden=false;q.innerHTML=`<q>${cur.q[0]}</q><cite>${cur.q[1]}</cite>`}else q.hidden=true;
   go(0); pv.hidden=false; document.body.style.overflow="hidden"; document.getElementById("pv-x").focus();
+  setM(cur.sku);
 }
+function setM(v){try{const u=new URL(location.href);if(v)u.searchParams.set("m",v);else u.searchParams.delete("m");history.replaceState(null,"",u.pathname+u.search+u.hash)}catch(e){}}
 function go(k){const n=cur.photos.length;ph=(k+n)%n;track.style.transform=`translateX(${-100*ph}%)`;dots.querySelectorAll("button").forEach((d,j)=>d.setAttribute("aria-current",j===ph))}
-function closeP(){pv.hidden=true;document.body.style.overflow=""}
+function closeP(){pv.hidden=true;document.body.style.overflow="";setM("")}
 document.getElementById("pv-prev").addEventListener("click",()=>go(ph-1));
 document.getElementById("pv-next").addEventListener("click",()=>go(ph+1));
 dots.addEventListener("click",e=>{const d=e.target.closest("[data-k]");if(d)go(+d.dataset.k)});
@@ -833,6 +835,7 @@ document.getElementById("pv-x").addEventListener("click",closeP);
 pv.addEventListener("click",e=>{if(e.target===pv)closeP()});
 document.getElementById("pv-order").addEventListener("click",()=>{add(cur.sku);closeP();});
 
+(function(){const m=(new URLSearchParams(location.search).get("m")||"").toUpperCase();if(!m)return;const i=items.findIndex(it=>it.sku.toUpperCase()===m);if(i>=0)openP(i)})();
 grid.addEventListener("click",e=>{
   const o=e.target.closest("[data-open]"); if(o){openP(+o.dataset.open);return}
   const b=e.target.closest("button[data-i]"); if(b) add(items[b.dataset.i].sku);
