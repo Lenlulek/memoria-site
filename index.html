@@ -409,23 +409,21 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 .advent-banner-photos img:last-child{object-position:center 58%}
 .advent-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(16,14,13,.77),rgba(16,14,13,.47) 42%,transparent 67%);z-index:0}
 .advent-copy{position:absolute;z-index:1;inset:auto auto 12% clamp(24px,6vw,100px);width:min(40%,540px)}
-.advent-copy h1{margin:0;font-family:var(--display);font-size:clamp(31px,4.35vw,69px);font-weight:500;line-height:1.02;text-wrap:balance;text-shadow:0 2px 20px #171512}
-.advent-copy p{margin:16px 0 24px;font-size:clamp(15px,1.55vw,23px);line-height:1.45}
-.advent-link.btn{display:inline-flex;background:#fff9ef;color:#681e2b;border-color:#fff9ef}
-.advent-link.btn:hover,.advent-link.btn:focus-visible{background:#fff;color:#4a1520}
-.advent-brand-line{margin:0;text-align:center;padding:22px 16px;color:var(--granat);font-family:var(--display);font-style:italic;font-size:clamp(17px,2vw,22px)}
+.advent-copy h1{margin:0;font-family:var(--body);font-size:clamp(30px,4.1vw,64px);font-weight:500;line-height:1.06;text-wrap:balance;text-shadow:0 2px 20px #171512}
+.advent-copy p{margin:16px 0 0;font-size:clamp(15px,1.55vw,23px);line-height:1.45}
 body:has(.advent-hero:not([hidden])) .orn{display:none}
-.advent-details{padding-block:clamp(28px,5vw,66px);text-align:center;scroll-margin-top:130px}
-.advent-details h2{font-family:var(--display);color:var(--granat);font-size:clamp(26px,4vw,44px);font-weight:500;margin:0 0 20px}
-.advent-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,20px);max-width:800px;margin:0 auto 20px}
-.advent-gallery img{display:block;width:100%;height:auto;aspect-ratio:4 / 5;object-fit:cover;object-position:center 58%}
+.advent-preorder{text-align:center;padding:24px 16px 0}
+.brand-intro{padding-block:clamp(36px,6vw,86px);text-align:center}
+.brand-intro .script{margin:0}
+.brand-intro h2{font-family:var(--display);font-weight:400;font-size:clamp(40px,5.6vw,72px);line-height:1.02;margin:18px 0 22px;text-wrap:balance;letter-spacing:-.01em}
+.brand-intro h2 em{font-style:italic;color:var(--granat)}
+.brand-intro .lead{margin:0 auto;max-width:35em}
 @media(max-width:690px){
   .advent-banner-photos{height:clamp(320px,101vw,510px)}
   .advent-hero::after{background:linear-gradient(0deg,rgba(16,14,13,.91),rgba(16,14,13,.60) 35%,transparent 75%)}
   .advent-copy{inset:auto 16px 20px;width:auto;text-align:center}
   .advent-copy h1{font-size:clamp(30px,7.9vw,44px)}
-  .advent-copy p{margin:8px 0 13px;font-size:15px}
-  .advent-brand-line{padding:16px 10px}
+  .advent-copy p{margin:8px 0 0;font-size:15px}
 }
 </style>
 </head>
@@ -463,18 +461,15 @@ body:has(.advent-hero:not([hidden])) .orn{display:none}
     <div class="advent-copy">
       <h1 id="advent-title">Рождественская сказка с MEMORIA</h1>
       <p>Адвент-календарь<br>12 окошек, 12 украшений</p>
-      <a class="btn advent-link" href="#advent-details">Посмотреть адвент</a>
     </div>
   </section>
-  <p class="advent-brand-line" data-on="home">Рай — это не про место. Это про состояние.</p>
-
-  <section class="advent-details wrap" id="advent-details" data-on="home" aria-labelledby="advent-details-title">
-    <h2 id="advent-details-title">Адвент-календарь MEMORIA</h2>
-    <div class="advent-gallery">
-      <img src="/img/advent/1950.webp" width="1080" height="1620" loading="lazy" decoding="async" alt="Красный адвент-календарь в руках модели">
-      <img src="/img/advent/1631.webp" width="1080" height="1620" loading="lazy" decoding="async" alt="Золотой рисунок и надпись Merry Christmas на коробке">
-    </div>
-    <button class="btn" type="button" data-advent-contact>Спросить про адвент</button>
+  <div class="advent-preorder" data-on="home">
+    <button class="btn" type="button" data-advent-preorder>Сделать предзаказ адвента</button>
+  </div>
+  <section class="brand-intro wrap" data-on="home" aria-labelledby="brand-intro-title">
+    <p class="script">Рай — это не про место. Это про состояние</p>
+    <h2 id="brand-intro-title">Memoria значит <em>«память»</em></h2>
+    <p class="lead">В каждом из нас есть память о месте, где царит гармония. О состоянии, где нет раскола внутри, где любовь не зависит от настроения и где тебя любят не благодаря, а вопреки. <em>Наши украшения напоминают о нём.</em></p>
   </section>
 
 
@@ -1087,8 +1082,13 @@ pop.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))pop.hidden=t
 
 
 <script>
-document.querySelector("[data-advent-contact]").addEventListener("click", () => {
+document.querySelector("[data-advent-preorder]").addEventListener("click", () => {
+  const message = encodeURIComponent("Здравствуйте! Хочу сделать предзаказ адвент-календаря MEMORIA.");
   document.getElementById("ask").click();
+  document.getElementById("sh-t").textContent = "Предзаказ адвента";
+  document.getElementById("sh-p").textContent = "Выберите мессенджер и отправьте нам сообщение. Мы подтвердим предзаказ и уточним условия.";
+  document.getElementById("sh-tg").href = "https://t.me/ellaMua?text=" + message;
+  document.getElementById("sh-wa").href = "https://wa.me/79266159309?text=" + message;
 });
 </script>
 </body>
