@@ -734,6 +734,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 </div>
 <div class="toast" id="toast" hidden role="status"><span id="toast-t"></span><button type="button" id="toast-go">Открыть корзину</button></div>
 
+<script src="/cdek-points.js"></script>
 <script>
 const items=__CATALOG__;
 const rub=n=>n.toLocaleString("ru-RU")+" руб.";
@@ -870,7 +871,12 @@ function payBlock(){
     <div class="dtiles" role="group" aria-label="Способ доставки">${DOPT.map(([v,t,d,c,r])=>`<button type="button" class="dt" data-dk="${v}" aria-pressed="${k===v}"><b>${t}</b><small>${d}</small><i>${c}${r?" · "+r:""}</i></button>`).join("")}</div>
     ${tr?`<p style="font-size:13px;color:var(--muted);margin:0">Сейчас оплачиваете только доставку: 500 рублей туда и обратно. В пункте СДЭК примерьте украшения и оплатите те, что понравились. В заказе с примеркой — до 5 украшений.</p>${cart.reduce((a,x)=>a+x.q,0)>5?`<p class="err" style="margin:0">Для примерки можно заказать до 5 украшений. Уберите лишние или выберите Ozon.</p>`:""}`:""}
     <input data-k="city" autocomplete="address-level2" placeholder="Город" value="${esc(dl.city)}">
-    <input data-k="point" placeholder="Адрес пункта выдачи ${svc}" value="${esc(dl.point)}">
+    ${tr?`<div data-cdek-points style="display:grid;gap:8px">
+      <button type="button" class="btn ghost">Найти пункты СДЭК</button>
+      <select aria-label="Город СДЭК" hidden></select>
+      <select aria-label="Пункт выдачи СДЭК" hidden></select>
+      <small role="status">${dl.pointCode?`Выбран пункт ${esc(dl.pointCode)}: ${esc(dl.point)}`:""}</small>
+    </div>`:`<input data-k="point" placeholder="Адрес пункта выдачи ${svc}" value="${esc(dl.point)}">`}
     <input data-k="comment" placeholder="Комментарий (необязательно)" value="${esc(dl.comment)}">
     <span class="step">3/3 <b>Оплата</b></span>
     <input id="ct-cert" placeholder="Номер сертификата, если есть" value="${esc(cert)}" autocomplete="off">
@@ -881,7 +887,7 @@ function payBlock(){
     <p class="err" id="ct-err" hidden></p></div>
   <p style="margin:6px 0 0">${cert?"С сертификатом оформим заказ вручную: отправьте нам список в мессенджер, мы вычтем сумму сертификата и пришлём ссылку на остаток.":"Или отправьте нам список в мессенджер:"}</p>`;
 }
-function okForm(){if(dl.way==="try"&&cart.reduce((a,x)=>a+x.q,0)>5)return false;return dl.name&&dl.city&&dl.point&&phone.replace(/\D/g,"").length>=10&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)&&agree}
+function okForm(){if(dl.way==="try"&&(!dl.pointCode||cart.reduce((a,x)=>a+x.q,0)>5))return false;return dl.name&&dl.city&&dl.point&&phone.replace(/\D/g,"").length>=10&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)&&agree}
 function checkPay(){const b=cbody.querySelector("[data-pay]");if(!b)return;const ok=okForm()&&!cert;b.disabled=!ok;b.textContent=cert?"С сертификатом — через мессенджер ниже":ok?b.dataset.lbl:"Заполните все поля"}
 function drawCart(){
   if(!cart.length){cbody.innerHTML='<p style="margin:8px 0 4px">Корзина пока пуста. Добавьте украшения кнопкой «В корзину».</p>';return}
@@ -905,6 +911,8 @@ function drawCart(){
   upd();
   document.getElementById("ct-promo").addEventListener("input",e=>{promo=e.target.value.trim();upd()});
   const ph=document.getElementById("ct-phone");if(ph)ph.addEventListener("input",e=>{phone=e.target.value.trim();saveDl();upd()});
+  const cdekPanel=cbody.querySelector("[data-cdek-points]");
+  if(cdekPanel)bindCdekPoints(cdekPanel,cbody.querySelector('[data-k="city"]'),dl,()=>{saveDl();upd()});
   cbody.querySelectorAll("[data-k]").forEach(i=>i.addEventListener("input",e=>{dl[i.dataset.k]=e.target.value.trim();saveDl();upd()}));
   const em=document.getElementById("ct-email");if(em)em.addEventListener("input",e=>{email=e.target.value.trim();try{localStorage.setItem("memoria-email",email)}catch(_){};upd()});
   const ce=document.getElementById("ct-cert");if(ce)ce.addEventListener("input",e=>{const had=!!cert;cert=e.target.value.trim();if(had!==!!cert){const pos=e.target.selectionStart;drawCart();const n=document.getElementById("ct-cert");n.focus();n.setSelectionRange(pos,pos)}else upd()});
@@ -922,7 +930,7 @@ cbody.addEventListener("click",async e=>{
   else if(t.id==="ct-copy"){const ok=await copyMsg();t.textContent=ok?"Скопировано ✓":"Выделите текст выше и скопируйте";return}
   else if(t.closest("#ct-tg,#ct-max")){copyMsg();return}
   else if(t.dataset.pay){pay(t);return}
-  else if(t.closest("[data-dk]")){const v=t.closest("[data-dk]").dataset.dk;dl.way=v==="cdektry"?"try":"pay";dl.service=v==="cdektry"?"cdek":v;saveDl();drawCart();return}
+  else if(t.closest("[data-dk]")){const v=t.closest("[data-dk]").dataset.dk;if(v!==dkey()){dl.point="";dl.pointCode=""}dl.way=v==="cdektry"?"try":"pay";dl.service=v==="cdektry"?"cdek":v;saveDl();drawCart();return}
   else if(t.dataset.svc){dl.service=t.dataset.svc;saveDl();cbody.querySelectorAll("[data-svc]").forEach(c=>c.setAttribute("aria-pressed",c===t));cbody.querySelector('[data-k="point"]').placeholder="Адрес пункта выдачи "+({ozon:"Ozon",cdek:"СДЭК",yandex:"Яндекс"})[t.dataset.svc];return}
   else return;
   save();cnt();drawCart();
@@ -938,13 +946,13 @@ cnt();
 async function pay(b){
   const err=document.getElementById("ct-err");err.hidden=true;
   const need=[["city","Укажите город."],["point","Укажите адрес пункта выдачи."],["name","Укажите имя и фамилию получателя."]];
-  for(const [k,t] of need){if(!dl[k]){err.textContent=t;err.hidden=false;cbody.querySelector(`[data-k="${k}"]`).focus();return}}
+  for(const [k,t] of need){if(!dl[k]){err.textContent=t;err.hidden=false;cbody.querySelector(`[data-k="${k}"]`)?.focus();return}}
   if(phone.replace(/\D/g,"").length<10){err.textContent="Укажите телефон получателя.";err.hidden=false;document.getElementById("ct-phone").focus();return}
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Укажите почту: туда придёт чек.";err.hidden=false;document.getElementById("ct-email").focus();return}
   if(!agree){err.textContent="Отметьте согласие на обработку данных.";err.hidden=false;return}
   const txt=b.textContent;b.disabled=true;b.textContent="Переходим к оплате…";
   try{
-    const dep=b.dataset.pay==="cdek",dlv=dep?Object.assign({},dl,{service:"cdektry"}):dl;
+    const dep=b.dataset.pay==="cdek",dlv=dep?{...dl,service:"cdektry",point:`${dl.pointCode} · ${dl.point}`}:dl;
     const r=await fetch(PAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(dep?{items:[{sku:"CDEK-DEPOSIT",q:1}],cart,promo,email,phone,news,delivery:dlv,mode:"cdek"}:{items:cart,promo,email,phone,news,delivery:dl,mode:b.dataset.pay})});
     const d=await r.json();
     if(!r.ok||!d.url)throw new Error(/CDEK-DEPOSIT/.test(d.error||"")?"Оплата временно недоступна. Напишите нам в мессенджер.":(d.error||"Ошибка"));
