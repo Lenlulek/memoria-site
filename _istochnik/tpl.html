@@ -246,7 +246,7 @@ footer .wrap.fine{display:block}
 .cartbtn svg{width:18px;height:18px}
 .cartbtn .n{min-width:20px;height:20px;border-radius:10px;background:var(--granat);color:var(--milk);font-size:12px;display:inline-grid;place-items:center;padding:0 5px}
 .cartbtn .n:empty{display:none}
-.cart .box{max-width:520px;max-height:calc(100dvh - 32px);overflow:auto}
+.cart .box{max-width:860px;max-height:calc(100dvh - 32px - env(safe-area-inset-bottom,0px));min-width:0;overflow:auto;padding:clamp(14px,3vw,26px)}
 .cl{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .cl li{display:grid;grid-template-columns:56px 1fr;gap:4px 12px;align-items:start}
 .cl img{grid-row:span 2}
@@ -734,7 +734,7 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 </div>
 <div class="toast" id="toast" hidden role="status"><span id="toast-t"></span><button type="button" id="toast-go">Открыть корзину</button></div>
 
-<script src="/cdek-points.js?v=2"></script>
+<script src="/cdek-points.js?v=3"></script>
 <script>
 const items=__CATALOG__;
 const rub=n=>n.toLocaleString("ru-RU")+" руб.";

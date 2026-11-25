@@ -51,7 +51,7 @@ const bindCdekPoints = (() => {
     const status = panel.querySelector("[role=status]");
     const mapHost = document.createElement("div");
     mapHost.hidden = true;
-    mapHost.style.cssText = "height:clamp(220px,40dvh,340px);border-radius:10px;overflow:hidden;isolation:isolate";
+    mapHost.style.cssText = "height:clamp(220px,56dvh,560px);border-radius:10px;overflow:hidden;isolation:isolate";
     mapHost.setAttribute("aria-label", "Карта пунктов выдачи СДЭК");
     panel.insertBefore(mapHost, offices);
     let markers = new Map();
