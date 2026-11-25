@@ -41,8 +41,8 @@ nav a:hover{color:var(--granat);border-bottom-color:var(--granat)}
 /* hero */
 .hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding-block:64px 72px}
 .script{font-family:var(--script);color:var(--granat);font-size:30px;line-height:1.25}
-h1,.brand-hero-title{font-family:var(--display);font-weight:400;font-size:clamp(40px,5.6vw,72px);line-height:1.02;margin:18px 0 22px;text-wrap:balance;letter-spacing:-.01em}
-h1 em,.brand-hero-title em{font-style:italic;color:var(--granat)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,5.6vw,72px);line-height:1.02;margin:18px 0 22px;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--granat)}
 .lead{max-width:30em;color:var(--muted);font-size:17px;margin:0 0 32px}
 .cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero-pom{margin:0;display:grid;justify-items:center;gap:6px;color:var(--granat)}
@@ -389,33 +389,30 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 .msg a:hover{background:var(--granat);color:var(--milk)}
 @media (max-width:760px){.scheme{flex-direction:column;align-items:stretch}.scheme li.sarr{transform:rotate(90deg);padding:0;align-self:center}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-.advent-hero{width:min(100% - 32px,1180px);margin:clamp(16px,3vw,40px) auto;background:var(--milk);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,48%);grid-template-rows:1fr auto 1fr;column-gap:clamp(24px,5vw,72px);border:1px solid var(--line)}
-.advent-copy{grid-column:1;grid-row:1;align-self:end;padding:28px 0 20px clamp(24px,6vw,82px)}
-.advent-copy h1{margin:0;color:var(--granat);font-family:var(--display);font-weight:500;font-size:clamp(34px,4.75vw,70px);line-height:1.02;text-wrap:balance;overflow-wrap:anywhere}
-.advent-copy h1 span{display:block;font-size:.72em;letter-spacing:.08em;margin-top:.25em}
-.advent-copy p{margin:18px 0 0;color:var(--muted);font-size:clamp(15px,1.5vw,19px)}
-.advent-link{grid-column:1;grid-row:2;justify-self:start;margin-left:clamp(24px,6vw,82px)}
-.advent-carousel{grid-column:2;grid-row:1 / 4;position:relative;overflow:hidden;aspect-ratio:4 / 5;min-width:0;background:#211e1c;touch-action:pan-y}
-.advent-carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 52%;opacity:1;transition:opacity .65s ease}
-.advent-carousel img[aria-hidden="true"]{opacity:0}
-.advent-controls{position:absolute;right:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(25,20,20,.82)}
-.advent-controls[hidden]{display:none}
-.advent-controls button{display:grid;place-items:center;width:42px;height:42px;border:0;background:transparent;color:white;border-radius:50%;font:500 22px/1 system-ui;cursor:pointer}
-.advent-controls button:hover,.advent-controls button:focus-visible{background:rgba(255,255,255,.22)}
-.advent-details{padding-block:clamp(32px,6vw,72px);text-align:center;scroll-margin-top:130px}
+.advent-hero{position:relative;width:min(100%,1600px);margin:0 auto;color:#fff;background:#191f1a;isolation:isolate}
+.advent-banner-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr);height:clamp(420px,59vw,720px);overflow:hidden}
+.advent-banner-photos img{display:block;width:100%;height:100%;min-height:0;object-fit:cover;object-position:center 52%}
+.advent-banner-photos img:last-child{object-position:center 58%}
+.advent-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(16,14,13,.77),rgba(16,14,13,.47) 42%,transparent 67%);z-index:0}
+.advent-copy{position:absolute;z-index:1;inset:auto auto 12% clamp(24px,6vw,100px);width:min(40%,540px)}
+.advent-copy h1{margin:0;font-family:var(--display);font-size:clamp(31px,4.35vw,69px);font-weight:500;line-height:1.02;text-wrap:balance;text-shadow:0 2px 20px #171512}
+.advent-copy p{margin:16px 0 24px;font-size:clamp(15px,1.55vw,23px);line-height:1.45}
+.advent-link.btn{display:inline-flex;background:#fff9ef;color:#681e2b;border-color:#fff9ef}
+.advent-link.btn:hover,.advent-link.btn:focus-visible{background:#fff;color:#4a1520}
+.advent-brand-line{margin:0;text-align:center;padding:22px 16px;color:var(--granat);font-family:var(--display);font-style:italic;font-size:clamp(17px,2vw,22px)}
+body:has(.advent-hero:not([hidden])) .orn{display:none}
+.advent-details{padding-block:clamp(28px,5vw,66px);text-align:center;scroll-margin-top:130px}
 .advent-details h2{font-family:var(--display);color:var(--granat);font-size:clamp(26px,4vw,44px);font-weight:500;margin:0 0 20px}
 .advent-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,20px);max-width:800px;margin:0 auto 20px}
 .advent-gallery img{display:block;width:100%;height:auto;aspect-ratio:4 / 5;object-fit:cover;object-position:center 58%}
 @media(max-width:690px){
-  .advent-hero{width:min(100% - 24px,480px);grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;row-gap:0;text-align:center}
-  .advent-copy{padding:18px 12px 14px}
-  .advent-copy h1{font-size:clamp(27px,7vw,40px)}
-  .advent-copy h1 span{display:inline-block;margin-top:0}
-  .advent-copy p{margin-top:8px}
-  .advent-carousel{grid-column:1;grid-row:2;aspect-ratio:4 / 5;max-height:58svh}
-  .advent-link{grid-row:3;justify-self:center;margin:14px 0}
+  .advent-banner-photos{height:clamp(320px,101vw,510px)}
+  .advent-hero::after{background:linear-gradient(0deg,rgba(16,14,13,.91),rgba(16,14,13,.60) 35%,transparent 75%)}
+  .advent-copy{inset:auto 16px 20px;width:auto;text-align:center}
+  .advent-copy h1{font-size:clamp(30px,7.9vw,44px)}
+  .advent-copy p{margin:8px 0 13px;font-size:15px}
+  .advent-brand-line{padding:16px 10px}
 }
-@media(prefers-reduced-motion:reduce){.advent-carousel img{transition:none}}
 </style>
 
 
@@ -443,39 +440,17 @@ footer .sup{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:24em}
 
 <main id="top">
   <section class="advent-hero" data-on="home" aria-labelledby="advent-title">
+    <div class="advent-banner-photos">
+      <img src="/img/advent/1636.webp" width="1080" height="1620" alt="Красная коробка адвента на фоне ёлочных огней" fetchpriority="high" decoding="async">
+      <img src="/img/advent/1659.webp" width="1080" height="1620" alt="Открытый адвент-календарь с двенадцатью окошками" fetchpriority="high" decoding="async">
+    </div>
     <div class="advent-copy">
-      <h1 id="advent-title">Рождественский адвент <span>MEMORIA</span></h1>
-      <p>12 окошек, 12 украшений</p>
-    </div>
-    <div class="advent-carousel" aria-label="Фотографии адвент-календаря">
-      <img src="/img/advent/1659.webp" width="1080" height="1620" alt="Открытый адвент-календарь с двенадцатью окошками" fetchpriority="high" decoding="async" aria-hidden="false">
-      <img src="/img/advent/1636.webp" width="1080" height="1620" alt="Красная коробка адвента на фоне ёлочных огней" decoding="async" aria-hidden="true">
-      <img src="/img/advent/1955.webp" width="1080" height="1620" alt="Украшения на модели с адвент-календарём в руках" decoding="async" aria-hidden="true">
-      <div class="advent-controls" hidden>
-        <button type="button" data-advent-prev aria-label="Предыдущее фото">‹</button>
-        <button type="button" data-advent-pause aria-label="Приостановить смену фото">Ⅱ</button>
-        <button type="button" data-advent-next aria-label="Следующее фото">›</button>
-      </div>
-    </div>
-    <a class="btn advent-link" href="#advent-details">Посмотреть адвент</a>
-  </section>
-  <section class="hero" data-on="home">
-    <div class="orn h">__SEEDS_HERO__</div>
-    <div class="wrap">
-      <div>
-        <div class="script">Рай — это не про место. Это про состояние</div>
-        <h2 class="brand-hero-title">Memoria значит <em>«память»</em></h2>
-        <p class="lead">В каждом из нас есть память о месте, где царит гармония. О состоянии, где нет раскола внутри, где любовь не зависит от настроения и где тебя любят не благодаря, а вопреки. <em>Наши украшения напоминают о нём.</em></p>
-        <div class="cta">
-          <a class="btn" href="/katalog/">Смотреть каталог</a>
-          <a class="more-link" href="/o-brende/">Подробнее о бренде <span>→</span></a>
-        </div>
-      </div>
-      <figure class="hero-pom">
-        __POM_BIG__
-      </figure>
+      <h1 id="advent-title">Рождественская сказка с MEMORIA</h1>
+      <p>Адвент-календарь<br>12 окошек, 12 украшений</p>
+      <a class="btn advent-link" href="#advent-details">Посмотреть адвент</a>
     </div>
   </section>
+  <p class="advent-brand-line" data-on="home">Рай — это не про место. Это про состояние.</p>
 
   <section class="advent-details wrap" id="advent-details" data-on="home" aria-labelledby="advent-details-title">
     <h2 id="advent-details-title">Адвент-календарь MEMORIA</h2>
@@ -1096,52 +1071,7 @@ pop.addEventListener("click",e=>{if(e.target.closest("[data-gift]"))pop.hidden=t
 </script>
 
 <script>
-(() => {
-  const carousel = document.querySelector(".advent-carousel");
-  const slides = [...carousel.querySelectorAll("img")];
-  const controls = carousel.querySelector(".advent-controls");
-  const pause = carousel.querySelector("[data-advent-pause]");
-  let index = 0;
-  let timer;
-  let playing = !matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let startX = null;
-
-  function show(offset) {
-    index = (index + offset + slides.length) % slides.length;
-    slides.forEach((slide, i) => slide.setAttribute("aria-hidden", String(i !== index)));
-  }
-
-  function schedule() {
-    clearInterval(timer);
-    if (playing && !document.hidden && carousel.offsetWidth) {
-      timer = setInterval(() => show(1), 6500);
-    }
-    pause.textContent = playing ? "Ⅱ" : "▶";
-    pause.setAttribute("aria-label", playing ? "Приостановить смену фото" : "Возобновить смену фото");
-  }
-
-  function choose(offset) {
-    playing = false;
-    show(offset);
-    schedule();
-  }
-
-  carousel.querySelector("[data-advent-prev]").onclick = () => choose(-1);
-  carousel.querySelector("[data-advent-next]").onclick = () => choose(1);
-  pause.onclick = () => { playing = !playing; schedule(); };
-  carousel.addEventListener("touchstart", event => {
-    startX = event.changedTouches[0].clientX;
-  }, {passive: true});
-  carousel.addEventListener("touchend", event => {
-    if (startX === null) return;
-    const delta = event.changedTouches[0].clientX - startX;
-    startX = null;
-    if (Math.abs(delta) > 44) choose(delta < 0 ? 1 : -1);
-  }, {passive: true});
-  carousel.addEventListener("touchcancel", () => { startX = null; });
-  document.addEventListener("visibilitychange", schedule);
-  document.querySelector("[data-advent-contact]").onclick = () => document.getElementById("ask").click();
-  controls.hidden = false;
-  schedule();
-})();
+document.querySelector("[data-advent-contact]").addEventListener("click", () => {
+  document.getElementById("ask").click();
+});
 </script>
