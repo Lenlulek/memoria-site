@@ -716,7 +716,7 @@ body:has(.advent-hero:not([hidden])) .orn{display:none}
       <div class="sku" id="pv-sku"></div>
       <h3 id="pv-t"></h3>
       <div class="price" id="pv-price"></div>
-      <ul class="meta" id="pv-meta"></ul>
+      <p id="pv-description" hidden></p><ul class="meta" id="pv-meta"></ul>
       <div class="pv-q" id="pv-q" hidden></div>
       <button class="btn" id="pv-order" type="button">В корзину</button>
       <p class="hint">Доставка по России уже включена в цену. Украшение приедет в подарочной коробке.</p>
@@ -827,7 +827,10 @@ function openP(i){
   document.getElementById("pv-sku").innerHTML=cur.sku+(cur.c?` · <span class="coll">Коллекция «${cur.c}»</span>`:"");
   document.getElementById("pv-t").innerHTML=title(cur);
   document.getElementById("pv-price").textContent=rub(cur.price);
-  document.getElementById("pv-meta").innerHTML=`<li><b>Материал</b>нержавеющая сталь, ${cur.metal}</li>${cur.det?`<li><b>Размер</b>${cur.det}</li>`:""}<li><b>Свойства</b>гипоаллергенно, не боится воды</li><li><b>Гарантия</b>6 месяцев</li>`;
+  const description=document.getElementById("pv-description");
+  description.textContent=cur.description||"";
+  description.hidden=!cur.description;
+  document.getElementById("pv-meta").innerHTML=`<li><b>Материал</b>${cur.material || ("нержавеющая сталь, "+cur.metal)}</li>${cur.det?`<li><b>Размер</b>${cur.det}</li>`:""}${cur.showProperties===false?"":"<li><b>Свойства</b>гипоаллергенно, не боится воды</li>"}<li><b>Гарантия</b>6 месяцев</li>`;
   const q=document.getElementById("pv-q");
   if(cur.q){q.hidden=false;q.innerHTML=`<q>${cur.q[0]}</q><cite>${cur.q[1]}</cite>`}else q.hidden=true;
   go(0); pv.hidden=false; document.body.style.overflow="hidden"; document.getElementById("pv-x").focus();
